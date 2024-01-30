@@ -1,4 +1,4 @@
 #define MAX_LINE_LENGTH 81
-#define idc 3
+#define idc 4
 void copyFile(FILE* op);
 hi
