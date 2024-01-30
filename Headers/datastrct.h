@@ -16,7 +16,7 @@ typedef struct node {
  line is the number line in the code
  next is the next node in the list
  */
-node *make_node(char *name, char *content, int line_num);
+node* make_node(char *name, char *content, int line_num);
 
 /**
  * @brief Searches for a node in a linked list.

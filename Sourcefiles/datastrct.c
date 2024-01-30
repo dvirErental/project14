@@ -2,12 +2,12 @@
 // Created by dvirerental on 1/30/24.
 //
 
-#include "../Headers/datastrct.h"
+#include "datastrct.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-node *make_node(char *name, char *content, int line_num){
+node* make_node(char *name, char *content, int line_num){
     node *temp;
 
     /* Check if memory allocation for the node succeeded */
