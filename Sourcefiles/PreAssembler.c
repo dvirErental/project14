@@ -1,3 +1,4 @@
+#include "PreAsse.h"
 void copyFile(FILE* op){
     FILE* cop = fopen("ChangedOriginal", "w");
     char line[MAX_LINE_LENGTH];
