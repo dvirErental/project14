@@ -13,3 +13,4 @@ int isCommand(char* word){
     }
     return -1;
 }
+/*checking if this change goes through*/
