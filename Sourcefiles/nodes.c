@@ -81,6 +81,7 @@ void add_to_list(node **head, char *name, char *content, int line_num){
     }
 }
 void copy_head(node* old,node* new){
+    /* Set the name, content and line number of the old node to the new node */
     old->name = new->name;        /* Set the name of the node */
     old->content = new->content;  /* Set the content string of the node */
     old->line = new->line;    /* Set the line number associated with the content */
