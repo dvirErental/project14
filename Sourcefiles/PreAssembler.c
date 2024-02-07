@@ -3,10 +3,14 @@ FILE* preAssemble(FILE* op){
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
     char* firstWord;
+    char* secondWord = "";
     node* current;
     FILE* ModOrig = fopen("Post_preAssembler", "w");
-    while (fgets(line,MAX_LINE_LENGTH,op) != EOF){
-        if(sscanf(line, "%s", firstWord)){
+    while (!feof(op)){
+        fgets(line,MAX_LINE_LENGTH,op);
+        if(sscanf(line, "%s%s", firstWord, secondWord)){
+            if (isFileIndication(firstWord))
+                firstWord = secondWord;
             if (strcmp(firstWord, "mcr") == 0)
                 lineNum += skip(lineNum, op);
             else if (isCommand(firstWord) == 0) {
@@ -18,7 +22,7 @@ FILE* preAssemble(FILE* op){
                 lineNum++;
             }
             else {
-                fprintf(stderr, "ERROR, unidentified command/macro in line %d/n", lineNum);
+                fprintf(stderr, "ERROR, unidentified command/macro in line, skipped that line %d/n", lineNum);
                 lineNum++;
             }
         }
@@ -30,10 +34,10 @@ void copyMacs(FILE* fp){
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
-    char* firstWord;
-    char* macroName;
-    while((fgets(line, MAX_LINE_LENGTH, fp)) != EOF){
-        if(sscanf(line, "%s%s", firstWord, macroName) == 2 && strcmp(firstWord, "mcr") == 0){
+    char* firstWord = "";
+    char* macroName = "";
+    while (!feof(fp)){
+        fgets(line,MAX_LINE_LENGTH,fp);        if(sscanf(line, "%s%s", firstWord, macroName) == 2 && strcmp(firstWord, "mcr") == 0){
             createMacro(fp,macroName,lineNum, macsFound);
             macsFound++;
         }
@@ -42,11 +46,11 @@ void copyMacs(FILE* fp){
 }
 
 void createMacro(FILE* fp, char* name, int lineNum, int macsFound){
-    node* head;
     char line[MAX_LINE_LENGTH];
-    char* content;
-    char* firstWord;
-    while((fgets(line, MAX_LINE_LENGTH, fp)) != EOF){
+    char* content = "";
+    char* firstWord = "";
+    while (!feof(fp)){
+        fgets(line,MAX_LINE_LENGTH,fp);
         if(sscanf(line, "%s", firstWord) == 1 && strcmp(firstWord, "endmcr") == 0){
             if (macsFound==0) {
                 first = make_node(name, content, lineNum);
@@ -64,11 +68,11 @@ void createMacro(FILE* fp, char* name, int lineNum, int macsFound){
 }
 
 int skip(int lineNum, FILE* op){
-    int counter = 1;
+    int counter = lineNum + 1;
     char line[MAX_LINE_LENGTH];
-    char* firstWord;
-    while(fgets(line, ENDMCR_LETTERS, op) != EOF){
-        sscanf(line, "%s", firstWord);
+    char* firstWord = "";
+    while (!feof(op)){
+        fgets(line,MAX_LINE_LENGTH,op);        sscanf(line, "%s", firstWord);
         if (strcmp(firstWord, "endmcr") == 0){
             counter++;
             break;
@@ -76,4 +80,15 @@ int skip(int lineNum, FILE* op){
         counter++;
     }
     return counter;
+}
+
+int isFileIndication(const char* a){
+    int i = 0;
+    while (a[i] != '\0'){
+        if((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0'))
+            i++;
+        else
+            return 0;
+    }
+    return 1;
 }

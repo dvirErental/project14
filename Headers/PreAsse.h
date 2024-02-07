@@ -8,4 +8,5 @@ void copyFile(FILE*);
 FILE* preAssemble(FILE*);
 void createMacro(FILE*, char*, int, int);
 int skip(int, FILE*);
+int isFileIndication(const char*);
 extern node* first;
