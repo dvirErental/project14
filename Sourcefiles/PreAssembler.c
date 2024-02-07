@@ -7,6 +7,7 @@ FILE* preAssemble(FILE* op) {
     char *secondWord = "";
     char *thirdWord = "";
     node *current;
+    initializeCommands();
     FILE *ModOrig = fopen("Post_preAssembler", "w");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
@@ -40,11 +41,13 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     char line[MAX_LINE_LENGTH];
     char* content = "";
     char* firstWord = "";
+    node* temp;
     while (!feof(fp)){
         fgets(line,MAX_LINE_LENGTH,fp);
         if(sscanf(line, "%s", firstWord) == 1 && strcmp(firstWord, "endmcr") == 0){
             if (macsFound==0) {
-                first = make_node(name, content, lineNum);
+                temp = make_node(name, content, lineNum);
+                copy_head(first, temp);
             }
             else{
                 add_to_list(&first, name, content, lineNum);

@@ -4,7 +4,7 @@
 
 #define NUM_OF_COMMANDS 16
 
-extern char** commands;
+extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/
 

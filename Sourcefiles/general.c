@@ -1,7 +1,7 @@
 #include "general.h"
 
 void initializeCommands(void){
-    commands = (char*[]){"mov", "cmp", "add", "sub", "not", "clr", "lea",
+    char* commands[] = {"mov", "cmp", "add", "sub", "not", "clr", "lea",
                          "inc", "dec", "jmp", "bne", "red", "prn", "jsr", "rts",
                          "hlt"};
 }
