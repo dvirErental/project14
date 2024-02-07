@@ -11,4 +11,5 @@ add_executable(project14_1
         Sourcefiles/datastrct.c
         Sourcefiles/PreAssembler.c
         Headers/general.h
-        Sourcefiles/general.c)
+        Sourcefiles/general.c
+        Sourcefiles/main.c)
