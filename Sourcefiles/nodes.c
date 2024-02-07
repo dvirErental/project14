@@ -80,6 +80,11 @@ void add_to_list(node **head, char *name, char *content, int line_num){
         }
     }
 }
+void copy_head(node* old,node* new){
+    old->name = new->name;        /* Set the name of the node */
+    old->content = new->content;  /* Set the content string of the node */
+    old->line = new->line;    /* Set the line number associated with the content */
+}
 
 void free_node(node *node1){
     /* Free memory allocated for the name, content and node */

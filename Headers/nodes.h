@@ -2,21 +2,13 @@
 #define PROJECT14_1_DATASTRCT_H
 /* Represents a node in a linked list */
 typedef struct node {
-    char *name;         /* Name associated with the node */
+    char *name;         /* Name node */
     char *content;      /* Content stored in the node */
-    int line;           /* Line number associated with the content */
+    int line;           /* Line number of the macro */
     struct node *next;  /* Pointer to the next node in the linked list */
 } node;
 
-/**
- create node in a linked list
-
- name present the name of the node
- content present the contect and line of the code
- line is the number line in the code
- next is the next node in the list
- */
-node* make_node(char *name, char *content, int line_num);
+node* make_node(char *name, char *content, int line_num);/* the function create node for a macro with char name as the name of*/
 
 /**
  * @brief Searches for a node in a linked list.
@@ -27,6 +19,9 @@ node* make_node(char *name, char *content, int line_num);
  * @param found a pointer to a number that indicates if the macro was found or not
  * @return the node of the macro if it was found, NULL if not
  */
+
+void copy_head(node* old,node* new);
+
 node *search_list(node *head, char *name, int *found);
 
 /**
