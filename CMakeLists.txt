@@ -6,9 +6,9 @@ set(CMAKE_C_STANDARD 11)
 include_directories(Headers)
 
 add_executable(project14_1
-        Headers/datastrct.h
+        Headers/nodes.h
         Headers/PreAsse.h
-        Sourcefiles/datastrct.c
+        Sourcefiles/nodes.c
         Sourcefiles/PreAssembler.c
         Headers/general.h
         Sourcefiles/general.c

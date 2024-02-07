@@ -2,10 +2,11 @@
 // Created by dvirerental on 1/30/24.
 //
 
-#include "datastrct.h"
+#include "nodes.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include "general.h"
 
 node* make_node(char *name, char *content, int line_num){
     node *temp;
@@ -58,7 +59,7 @@ void add_to_list(node **head, char *name, char *content, int line_num){
     /* If the list already has a macro with the same name */
     if(found && strcmp(temp->content,content) != 0){
         /* The content of the same node name is not the same - skipping this macro definition */
-        print_internal_error(ERROR_CODE_13);
+        print_error(ERROR_CODE_2);
         free(name);
         free(content);
         return;

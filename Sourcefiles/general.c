@@ -13,3 +13,24 @@ int isCommand(char* word){
     }
     return -1;
 }
+void *handle_malloc(long object_size) {
+    void *object_ptr = malloc(object_size);
+    if (object_ptr == NULL) {
+        print_error(ERROR_CODE_1);
+    }
+    return object_ptr;
+}
+
+Error errors[] = {
+        {ERROR_CODE_0,  "No Error"},
+        {ERROR_CODE_1,  "Failed dynamically memory"},
+        {ERROR_CODE_2, "Macro has more than one definition"},
+};
+
+void print_line_error(int error_code, int lineErr) {
+    fprintf(stderr,"in line %d ERROR %s\n",  lineErr, errors[error_code].error_msg);
+}
+
+void print_error(int error_code) {
+    fprintf(stderr,"ERROR %s\n", errors[error_code].error_msg);
+}
