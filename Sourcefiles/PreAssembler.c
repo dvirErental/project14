@@ -1,5 +1,8 @@
 #include "../Headers/PreAsse.h"
+node* first;
+char* commands[16];
 FILE* preAssemble(FILE* op) {
+
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];

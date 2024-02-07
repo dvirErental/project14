@@ -1,9 +1,22 @@
 #include "general.h"
 
 void initializeCommands(void){
-    char* commands[] = {"mov", "cmp", "add", "sub", "not", "clr", "lea",
-                         "inc", "dec", "jmp", "bne", "red", "prn", "jsr", "rts",
-                         "hlt"};
+    commands[0] = "mov";
+    commands[1] = "cmp";
+    commands[2] = "add";
+    commands[3] = "sub";
+    commands[4] = "not";
+    commands[5] = "clr";
+    commands[6] = "lea";
+    commands[7] = "inc";
+    commands[8] = "dec";
+    commands[9] = "jmp";
+    commands[10] = "bne";
+    commands[11] = "red";
+    commands[12] = "prn";
+    commands[13] = "jsr";
+    commands[14] = "rts";
+    commands[15] = "hlt";
 }
 int isCommand(char* word){
     int index;
