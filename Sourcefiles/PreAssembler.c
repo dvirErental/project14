@@ -1,4 +1,4 @@
-#include "../Headers/PreAsse.h"
+#include "../Headers/PreAssembler.h"
 node* first;
 char* commands[16];
 FILE* preAssemble(FILE* op) {
@@ -6,12 +6,12 @@ FILE* preAssemble(FILE* op) {
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
-    char *firstWord;
-    char *secondWord = "";
-    char *thirdWord = "";
+    char *firstWord = malloc(10* sizeof(char));
+    char *secondWord = malloc(10* sizeof(char));
+    char *thirdWord = malloc(10* sizeof(char));
     node *current;
     initializeCommands();
-    FILE *ModOrig = fopen("Post_preAssembler", "w");
+    FILE *ModOrig = fopen("../Examples/hope", "w");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
         if (sscanf(line, "%s%s%s", firstWord, secondWord, thirdWord)) {

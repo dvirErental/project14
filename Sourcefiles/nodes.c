@@ -7,7 +7,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include "general.h"
-
 node* make_node(char *name, char *content, int line_num){
     node *temp;
 

@@ -7,7 +7,7 @@ include_directories(Headers)
 
 add_executable(project14_1
         Headers/nodes.h
-        Headers/PreAsse.h
+        Headers/PreAssembler.h
         Sourcefiles/nodes.c
         Sourcefiles/PreAssembler.c
         Headers/general.h
