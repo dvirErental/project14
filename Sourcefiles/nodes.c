@@ -46,7 +46,7 @@ void add_to_list(char *name, char *content, int line_num){
    temp->next = make_node(name, content, line_num);
 }
 void copy_head(node* old,node* new){
-    old = mallocError(strlen(new->name)*sizeof(char));
+    old = mallocError(strlen(new->name)*sizeof(char)+(strlen(new->content)*sizeof(char))+sizeof(new->next));
     /* Set the name, content and line number of the old node to the new node */
     old->name = new->name;        /* Set the name of the node */
     old->content = new->content;  /* Set the content string of the node */
