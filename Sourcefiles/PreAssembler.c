@@ -23,7 +23,7 @@ FILE* preAssemble(FILE* op) {
                 else if (isCommand(firstWord) == 0) {
                     fputs(line, ModOrig);
                     lineNum++;
-                } else if ((current = search_list(first, firstWord, 0)) != NULL) {
+                } else if (existNode(current->name)) {
                     fputs(current->content, ModOrig);
                     lineNum++;
                 } else if (strcmp(firstWord, "mcr") == 0) {

@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "general.h"
+node* first;
 node* make_node(char *name, char *content, int line_num){
     node *temp;
 
@@ -21,19 +22,21 @@ node* make_node(char *name, char *content, int line_num){
     return temp;  /* Return a pointer to the newly created node */
 }
 
-node *search_list(node *head, char *name, int *found){
-    *found = 0;
-
+int *existNode(char *name){
+    int found = 0;
+    node temp;
+    temp = *first;
     /* If the list is empty */
-    if (head == NULL) {
+    if (first == NULL) {
         return NULL;
     }
-    
-    /* If the node exists already */
-    if (strcmp(name, head->name) == 0) {
-        *found = 1;
-        printf("Node %s already exists in the list\n", name);
-        return head;
+    while (temp.next != NULL) {/* If the node exists already */
+        if (strcmp(name, temp.name) == 0) {
+            found = 1;
+            printf("Node %s already exists in the list\n", name);
+            return 1;
+        }
+        head = head->next;
     }
 
     /* If the end of the list is reached */
