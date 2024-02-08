@@ -5,9 +5,9 @@ FILE* preAssemble(FILE* op) {
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
-    char *firstWord = mallocError(MAX_WORD_LENGTH* sizeof(char));/*to prevent segmentation fault*/
-    char *secondWord = mallocError(MAX_WORD_LENGTH* sizeof(char));/*to prevent segmentation fault*/
-    char *thirdWord = mallocError(MAX_WORD_LENGTH* sizeof(char));/*to prevent segmentation fault*/
+    char *firstWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
+    char *secondWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
+    char *thirdWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node *current;
     initializeCommands();
     FILE *ModOrig = fopen("../Examples/hope", "w");
@@ -17,25 +17,20 @@ FILE* preAssemble(FILE* op) {
             if (isFileIndication(firstWord)) {
                 firstWord = secondWord;
                 secondWord = thirdWord;
-                if (strcmp(firstWord, "mcr") == 0)
-                    lineNum += skip(lineNum, op);
-                else if (isCommand(firstWord) == 0) {
-                    fputs(line, ModOrig);
-                    lineNum++;
-                }
-                else if (existNode(firstWord) != NULL) {
-                    current = existNode(firstWord);
-                    fputs(current->content, ModOrig);
-                    lineNum++;
-                }
-                else if (strcmp(firstWord, "mcr") == 0) {
-                    lineNum = createMacro(op, secondWord, lineNum, macsFound);
-                    macsFound++;
-                }
-                else {
-                    fprintf(stderr, "ERROR, unidentified command/macro in line, skipped that line %d/n", lineNum);
-                    lineNum++;
-                }
+            }
+            if (strcmp(firstWord, "mcr") == 0) {
+                lineNum = createMacro(op, secondWord, lineNum, macsFound);
+                macsFound++;
+            }
+
+            else if (existNode(firstWord) != NULL) {
+                current = existNode(firstWord);
+                fputs(current->content, ModOrig);
+                lineNum++;
+            }
+            else {
+                fputs(line, ModOrig);
+                lineNum++;
             }
         }
     }
@@ -45,8 +40,9 @@ FILE* preAssemble(FILE* op) {
 
 int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     char line[MAX_LINE_LENGTH];
-    char* content = "";
-    char* firstWord = "";
+    char* tempCont = NULL;
+    char* content = mallocError(MAX_LINE_LENGTH* sizeof(char));
+    char* firstWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node* temp;
     while (!feof(fp)){
         fgets(line,MAX_LINE_LENGTH,fp);
@@ -60,7 +56,11 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
             }
         }
         else{
-            strcat(content, line);
+            tempCont = realloc(content, (strlen(content)+ strlen(line))* sizeof(char));
+            if (tempCont != NULL)
+                content = tempCont;
+            else
+                /*print error here*/
             lineNum++;
         }
     }
@@ -68,21 +68,6 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
         //print error here
     }
     return lineNum;
-}
-
-int skip(int lineNum, FILE* op){
-    int counter = lineNum + 1;
-    char line[MAX_LINE_LENGTH];
-    char* firstWord = "";
-    while (!feof(op)){
-        fgets(line,MAX_LINE_LENGTH,op);        sscanf(line, "%s", firstWord);
-        if (strcmp(firstWord, "endmcr") == 0){
-            counter++;
-            break;
-        }
-        counter++;
-    }
-    return counter;
 }
 
 int isFileIndication(const char* a){

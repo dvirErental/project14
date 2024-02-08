@@ -1,5 +1,3 @@
-#ifndef PROJECT14_1_DATASTRCT_H
-#define PROJECT14_1_DATASTRCT_H
 /* Represents a node in a linked list */
 typedef struct node {
     char *name;         /* Name node */
