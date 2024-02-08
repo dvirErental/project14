@@ -12,15 +12,13 @@ node* first;
 node* make_node(char *name, char *content, int line_num){
     node *temp;
 
-    /* Check if memory allocation for the node succeeded */
     temp = mallocError(sizeof(node));
-
-    temp->name = name;        /* Set the name of the node */
-    temp->content = content;  /* Set the content string of the node */
-    temp->line = line_num;    /* Set the line number associated with the content */
-    temp->next = NULL;        /* Initialize the next pointer to NULL */
-
-    return temp;  /* Return a pointer to the newly created node */
+    temp->name = mallocError((strlen(name) + 1) * sizeof(char));
+    strcpy(temp->name, name);
+    temp->content = mallocError((strlen(content) + 1) * sizeof(char));
+    strcpy(temp->content, content);
+    temp->line = line_num;
+    temp->next = NULL;
 }
 
 node* existNode(char *name){
