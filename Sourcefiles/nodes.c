@@ -22,17 +22,15 @@ node* make_node(char *name, char *content, int line_num){
 }
 
 node* existNode(char *name){
-    node *temp = first;
+    node *temp = copyNode(first);
 
-    while (first != NULL) {
-        if (strcmp(name, first->name) == 0) {/* If the node exists already */
+    while (temp != NULL) {
+        if (strcmp(name, temp->name) == 0) {/* If the node exists already */
             printf("Node %s already exists in the list\n", name);
-            first = temp;
-            return first;
+            return temp;
         }
-        first = first->next;
+        temp = temp->next;
     }
-    first = temp;
     return NULL;
 }
 
@@ -66,4 +64,15 @@ void free_list(node *head){
         head = head->next;
         free_node(temp);
     }
+}
+node* copyNode(node* old){
+    node* new;
+    new = mallocError(sizeof(node));
+    new->name = mallocError((strlen(old->name) + 1) * sizeof(char));
+    strcpy(new->name, old->name);
+    new->content = mallocError((strlen(old->content) + 1) * sizeof(char));
+    strcpy(new->content, old->content);
+    new->line = old->line;
+    new->next = old->next;
+    return new;
 }

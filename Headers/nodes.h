@@ -18,6 +18,8 @@ void add_to_list (char *name, char *content, int line_num); /*Adds a node to the
 void free_node(node *node1);/* Free memory of the node*/
 
 void free_list(node *head);/*free list*/
+node* copyNode(node*);
+
 
 extern node* first;/*the head of the list*/
 
