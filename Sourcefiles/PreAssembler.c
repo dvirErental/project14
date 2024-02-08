@@ -22,7 +22,6 @@ FILE* preAssemble(FILE* op) {
                 lineNum = createMacro(op, secondWord, lineNum, macsFound);
                 macsFound++;
             }
-
             else if (existNode(firstWord) != NULL) {
                 current = existNode(firstWord);
                 fputs(current->content, ModOrig);
@@ -46,7 +45,7 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     node* temp;
     while (!feof(fp)){
         fgets(line,MAX_LINE_LENGTH,fp);
-        if(sscanf(line, "%s", firstWord) == 1 && strcmp(firstWord, "endmcr") == 0){
+        if((sscanf(line, "%s", firstWord)) && (strcmp(firstWord, "endmcr") == 0)){
             if (macsFound==0) {
                 temp = make_node(name, content, lineNum);
                 copy_head(first, temp);
@@ -57,12 +56,11 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
         }
         else{
             tempCont = realloc(content, (strlen(content)+ strlen(line))* sizeof(char));
-            if (tempCont == NULL)
-                lineNum++;
-            else {
-                content = tempCont;
-                lineNum++;
+            if (tempCont == NULL) {
+                /*print error*/
             }
+            content = tempCont;
+            lineNum++;
         }
     }
     if(feof(fp)) {
