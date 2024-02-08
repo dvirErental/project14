@@ -8,6 +8,7 @@
 #include <string.h>
 #include "general.h"
 
+node* first;
 node* make_node(char *name, char *content, int line_num){
     node *temp;
 
@@ -22,25 +23,23 @@ node* make_node(char *name, char *content, int line_num){
     return temp;  /* Return a pointer to the newly created node */
 }
 
-node* existNode(char *name, node* otherFirst){
-    node* temp;
-    copy_head(temp, otherFirst);
-    printf("%s",otherFirst->name);
-    /* If the list is empty */
-    printf("hello");
+node* existNode(char *name){
+    node *temp = first;
 
-    while (temp != NULL) {
-        if (strcmp(name, temp->name) == 0) {/* If the node exists already */
+    while (first != NULL) {
+        if (strcmp(name, first->name) == 0) {/* If the node exists already */
             printf("Node %s already exists in the list\n", name);
-            return temp;
+            first = temp;
+            return first;
         }
-        temp = temp->next;
+        first = first->next;
     }
+    first = temp;
     return NULL;
 }
 
-void add_to_list(char *name, char *content, int line_num, char* otherFirst){
-   node* temp = otherFirst;
+void add_to_list(char *name, char *content, int line_num){
+   node* temp = first;
    while (temp->next != NULL)
        temp = temp->next;
    temp->next = make_node(name, content, line_num);

@@ -1,8 +1,6 @@
 #include "../Headers/PreAssembler.h"
 char* commands[16];
-node* first;
 FILE* preAssemble(FILE* op) {
-    first = mallocError(sizeof(node));
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
@@ -24,10 +22,16 @@ FILE* preAssemble(FILE* op) {
                 lineNum = createMacro(op, secondWord, lineNum, macsFound);
                 macsFound++;
             }
-            else if (macsFound && (existNode(firstWord,first) != NULL)) {
-                current = existNode(firstWord,first);
-                fputs(current->content, ModOrig);
-                lineNum++;
+            else if (macsFound)  {
+                current = existNode(firstWord);
+                if (current == NULL) {
+                    fputs(line, ModOrig);
+                    lineNum++;
+                }
+                else {
+                    fputs(current->content, ModOrig);
+                    lineNum++;
+                }
             }
             else {
                 fputs(line, ModOrig);
@@ -51,8 +55,8 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
 
         if(strcmp(firstWord, "endmcr") == 0){
             if (macsFound==0) {
-                temp = make_node(name, content, lineNum);
-                copy_head(first, temp);
+                first= mallocError(sizeof(node));
+                first=make_node(name, content, lineNum);
                 return ++lineNum;
             }
             else{
