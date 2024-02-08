@@ -6,9 +6,9 @@ FILE* preAssemble(FILE* op) {
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
-    char *firstWord = malloc(10* sizeof(char));
-    char *secondWord = malloc(10* sizeof(char));
-    char *thirdWord = malloc(10* sizeof(char));
+    char *firstWord = mallocError(MAX_WORD_LENGTH* sizeof(char));
+    char *secondWord = mallocError(MAX_WORD_LENGTH* sizeof(char));
+    char *thirdWord = mallocError(MAX_WORD_LENGTH* sizeof(char));
     node *current;
     initializeCommands();
     FILE *ModOrig = fopen("../Examples/hope", "w");

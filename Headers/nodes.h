@@ -20,4 +20,5 @@ void add_to_list(node **head, char *name, char *content, int line_num); /*Adds a
 void free_node(node *node1);/* Free memory of the node*/
 
 void free_list(node *head);/*free list*/
-#endif //PROJECT14_1_DATASTRCT_H
+
+extern node* first;
