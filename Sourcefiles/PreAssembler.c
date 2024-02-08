@@ -57,11 +57,12 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
         }
         else{
             tempCont = realloc(content, (strlen(content)+ strlen(line))* sizeof(char));
-            if (tempCont != NULL)
+            if (tempCont == NULL)
+                lineNum++;
+            else {
                 content = tempCont;
-            else
-                /*print error here*/
-            lineNum++;
+                lineNum++;
+            }
         }
     }
     if(feof(fp)) {
