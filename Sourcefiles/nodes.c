@@ -22,30 +22,21 @@ node* make_node(char *name, char *content, int line_num){
     return temp;  /* Return a pointer to the newly created node */
 }
 
-int *existNode(char *name){
-    int found = 0;
-    node temp;
-    temp = *first;
+node* existNode(char *name){
+    node* temp;
+    temp = first;
     /* If the list is empty */
     if (first == NULL) {
         return NULL;
     }
-    while (temp.next != NULL) {/* If the node exists already */
-        if (strcmp(name, temp.name) == 0) {
-            found = 1;
+    while (temp->next != NULL) {
+        if (strcmp(name, temp->name) == 0) {/* If the node exists already */
             printf("Node %s already exists in the list\n", name);
-            return 1;
+            return temp;
         }
-        head = head->next;
+        temp = temp->next;
     }
-
-    /* If the end of the list is reached */
-    if (head->next == NULL) {
-        return head;
-    }
-
-    /* Recursively search the rest of the list */
-    return search_list(head->next, name, found);
+    return NULL;
 }
 
 void add_to_list(node **head, char *name, char *content, int line_num){
