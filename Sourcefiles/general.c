@@ -26,7 +26,7 @@ int isCommand(char* word){
     }
     return -1;
 }
-void *handle_malloc(long object_size) {
+void *mallocError(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
         print_error(ERROR_CODE_1);

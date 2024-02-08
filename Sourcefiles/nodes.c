@@ -11,7 +11,7 @@ node* make_node(char *name, char *content, int line_num){
     node *temp;
 
     /* Check if memory allocation for the node succeeded */
-    temp = handle_malloc(sizeof(node));
+    temp = mallocError(sizeof(node));
 
     temp->name = name;        /* Set the name of the node */
     temp->content = content;  /* Set the content string of the node */
@@ -28,7 +28,7 @@ node *search_list(node *head, char *name, int *found){
     if (head == NULL) {
         return NULL;
     }
-
+    
     /* If the node exists already */
     if (strcmp(name, head->name) == 0) {
         *found = 1;
