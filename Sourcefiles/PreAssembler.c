@@ -1,5 +1,4 @@
 #include "../Headers/PreAssembler.h"
-node* first;
 char* commands[16];
 FILE* preAssemble(FILE* op) {
 
@@ -23,7 +22,8 @@ FILE* preAssemble(FILE* op) {
                 else if (isCommand(firstWord) == 0) {
                     fputs(line, ModOrig);
                     lineNum++;
-                } else if (existNode(current->name)) {
+                } else if (existNode(firstWord) != NULL) {
+                    current = existNode(firstWord);
                     fputs(current->content, ModOrig);
                     lineNum++;
                 } else if (strcmp(firstWord, "mcr") == 0) {

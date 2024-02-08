@@ -48,39 +48,11 @@ int *existNode(char *name){
     return search_list(head->next, name, found);
 }
 
-void add_to_list(node **head, char *name, char *content, int line_num){
-    int found;
-    node *new_node, *temp;
-    found = 0;
-
-    /* Temp is the immediate parent of the new node in the list
-     * or if the macro name already exists in the list, temp is the mcro with the same name.
-     * */
-    temp = search_list(*head,name,&found);
-
-    /* If the list already has a macro with the same name */
-    if(found && strcmp(temp->content,content) != 0){
-        /* The content of the same node name is not the same - skipping this macro definition */
-        print_error(ERROR_CODE_2);
-        free(name);
-        free(content);
-        return;
-    }
-
-    /* If the macro with the same name is not found in the list */
-    if(!found){
-        new_node = make_node(name,content,line_num);
-
-        /* If the list is empty, add the new node to the head of the list */
-        if(temp == NULL){
-            *head = new_node;
-        }
-
-            /* If the list is not empty, add the new node down the list */
-        else{
-            temp->next = new_node;
-        }
-    }
+void add_to_list(char *name, char *content, int line_num){
+   node* temp = first;
+   while (temp->next != NULL)
+       temp = temp->next;
+   temp->next = make_node(name, content, line_num);
 }
 void copy_head(node* old,node* new){
     /* Set the name, content and line number of the old node to the new node */
