@@ -5,9 +5,9 @@ FILE* preAssemble(FILE* op) {
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
-    char *firstWord = mallocError(MAX_WORD_LENGTH* sizeof(char));
-    char *secondWord = mallocError(MAX_WORD_LENGTH* sizeof(char));
-    char *thirdWord = mallocError(MAX_WORD_LENGTH* sizeof(char));
+    char *firstWord = mallocError(MAX_WORD_LENGTH* sizeof(char));/*to prevent segmentation fault*/
+    char *secondWord = mallocError(MAX_WORD_LENGTH* sizeof(char));/*to prevent segmentation fault*/
+    char *thirdWord = mallocError(MAX_WORD_LENGTH* sizeof(char));/*to prevent segmentation fault*/
     node *current;
     initializeCommands();
     FILE *ModOrig = fopen("../Examples/hope", "w");
@@ -22,14 +22,17 @@ FILE* preAssemble(FILE* op) {
                 else if (isCommand(firstWord) == 0) {
                     fputs(line, ModOrig);
                     lineNum++;
-                } else if (existNode(firstWord) != NULL) {
+                }
+                else if (existNode(firstWord) != NULL) {
                     current = existNode(firstWord);
                     fputs(current->content, ModOrig);
                     lineNum++;
-                } else if (strcmp(firstWord, "mcr") == 0) {
+                }
+                else if (strcmp(firstWord, "mcr") == 0) {
                     lineNum = createMacro(op, secondWord, lineNum, macsFound);
                     macsFound++;
-                } else {
+                }
+                else {
                     fprintf(stderr, "ERROR, unidentified command/macro in line, skipped that line %d/n", lineNum);
                     lineNum++;
                 }
@@ -53,7 +56,7 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
                 copy_head(first, temp);
             }
             else{
-                add_to_list(&first, name, content, lineNum);
+                add_to_list(name, content, lineNum);
             }
         }
         else{
