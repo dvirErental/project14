@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "general.h"
-node* first;
+
 node* make_node(char *name, char *content, int line_num){
     node *temp;
 
@@ -22,14 +22,14 @@ node* make_node(char *name, char *content, int line_num){
     return temp;  /* Return a pointer to the newly created node */
 }
 
-node* existNode(char *name){
+node* existNode(char *name, node* otherFirst){
     node* temp;
-    temp = first;
+    copy_head(temp, otherFirst);
+    printf("%s",otherFirst->name);
     /* If the list is empty */
-    if (first == NULL) {
-        return NULL;
-    }
-    while (temp->next != NULL) {
+    printf("hello");
+
+    while (temp != NULL) {
         if (strcmp(name, temp->name) == 0) {/* If the node exists already */
             printf("Node %s already exists in the list\n", name);
             return temp;
@@ -39,15 +39,17 @@ node* existNode(char *name){
     return NULL;
 }
 
-void add_to_list(char *name, char *content, int line_num){
-   node* temp = first;
+void add_to_list(char *name, char *content, int line_num, char* otherFirst){
+   node* temp = otherFirst;
    while (temp->next != NULL)
        temp = temp->next;
    temp->next = make_node(name, content, line_num);
 }
 void copy_head(node* old,node* new){
-    old = mallocError(strlen(new->name)*sizeof(char)+(strlen(new->content)*sizeof(char))+sizeof(new->next));
-    /* Set the name, content and line number of the old node to the new node */
+   /* old = mallocError(strlen(new->name)*sizeof(char)+(strlen(new->content)*sizeof(char))+sizeof(new->next));*/
+    old = mallocError(sizeof(new));
+    if(new->name == NULL)
+        old->name = NULL;
     old->name = new->name;        /* Set the name of the node */
     old->content = new->content;  /* Set the content string of the node */
     old->line = new->line;    /* Set the line number associated with the content */

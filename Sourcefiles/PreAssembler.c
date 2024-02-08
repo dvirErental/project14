@@ -1,7 +1,8 @@
 #include "../Headers/PreAssembler.h"
 char* commands[16];
+node* first;
 FILE* preAssemble(FILE* op) {
-
+    first = mallocError(sizeof(node));
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
@@ -9,21 +10,22 @@ FILE* preAssemble(FILE* op) {
     char *secondWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     char *thirdWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node *current;
+    node *temp;
     initializeCommands();
     FILE *ModOrig = fopen("../Examples/hope", "w");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
         if (sscanf(line, "%s%s%s", firstWord, secondWord, thirdWord)) {
             if (isFileIndication(firstWord)) {
-                firstWord = secondWord;
-                secondWord = thirdWord;
+                strcpy(firstWord, secondWord);
+                strcpy(secondWord, thirdWord);
             }
             if (strcmp(firstWord, "mcr") == 0) {
                 lineNum = createMacro(op, secondWord, lineNum, macsFound);
                 macsFound++;
             }
-            else if (existNode(firstWord) != NULL) {
-                current = existNode(firstWord);
+            else if (macsFound && (existNode(firstWord,first) != NULL)) {
+                current = existNode(firstWord,first);
                 fputs(current->content, ModOrig);
                 lineNum++;
             }
@@ -45,22 +47,23 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     node* temp;
     while (!feof(fp)){
         fgets(line,MAX_LINE_LENGTH,fp);
-        if((sscanf(line, "%s", firstWord)) && (strcmp(firstWord, "endmcr") == 0)){
+        sscanf(line, "%s", firstWord);
+
+        if(strcmp(firstWord, "endmcr") == 0){
             if (macsFound==0) {
                 temp = make_node(name, content, lineNum);
                 copy_head(first, temp);
+                return ++lineNum;
             }
             else{
                 add_to_list(name, content, lineNum);
+                return ++lineNum;
             }
         }
         else{
-            tempCont = realloc(content, (strlen(content)+ strlen(line))* sizeof(char));
-            if (tempCont == NULL) {
-                /*print error*/
-            }
-            content = tempCont;
-            lineNum++;
+            printf("\n*");
+            content = realloc(content, (strlen(content)+MAX_LINE_LENGTH)*sizeof(char));
+            strcat(content, line);
         }
     }
     if(feof(fp)) {
@@ -72,7 +75,7 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
 int isFileIndication(const char* a){
     int i = 0;
     while (a[i] != '\0'){
-        if((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (strcmp(a, ".define") == 0))
+        if((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (strcmp(a, ".define") == 0) || (a[i] == ':'))
             i++;
         else
             return 0;
