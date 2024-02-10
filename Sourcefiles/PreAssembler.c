@@ -8,9 +8,8 @@ FILE* preAssemble(FILE* op) {
     char *secondWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     char *thirdWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node *current;
-    node *temp;
     initializeCommands();
-    FILE *ModOrig = fopen("../Examples/hope", "w");
+    FILE *ModOrig = fopen("../Examples/postPreAssembler", "w");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
         if (sscanf(line, "%s%s%s", firstWord, secondWord, thirdWord)) {
@@ -48,7 +47,6 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     char* tempCont = NULL;
     char* content = mallocError(MAX_LINE_LENGTH* sizeof(char));
     char* firstWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
-    node* temp;
     while (!feof(fp)){
         fgets(line,MAX_LINE_LENGTH,fp);
         sscanf(line, "%s", firstWord);

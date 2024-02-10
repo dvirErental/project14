@@ -17,8 +17,8 @@ typedef struct Error {
 } Error;
 
 typedef enum {
-    FALSE = 0,
-    TRUE
+    false = 0,
+    true
 } boolean;
 
 
