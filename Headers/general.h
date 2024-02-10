@@ -3,7 +3,10 @@
 #include <stdlib.h>
 
 #define NUM_OF_COMMANDS 16
-
+#define MAX_LINE_LENGTH 81
+#define MAX_WORD_LENGTH 10
+#define MAX_WORDS_IN_LINE 6
+#define START_ADDRESS 100
 extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/
