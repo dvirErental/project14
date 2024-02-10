@@ -1,8 +1,3 @@
-//
-// Created by dvir on 10/02/2024.
-//
+#include <stdio.h>
+#include "general.h"
 
-#ifndef PROJECT14REAL_FIRSTPASS_H
-#define PROJECT14REAL_FIRSTPASS_H
-
-#endif //PROJECT14REAL_FIRSTPASS_H
