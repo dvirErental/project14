@@ -13,6 +13,12 @@ typedef struct Error {
     char *error_msg;  /* Error message*/
 } Error;
 
+typedef enum {
+    FALSE = 0,
+    TRUE
+} boolean;
+
+
 void *mallocError(long object_size);
 
 typedef enum ERROR_CODES {
