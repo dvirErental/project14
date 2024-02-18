@@ -74,16 +74,3 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     }
     return lineNum;
 }
-
-int isFileIndication(const char* a){
-    int i = 0;
-    while (a[i] != '\0'){
-        if((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (strcmp(a, ".define") == 0) || (a[i] == ':'))
-            i++;
-        else
-            return 0;
-    }
-    if (a[i-1] != ':')
-        return 0;
-    return 1;
-}

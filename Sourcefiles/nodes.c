@@ -9,7 +9,7 @@
 #include "general.h"
 
 node* first;
-node* make_node(char *name, char *content, int line_num){
+node *make_node(char *name, char *content, int line_num){
     node *temp;
 
     temp = mallocError(sizeof(node));

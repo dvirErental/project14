@@ -3,7 +3,9 @@
 line_table firstPass(FILE* fp) {
     int IC = 0, DC = 0;
     int address = 100;
+    int lineLength = 0;
     boolean isFirst = true;
+    boolean symbolFlag = false;
     char line[MAX_LINE_LENGTH];
     char* firstWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* secondWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
@@ -15,16 +17,29 @@ line_table firstPass(FILE* fp) {
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord, fifthWord, sixthWord)) {
             if (!strcmp(firstWord, ".define")){
-                if (!searchList(secondWord))
+                if (!searchList(secondWord)) {
                     print_error(3);
+                    continue;
+                }
                 else if (isFirst == true){
                     make_line_table(secondWord, "mdefine", atoi(thirdWord));
                     isFirst = false;
+                    continue;
                 }
-                else
+                else {
                     add_to_list(secondWord, "mdefine", atoi(thirdWord));
+                    continue;
+                }
             }
+            if (isFileIndication(firstWord))
+                symbolFlag = true;
+            if (strcmp(secondWord, ".string") == 0 || strcmp(secondWord, ".data") == 0){
+                if (symbolFlag == true) {
+                    if(isFirst == true)
+                        make_line_table(firstWord, ".data", DC);
 
+                }
+            }
 
         }
     }

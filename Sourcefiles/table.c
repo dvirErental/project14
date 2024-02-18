@@ -4,16 +4,16 @@
 
 #include "../Headers/table.h"
 line_table * first;
-line_table * make_line_table(char *name, char *type, int value){
+line_table* make_line_table(char *name, char *type, int value){
     line_table *temp;
 
-    temp = mallocError(sizeof(line_table));
-    temp->name = mallocError((strlen(name) + 1) * sizeof(char));
-    strcpy(temp->name, name);
-    temp->type = mallocError((strlen(type) + 1) * sizeof(char));
-    strcpy(temp->type, type);
-    temp->value = value;
-    temp->next = NULL;
+    first = mallocError(sizeof(line_table));
+    first->name = mallocError((strlen(name) + 1) * sizeof(char));
+    strcpy(first->name, name);
+    first->type = mallocError((strlen(type) + 1) * sizeof(char));
+    strcpy(first->type, type);
+    first->value = value;
+    first->next = NULL;
 }
 
 void add_to_list(char *name, char *type, int value){

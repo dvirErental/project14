@@ -34,11 +34,12 @@ void *mallocError(long object_size) {
     return object_ptr;
 }
 
-Error errors[] = {
+struct Error errors[4] = {
+        errors[0].
         {ERROR_CODE_0,  "No Error"},
         {ERROR_CODE_1,  "Failed dynamically memory"},
         {ERROR_CODE_2, "Macro has more than one definition"},
-        {ERROR_CODE_3, "two definitions with same word"},
+        {ERROR_CODE_3, "two definitions with same name"}
 };
 
 void print_line_error(int error_code, int lineErr) {
@@ -47,4 +48,39 @@ void print_line_error(int error_code, int lineErr) {
 
 void print_error(int error_code) {
     fprintf(stderr,"ERROR %s\n", errors[error_code].error_msg);
+}
+
+
+int isFileIndication(const char* a){
+    int i = 0;
+    while (a[i] != '\0'){
+        if((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (strcmp(a, ".define") == 0) || (a[i] == ':'))
+            i++;
+        else
+            return 0;
+    }
+    if (a[i-1] != ':')
+        return 0;
+    return 1;
+}
+
+char* translateToBinary(int num) {
+    int bits = sizeof(int) * 8;
+    char *binaryStr = (char *) malloc(bits + 1); // +1 for null terminator
+
+    // Check for memory allocation failure
+    if (binaryStr == NULL) {
+        printf("Memory allocation failed.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // Null terminate the string
+    binaryStr[bits] = '\0';
+
+    // Iterate through each bit and set the corresponding character in the string
+    for (int i = bits - 1; i >= 0; i--) {
+        binaryStr[bits - 1 - i] = ((num >> i) & 1) ? '1' : '0';
+    }
+
+    return binaryStr;
 }

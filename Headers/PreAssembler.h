@@ -6,4 +6,3 @@
 #define MAX_WORD_LENGTH 10
 FILE* preAssemble(FILE*);
 int createMacro(FILE*, char*, int, int);
-int isFileIndication(const char*);
