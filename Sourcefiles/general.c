@@ -29,25 +29,18 @@ int isCommand(char* word){
 void *mallocError(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
-        print_error(ERROR_CODE_1);
+        print_error("Failed dynamically memory");
     }
     return object_ptr;
 }
 
-struct Error errors[4] = {
-        errors[0].
-        {ERROR_CODE_0,  "No Error"},
-        {ERROR_CODE_1,  "Failed dynamically memory"},
-        {ERROR_CODE_2, "Macro has more than one definition"},
-        {ERROR_CODE_3, "two definitions with same name"}
-};
 
-void print_line_error(int error_code, int lineErr) {
-    fprintf(stderr,"in line %d ERROR %s\n",  lineErr, errors[error_code].error_msg);
+void print_line_error(char* error_content, int lineErr) {
+    fprintf(stderr,"in line %d ERROR %s\n",  lineErr, error_content);
 }
 
-void print_error(int error_code) {
-    fprintf(stderr,"ERROR %s\n", errors[error_code].error_msg);
+void print_error(char* error) {
+    fprintf(stderr, error);
 }
 
 
