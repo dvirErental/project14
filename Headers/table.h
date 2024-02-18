@@ -17,7 +17,11 @@ line_table* make_line_table(char *name, char *type, int value);
 void add_to_list(char *name, char *type, int value);
 
 int searchList(char*);
+
 void free_line_table(line_table *line);
 
 void free_table(line_table *head);
+
+void add_to_num(line_table *line,int num);
+
 #endif //PROJECT14REAL_TABLE_H

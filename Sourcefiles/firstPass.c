@@ -13,9 +13,13 @@ line_table firstPass(FILE* fp) {
     char* fourthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* fifthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* sixthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord, fifthWord, sixthWord)) {
+            if (firstWord[0]==';'){
+                continue;
+            }
             if (!strcmp(firstWord, ".define")){
                 if (!searchList(secondWord)) {
                     print_error(3);
@@ -32,13 +36,16 @@ line_table firstPass(FILE* fp) {
                 }
             }
             if (isFileIndication(firstWord))
-                symbolFlag = true;
+                symbolFlag = true;//לאתחל בסוף
             if (strcmp(secondWord, ".string") == 0 || strcmp(secondWord, ".data") == 0){
                 if (symbolFlag == true) {
                     if(isFirst == true)
                         make_line_table(firstWord, ".data", DC);
-
+                    //להוסיף את הנתונים לטבלה הגדולה
                 }
+            }
+            if (strcmp(firstWord, ".entry") == 0 || strcmp(firstWord, ".extern") == 0){
+                //להשלים
             }
 
         }

@@ -22,7 +22,7 @@ int isCommand(char* word){
     int index;
     for (index = 0; index <NUM_OF_COMMANDS; index++){
         if (strcmp(word,commands[index]) == 0)
-            return 0;
+            return index;
     }
     return -1;
 }
@@ -35,7 +35,7 @@ void *mallocError(long object_size) {
 }
 
 struct Error errors[4] = {
-        errors[0].
+        //errors[0].
         {ERROR_CODE_0,  "No Error"},
         {ERROR_CODE_1,  "Failed dynamically memory"},
         {ERROR_CODE_2, "Macro has more than one definition"},
@@ -64,9 +64,8 @@ int isFileIndication(const char* a){
     return 1;
 }
 
-char* translateToBinary(int num) {
-    int bits = sizeof(int) * 8;
-    char *binaryStr = (char *) malloc(bits + 1); // +1 for null terminator
+char* translateToBinary(int num,int digits) {
+    char *binaryStr = (char *) malloc(digits + 1); // +1 for null terminator
 
     // Check for memory allocation failure
     if (binaryStr == NULL) {
@@ -75,12 +74,22 @@ char* translateToBinary(int num) {
     }
 
     // Null terminate the string
-    binaryStr[bits] = '\0';
+    binaryStr[digits] = '\0';
 
     // Iterate through each bit and set the corresponding character in the string
-    for (int i = bits - 1; i >= 0; i--) {
-        binaryStr[bits - 1 - i] = ((num >> i) & 1) ? '1' : '0';
+    for (int i = digits - 1; i >= 0; i--) {
+        binaryStr[digits - 1 - i] = ((num >> i) & 1) ? '1' : '0';
     }
 
     return binaryStr;
+}
+
+char* command_to_machine_code(char * command,int type_op1,int type_op2,int ARE){
+    int opcode=isCommand(command);
+    char machineCode[NUM_OF_BITS]="0000";
+    strcat(machineCode, translateToBinary(opcode,BITS_IN_OPCODE));
+    strcat(machineCode, translateToBinary(type_op1,BITS_IN_OP1));
+    strcat(machineCode, translateToBinary(type_op2,BITS_IN_OP2));
+    strcat(machineCode, translateToBinary(ARE,BITS_IN_ARE));
+
 }
