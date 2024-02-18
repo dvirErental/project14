@@ -22,7 +22,7 @@ line_table firstPass(FILE* fp) {
             }
             if (!strcmp(firstWord, ".define")){
                 if (!searchList(secondWord)) {
-                    print_error(3);
+                    print_error("multiple definitions using same name");
                     continue;
                 }
                 else if (isFirst == true){

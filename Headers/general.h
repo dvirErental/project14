@@ -15,10 +15,6 @@ extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/
 
-struct Error {
-    int error_id;
-    char *error_msg;  /* Error message*/
-};
 
 typedef enum {
     false = 0,
@@ -28,16 +24,10 @@ typedef enum {
 
 void *mallocError(long object_size);
 
-typedef enum ERROR_CODES {
-    ERROR_CODE_0 = 0,
-    ERROR_CODE_1,
-    ERROR_CODE_2,
-    ERROR_CODE_3
 
-} ERROR_CODES;
 
-void print_line_error(int error_code, int lineErr);/*print the error and the line its was happened*/
-void print_error(int error_code);/*print error message*/
+void print_line_error(char*, int lineErr);/*print the error and the line its was happened*/
+void print_error(char*);/*print error message*/
 int isFileIndication(const char*);
 char* translateToBinary(int,int);
 char* command_to_machine_code(char * command,int type_op1,int type_op2,int ARE);
