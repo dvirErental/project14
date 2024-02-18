@@ -12,4 +12,11 @@ typedef struct line_table{
     struct line_table *next;  /* Pointer to the next line */
 } line_table;
 
+line_table * make_line_table(char *name, char *type, int value);
+
+void add_to_list(char *name, char *type, int value);
+
+void free_line_table(line_table *line);
+
+void free_table(line_table *head);
 #endif //PROJECT14REAL_TABLE_H

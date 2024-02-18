@@ -38,6 +38,7 @@ FILE* preAssemble(FILE* op) {
             }
         }
     }
+    free_list(first);
     return ModOrig;
 }
 
