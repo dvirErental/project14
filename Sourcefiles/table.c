@@ -17,10 +17,14 @@ line_table * make_line_table(char *name, char *type, int value){
 }
 
 void add_to_list(char *name, char *type, int value){
-    line_table * temp = first;
+    line_table *temp = first;
     while (temp->next != NULL)
         temp = temp->next;
     temp->next = make_line_table(name, type, value);
+}
+void searchList(char* name){
+    line_table *temp = first;
+    while (temp != NULL )
 }
 
 void free_line_table(line_table *line){

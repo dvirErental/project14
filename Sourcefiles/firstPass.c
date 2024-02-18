@@ -14,14 +14,17 @@ line_table firstPass(FILE* fp) {
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord, fifthWord, sixthWord)) {
-            if (strcmp(firstWord, ".define")){
+            if (!strcmp(firstWord, ".define")){
                 if (isFirst == true){
                     make_line_table(secondWord, "mdefine", atoi(thirdWord));
+                    isFirst = false;
                 }
                 else
                     add_to_list(secondWord, "mdefine", atoi(thirdWord));
             }
 
+
         }
     }
 }
+
