@@ -38,6 +38,7 @@ Error errors[] = {
         {ERROR_CODE_0,  "No Error"},
         {ERROR_CODE_1,  "Failed dynamically memory"},
         {ERROR_CODE_2, "Macro has more than one definition"},
+        {ERROR_CODE_3, "two definitions with same word"},
 };
 
 void print_line_error(int error_code, int lineErr) {

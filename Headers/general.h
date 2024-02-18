@@ -27,7 +27,8 @@ void *mallocError(long object_size);
 typedef enum ERROR_CODES {
     ERROR_CODE_0 = 0,
     ERROR_CODE_1,
-    ERROR_CODE_2
+    ERROR_CODE_2,
+    ERROR_CODE_3,
 
 } ERROR_CODES;
 

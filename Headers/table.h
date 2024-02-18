@@ -16,7 +16,7 @@ line_table * make_line_table(char *name, char *type, int value);
 
 void add_to_list(char *name, char *type, int value);
 
-void searchList(char*);
+int searchList(char*);
 void free_line_table(line_table *line);
 
 void free_table(line_table *head);

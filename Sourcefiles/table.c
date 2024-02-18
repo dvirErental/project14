@@ -22,9 +22,13 @@ void add_to_list(char *name, char *type, int value){
         temp = temp->next;
     temp->next = make_line_table(name, type, value);
 }
-void searchList(char* name){
+int searchList(char* name){
     line_table *temp = first;
-    while (temp != NULL )
+    while (temp != NULL){
+        if (!(strcmp(temp->name,name)))
+            return 1;
+    }
+    return 0;
 }
 
 void free_line_table(line_table *line){

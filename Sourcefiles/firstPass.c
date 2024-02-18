@@ -15,7 +15,9 @@ line_table firstPass(FILE* fp) {
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord, fifthWord, sixthWord)) {
             if (!strcmp(firstWord, ".define")){
-                if (isFirst == true){
+                if (!searchList(secondWord))
+                    print_error(3);
+                else if (isFirst == true){
                     make_line_table(secondWord, "mdefine", atoi(thirdWord));
                     isFirst = false;
                 }
