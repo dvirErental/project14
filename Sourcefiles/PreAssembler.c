@@ -12,6 +12,8 @@ FILE* preAssemble(FILE* op) {
     FILE *ModOrig = fopen("../Examples/postPreAssembler", "w");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
+        if(line[0] == ';')
+            continue;
         if (sscanf(line, "%s%s%s", firstWord, secondWord, thirdWord)) {
             if (isFileIndication(firstWord)) {
                 strcpy(firstWord, secondWord);
