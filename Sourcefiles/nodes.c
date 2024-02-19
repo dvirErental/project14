@@ -1,12 +1,6 @@
-//
-// Created by dvirerental on 1/30/24.
-//
 
 #include "nodes.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include "general.h"
+
 
 node* first;
 node *make_node(char *name, char *content, int line_num){

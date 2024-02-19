@@ -16,3 +16,6 @@ void makeInfoTable(int, char*, int);
 void addLineToInfoTable(int, char*, int);
 
 infoTable* createLine(int, char*, int);
+
+
+//שני מערכים דו ממדיים  = address והקוד הבינארי לכל מילה

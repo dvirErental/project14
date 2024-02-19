@@ -1,3 +1,10 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include "general.h"
+
+
+
 /* Represents a node in a linked list */
 typedef struct node {
     char *name;         /* Name node */

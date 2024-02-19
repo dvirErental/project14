@@ -23,5 +23,5 @@ infoTable* createLine(int address, char* sourceCode, int num){
     next-> address = address;
     next -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(next->sourceCode, sourceCode);
-    strcpy()
+    next ->
 }

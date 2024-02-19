@@ -17,7 +17,7 @@ int isCommand (char*); /*check if the string is a command*/
 
 typedef enum {
     false = 0,
-    true
+    true = 1
 } boolean;
 
 void *mallocError(long object_size);
