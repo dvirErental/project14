@@ -17,12 +17,9 @@ line_table firstPass(FILE* fp) {
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord, fifthWord, sixthWord)) {
-            if (firstWord[0]==';'){
-                continue;
-            }
             if (!strcmp(firstWord, ".define")){
                 if (!searchList(secondWord)) {
-                    print_error("multiple definitions using same name");
+                    printf("multiple definitions using same name");
                     continue;
                 }
                 else if (isFirst == true){

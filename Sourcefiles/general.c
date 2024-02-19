@@ -29,25 +29,9 @@ int isCommand(char* word){
 void *mallocError(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
-        print_error(ERROR_CODE_1);
+        printf("Failed dynamically memory");
     }
     return object_ptr;
-}
-
-struct Error errors[4] = {
-        //errors[0].
-        {ERROR_CODE_0,  "No Error"},
-        {ERROR_CODE_1,  "Failed dynamically memory"},
-        {ERROR_CODE_2, "Macro has more than one definition"},
-        {ERROR_CODE_3, "two definitions with same name"}
-};
-
-void print_line_error(int error_code, int lineErr) {
-    fprintf(stderr,"in line %d ERROR %s\n",  lineErr, errors[error_code].error_msg);
-}
-
-void print_error(int error_code) {
-    fprintf(stderr,"ERROR %s\n", errors[error_code].error_msg);
 }
 
 
@@ -84,12 +68,11 @@ char* translateToBinary(int num,int digits) {
     return binaryStr;
 }
 
-char* command_to_machine_code(char * command,int type_op1,int type_op2,int ARE){
+char* change_to_machine_code(char * command,int type_op1,int type_op2,int ARE){
     int opcode=isCommand(command);
     char machineCode[NUM_OF_BITS]="0000";
     strcat(machineCode, translateToBinary(opcode,BITS_IN_OPCODE));
     strcat(machineCode, translateToBinary(type_op1,BITS_IN_OP1));
     strcat(machineCode, translateToBinary(type_op2,BITS_IN_OP2));
     strcat(machineCode, translateToBinary(ARE,BITS_IN_ARE));
-
 }
