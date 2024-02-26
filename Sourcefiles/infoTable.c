@@ -70,28 +70,27 @@ infoTable* createDataLine(int address, char* sourceCode){
     temp -> next= NULL;
 }
 
-void createStringLine(int address, char* stringToSave, int index, int isFirst){
+void createStringLine(int address, char* stringToSave, int isFirst){
     infoTable* temp;
-    if (stringToSave[index] != '"') {
+    int i = 0;
+    while (stringToSave[i] != '"') {
         temp->address = &address;
-        temp->binaryCode[0] = mallocError(sizeof(translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
-        temp->binaryCode[0] = (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS));
+        temp->binaryCode[0] = mallocError(sizeof(translateToTwosCompliment(stringToSave[i], NUM_OF_BITS)));
+        temp->binaryCode[0] = (translateToTwosCompliment(stringToSave[i], NUM_OF_BITS));
         if(isFirst) {
             startInfoTable(temp);
-            return (createStringLine(++address, stringToSave, ++index, false));
+            i++;
+            isFirst = false;
         }
         else{
             addSetLineToInfoTable(temp);
-            return (createStringLine(++address, stringToSave, ++index, false));
+            i++;
         }
     }
-    else {
         temp->address = &address;
         temp -> binaryCode[0] = mallocError(sizeof(char)*(NUM_OF_BITS+1));
         temp-> binaryCode[0] = "00000000000000";
         addSetLineToInfoTable(temp);
-        return;
-    }
 }
 
 void createCommandLine(char* command, int op1, int op2, int are,char* sourceCode, int address){

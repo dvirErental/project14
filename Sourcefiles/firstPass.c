@@ -5,8 +5,8 @@ line_table firstPass(FILE* fp) {
     int address = 100;
     int lineLength = 0;
     int lineNum = 0;
-    int i;
-    boolean isFirst = true;
+    boolean isFirstSymbol = true;
+    boolean is
     boolean symbolFlag = false;
     char line[MAX_LINE_LENGTH];
     char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*10);
@@ -50,20 +50,16 @@ line_table firstPass(FILE* fp) {
                 DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3],
                              words[4],words[5],words[6], words[7], words[8], words[9]);
             }
-            continue;
             if (strcmp(words[0], ".entry") == 0 || strcmp(words[0], ".extern") == 0){
                 if (isFirst == true) {
-                    first_Symbol = make_symbol(words[1], "external", -1);
+                    first_Symbol = make_symbol(words[1],"external", DC);
+
                     isFirst = false;
-                    i++;
                 }
-                while (words[i] != NULL){
-                    lineLength++;
-                    add_to_symbol_list(words[i+1], "external", -1);
-                    i++;
-                }
+                else
+                    add_to_symbol_list(words[1], words[0], 0);
             }
-            continue;
+
         }
     }
 }
