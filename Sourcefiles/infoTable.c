@@ -5,11 +5,15 @@ infoTable* first_info;
 
 void makeInfoTable(int address, char* sourceCode, int num){
     first_info = mallocError(sizeof(infoTable));
-    first_info -> address = address;
+    first_info -> address[0] = address;
     first_info -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(first_info->sourceCode, sourceCode);
     strcpy(first_info->binaryCode, translateToTwosCompliment(num));
     first_info -> next = NULL;
+}
+void startInfoTable(infoTable* info){
+    first_info = mallocError(sizeof(info));
+    first_info = info;
 }
 
 void addLineToInfoTable(int address, char* sourceCode, int num){
@@ -17,6 +21,13 @@ void addLineToInfoTable(int address, char* sourceCode, int num){
     while(temp != NULL)
         temp = temp->next;
 
+}
+void addSetLineToInfoTable(infoTable* info){
+    infoTable* temp;
+    while(temp -> next != NULL)
+        temp = temp->next;
+    temp->next = mallocError(sizeof(info));
+    temp->next = info;
 }
 
 infoTable* createDataLine(int address, char* sourceCode){
@@ -176,4 +187,28 @@ infoTable* createDataLine(int address, char* sourceCode){
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
     temp -> next= NULL;
+}
+
+void createStringLine(int address, char* stringToSave, int index, int isFirst){
+    infoTable* temp;
+    if (stringToSave[index] != '"') {
+        temp->address = &address;
+        temp->binaryCode[0] = mallocError(sizeof(translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
+        temp->binaryCode[0] = (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS));
+        if(isFirst) {
+            startInfoTable(temp);
+            return (createStringLine(++address, stringToSave, ++index, false));
+        }
+        else{
+            addSetLineToInfoTable(temp);
+            return (createStringLine(++address, stringToSave, ++index, false));
+        }
+    }
+    else {
+        temp->address = &address;
+        temp -> binaryCode[0] = mallocError(sizeof(char)*(NUM_OF_BITS+1));
+        temp-> binaryCode[0] = "00000000000000";
+        addSetLineToInfoTable(temp);
+        return;
+    }
 }

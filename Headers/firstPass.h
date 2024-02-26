@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "general.h"
 #include "symbolTable.h"
+#include "infoTable.h"
 
 #define TYPE0 0
 #define TYPE1 1

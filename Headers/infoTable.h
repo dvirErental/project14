@@ -17,6 +17,9 @@ void addLineToInfoTable(int, char*, int);
 
 infoTable* createDataLine(int, char*);
 
+void createStringLine(int, char*, int, int);
+
+void startInfoTable(infoTable*);
 
 
 char* dataToBinary()

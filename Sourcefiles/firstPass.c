@@ -14,10 +14,10 @@ line_table firstPass(FILE* fp) {
     char* fourthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* fifthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* sixthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* SeventhWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* EighthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+    char* seventhWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+    char* eighthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* ninthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* TenthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+    char* tenthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
 
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
@@ -29,12 +29,12 @@ line_table firstPass(FILE* fp) {
                     continue;
                 }
                 else if (isFirst == true){
-                    make_line_table(secondWord, "mdefine", atoi(thirdWord));
+                    make_symbol(secondWord, "mdefine", atoi(thirdWord));
                     isFirst = false;
                     continue;
                 }
                 else {
-                    add_to_list(secondWord, "mdefine", atoi(thirdWord));
+                    add_to_symbol_list(secondWord, "mdefine", atoi(thirdWord));
                     continue;
                 }
             }
@@ -52,10 +52,11 @@ line_table firstPass(FILE* fp) {
                 else
                     printf("data without symbol");
                 if (strcmp(secondWord, ".string") == 0)
-                    createStringLine(DC, line);
+                    createStringLine(DC, line, 0, isFirst);
                 else
                     createDataline(DC, line);
-                DC += sscanf()
+                DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord,
+                             fifthWord,sixthWord,seventhWord, eighthword, ninthWord, tenthWord);
             }
             if (strcmp(firstWord, ".entry") == 0 || strcmp(firstWord, ".extern") == 0){
                 //להשלים
