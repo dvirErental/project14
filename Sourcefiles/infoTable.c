@@ -117,7 +117,7 @@ infoTable* createDataLine(int address, char* sourceCode){
 
     }
     if (sixthNum != NULL){
-        if (sixthNum[0] >= '0' && sixthNum[0] <= '9'){
+        if (sixthNum[0] >= '0' && sixthNum[0] <= '9'){//
             location = searchList(sixthNum);
             for (j = 0; j < location; j++)
                 thisSymbol = thisSymbol->next;
