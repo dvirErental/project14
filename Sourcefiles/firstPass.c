@@ -6,12 +6,14 @@ line_table firstPass(FILE* fp) {
     int lineLength = 0;
     int lineNum = 0;
     boolean isFirstSymbol = true;
-    boolean is
+    boolean isFirstInfoLine = true;
     boolean symbolFlag = false;
+    boolean errorFlag = false;
     char line[MAX_LINE_LENGTH];
     char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*10);
 
     while (!feof(fp)) {
+        lineNum++;
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5])) {
 
@@ -20,9 +22,9 @@ line_table firstPass(FILE* fp) {
                     printf("multiple definitions using same name");
                     continue;
                 }
-                else if (isFirst == true){
+                else if (isFirstSymbol){
                     make_symbol(words[1], "mdefine", atoi(words[2]));
-                    isFirst = false;
+                    isFirstSymbol = false;
                     continue;
                 }
                 else {
@@ -34,9 +36,9 @@ line_table firstPass(FILE* fp) {
                 symbolFlag = true;//לאתחל בסוף
             if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
                 if (symbolFlag == true) {
-                    if(isFirst == true) {
+                    if(isFirstSymbol == true) {
                         first_Symbol = make_symbol(words[0], ".data", DC);
-                        isFirst = false;
+                        isFirstSymbol = false;
                     }
                     else
                         add_to_symbol_list(words[0], ".data", DC);
@@ -44,21 +46,33 @@ line_table firstPass(FILE* fp) {
                 else
                     printf("data without symbol");
                 if (strcmp(words[1], ".string") == 0)
-                    createStringLine(DC, line, 0, isFirst);
+                    createStringLine(DC, line,isFirstInfoLine);
                 else
                     createDataLine(DC, line);
                 DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3],
                              words[4],words[5],words[6], words[7], words[8], words[9]);
             }
             if (strcmp(words[0], ".entry") == 0 || strcmp(words[0], ".extern") == 0){
-                if (isFirst == true) {
+                if (isFirstInfoLine == true) {
                     first_Symbol = make_symbol(words[1],"external", DC);
-
-                    isFirst = false;
+                    isFirstInfoLine = false;
                 }
                 else
                     add_to_symbol_list(words[1], words[0], 0);
             }
+            if (symbolFlag){
+                if(searchList(words[0])) {
+                    printf("Error: multiple definitions for same label. Line number %d", lineNum);
+                    errorFlag = true;
+                    continue;
+                }
+                if(isFirstSymbol){
+                    make_symbol(words[0], "code", IC+100);
+                }
+                else
+                    add_to_symbol_list(words[0], "code", IC+100);
+            }
+            continue;
 
         }
     }
