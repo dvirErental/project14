@@ -2,8 +2,8 @@
 // Created by dvir on 10/02/2024.
 //
 
-#ifndef PROJECT14REAL_TABLE_H
-#define PROJECT14REAL_TABLE_H
+#ifndef PROJECT14REAL_SYMBOLTABLE_H
+#define PROJECT14REAL_SYMBOLTABLE_H
 #include "general.h"
 typedef struct line_table{
     int value;
@@ -24,4 +24,4 @@ void free_table(line_table *head);
 
 void add_to_num(line_table *line,int num);
 
-#endif //PROJECT14REAL_TABLE_H
+#endif //PROJECT14REAL_SYMBOLTABLE_H

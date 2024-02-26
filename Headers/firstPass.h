@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include "general.h"
-#include "table.h"
+#include "symbolTable.h"
 
 #define TYPE0 0
 #define TYPE1 1

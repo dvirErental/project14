@@ -13,8 +13,10 @@ void makeInfoTable(int address, char* sourceCode, char*){
 }
 
 void addLineToInfoTable(int address, char* sourceCode, int num){
-    infoTable* next = first;
-    while()
+    infoTable* temp = first;
+    while(temp != NULL)
+        temp = temp->next;
+
 }
 
 infoTable* createLine(int address, char* sourceCode, int num){

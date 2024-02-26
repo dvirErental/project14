@@ -2,7 +2,7 @@
 // Created by dvir on 10/02/2024.
 //
 
-#include "../Headers/table.h"
+#include "../Headers/symbolTable.h"
 line_table * first;
 line_table* make_line_table(char *name, char *type, int value){
     line_table *temp;

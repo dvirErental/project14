@@ -48,23 +48,23 @@ int isFileIndication(const char* a){
     return 1;
 }
 
-char* translateToBinary(int num,int digits) {
-    char *binaryStr = (char *) malloc(digits + 1); // +1 for null terminator
-
-    // Check for memory allocation failure
-    if (binaryStr == NULL) {
+char* translateToTwosCompliment(int num,int length) {
+    char *str = (char *)malloc((length + 1) * sizeof(char));
+    if (str == NULL) {
         printf("Memory allocation failed.\n");
-        exit(EXIT_FAILURE);
+        exit(1);
+    }
+    str[length] = '\0'; // Null-terminate the string
+    // Filling the string with '0' or '1' based on the two's complement representation
+    int mask = 1 << (length - 1);
+    for (int i = 0; i < length; i++) {
+        if (num & mask)
+            str[i] = '1';
+        else
+            str[i] = '0';
+        mask >>= 1;
     }
 
-    // Null terminate the string
-    binaryStr[digits] = '\0';
-
-    // Iterate through each bit and set the corresponding character in the string
-    for (int i = digits - 1; i >= 0; i--) {
-        binaryStr[digits - 1 - i] = ((num >> i) & 1) ? '1' : '0';
-    }
-
-    return binaryStr;
+    return str;
 }
 

@@ -4,6 +4,7 @@ line_table firstPass(FILE* fp) {
     int IC = 0, DC = 0;
     int address = 100;
     int lineLength = 0;
+    int lineNum = 0;
     boolean isFirst = true;
     boolean symbolFlag = false;
     char line[MAX_LINE_LENGTH];
@@ -17,8 +18,9 @@ line_table firstPass(FILE* fp) {
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord, fifthWord, sixthWord)) {
+
             if (!strcmp(firstWord, ".define")){
-                if (!searchList(secondWord)) {
+                if (searchList(secondWord)) {
                     printf("multiple definitions using same name");
                     continue;
                 }

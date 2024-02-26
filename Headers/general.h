@@ -23,5 +23,5 @@ typedef enum {
 void *mallocError(long object_size);
 
 int isFileIndication(const char*);
-char* translateToBinary(int,int);
+char* translateToTwosCompliment(int,int);
 char* command_to_machine_code(char * command,int type_op1,int type_op2,int ARE);
