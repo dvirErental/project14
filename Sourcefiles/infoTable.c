@@ -1,19 +1,19 @@
 
 #include "infoTable.h"
 
-infoTable* first;
+infoTable* first_info;
 
-void makeInfoTable(int address, char* sourceCode, char*){
-    first = mallocError(sizeof(infoTable));
-    first -> address = address;
-    first -> sourceCode = mallocError(sizeof(sourceCode));
-    strcpy(first->sourceCode, sourceCode);
-    strcpy(first->binaryCode, translateToBinary(num));
-    first -> next = NULL;
+void makeInfoTable(int address, char* sourceCode, int num){
+    first_info = mallocError(sizeof(infoTable));
+    first_info -> address = address;
+    first_info -> sourceCode = mallocError(sizeof(sourceCode));
+    strcpy(first_info->sourceCode, sourceCode);
+    strcpy(first_info->binaryCode, translateToTwosCompliment(num));
+    first_info -> next = NULL;
 }
 
 void addLineToInfoTable(int address, char* sourceCode, int num){
-    infoTable* temp = first;
+    infoTable* temp = first_info;
     while(temp != NULL)
         temp = temp->next;
 
