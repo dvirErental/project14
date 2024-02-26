@@ -10,7 +10,7 @@ line_table firstPass(FILE* fp) {
     char line[MAX_LINE_LENGTH];
     char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*10);
 
-    while (!feof(fp)) {
+    while (!feof(fp)) {//
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5])) {
 
