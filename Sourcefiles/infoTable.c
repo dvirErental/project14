@@ -93,3 +93,10 @@ void createStringLine(int address, char* stringToSave, int index, int isFirst){
         return;
     }
 }
+
+void createCommandLine(char* command, int op1, int op2, int are,char* sourceCode, int address){
+    int opcode= isCommand(command);
+    int result=(opcode<<6)+(op1<<4)+(op2<<2)+are;
+    char* binaryCode=translateToTwosCompliment(result,NUM_OF_BITS);
+
+}
