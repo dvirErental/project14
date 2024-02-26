@@ -7,6 +7,7 @@ line_table firstPass(FILE* fp) {
     int lineNum = 0;
     boolean isFirst = true;
     boolean symbolFlag = false;
+
     char line[MAX_LINE_LENGTH];
     char* firstWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* secondWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
@@ -25,7 +26,7 @@ line_table firstPass(FILE* fp) {
                     continue;
                 }
                 else if (isFirst == true){
-                    make_line_table(secondWord, "mdefine", atoi(thirdWord));
+                    make_symbol(secondWord, "mdefine", atoi(thirdWord));
                     isFirst = false;
                     continue;
                 }
@@ -38,9 +39,14 @@ line_table firstPass(FILE* fp) {
                 symbolFlag = true;//לאתחל בסוף
             if (strcmp(secondWord, ".string") == 0 || strcmp(secondWord, ".data") == 0){
                 if (symbolFlag == true) {
-                    if(isFirst == true)
-                        make_symbol(firstWord, ".data", DC);
-                    //להוסיף את הנתונים לטבלה הגדולה
+                    if(isFirst == true) {
+                        first_Symbol=make_symbol(firstWord, ".data", DC);
+                        isFirst = false;
+
+                        }
+                    }
+                    else{
+                        add_to_list(firstWord, ".data", DC);}
                 }
             }
             if (strcmp(firstWord, ".entry") == 0 || strcmp(firstWord, ".extern") == 0){

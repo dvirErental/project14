@@ -1,7 +1,7 @@
 
 #define NUM_OF_BITS 14
 #include <string.h>
-#include "general.h"
+#include "symbolTable.h"
 
 
 typedef struct infoTable{
@@ -15,7 +15,7 @@ void makeInfoTable(int, char*, int);
 
 void addLineToInfoTable(int, char*, int);
 
-infoTable* createDataLine(int, char*, int*);
+infoTable* createDataLine(int, char*);
 
 
 

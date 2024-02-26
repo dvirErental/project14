@@ -24,10 +24,12 @@ void add_to_list(char *name, char *type, int value){
     temp->next = make_symbol(name, type, value);
 }
 int searchList(char* name){
+    int location = 0;
     line_table *temp = first_Symbol;
     while (temp != NULL){
+        location++;
         if (!(strcmp(temp->name,name)))
-            return 1;
+            return location;
     }
     return 0;
 }
