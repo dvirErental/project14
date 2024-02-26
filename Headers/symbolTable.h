@@ -14,7 +14,7 @@ typedef struct line_table{
 
 line_table* make_symbol(char *name, char *type, int value);
 
-void add_to_list(char *name, char *type, int value);
+void add_to_symbol_list(char *name, char *type, int value);
 
 int searchList(char*);
 

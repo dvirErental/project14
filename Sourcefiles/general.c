@@ -68,3 +68,6 @@ char* translateToTwosCompliment(int num,int length) {
     return str;
 }
 
+boolean is_whitespace(char c) {
+    return c == ' ' || c == '\t'; // Add other whitespace characters if needed
+}

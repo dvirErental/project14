@@ -17,7 +17,7 @@ line_table* make_symbol(char *name, char *type, int value){
     return temp;
 }
 
-void add_to_list(char *name, char *type, int value){
+void add_to_symbol_list(char *name, char *type, int value){
     line_table *temp = first_Symbol;
     while (temp->next != NULL)
         temp = temp->next;
