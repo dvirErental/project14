@@ -19,11 +19,16 @@ void addLineToInfoTable(int address, char* sourceCode, int num){
 
 }
 
-infoTable* createLine(int address, char* sourceCode, int num){
-    infoTable* next;
-    next = mallocError(sizeof(infoTable));
-    next-> address = address;
-    next -> sourceCode = mallocError(sizeof(sourceCode));
-    strcpy(next->sourceCode, sourceCode);
-    next ->
+infoTable* createDataLine(int address, char* sourceCode, int* num){
+    infoTable* temp;
+    temp = mallocError(5*sizeof(infoTable));
+    int i;
+    while(num[i]< (sizeof(num) / sizeof(num[0]))){
+        temp -> binaryCode[i] = translateToTwosCompliment(num[i],NUM_OF_BITS);
+        i++;
+        temp->address[i]=address+i;
+    }
+    temp -> sourceCode = mallocError(sizeof(sourceCode));
+    strcpy(temp->sourceCode, sourceCode);
+    temp -> next= NULL;
 }
