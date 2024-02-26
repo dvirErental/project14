@@ -15,9 +15,11 @@ void makeInfoTable(int, char*, int);
 
 void addLineToInfoTable(int, char*, int);
 
-infoTable* createDataLine(int, char*);
+infoTable* createDataLine(int, char*,infoTable*);
 
 void createStringLine(int, char*, int, int);
+
+void createCommandLine(char* ,int, int, int,char*, int,infoTable*);
 
 void startInfoTable(infoTable*);
 

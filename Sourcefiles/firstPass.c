@@ -11,7 +11,7 @@ line_table firstPass(FILE* fp) {
     boolean errorFlag = false;
     char line[MAX_LINE_LENGTH];
     char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*10);
-
+    infoTable thisInfo;
     while (!feof(fp)) {
         lineNum++;
         fgets(line, MAX_LINE_LENGTH, fp);
@@ -48,7 +48,7 @@ line_table firstPass(FILE* fp) {
                 if (strcmp(words[1], ".string") == 0)
                     createStringLine(DC, line,isFirstInfoLine);
                 else
-                    createDataLine(DC, line);
+                    createDataLine(DC, line,thisInfo);
                 DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3],
                              words[4],words[5],words[6], words[7], words[8], words[9]);
             }

@@ -30,7 +30,7 @@ void addSetLineToInfoTable(infoTable* info){
     temp->next = info;
 }
 
-infoTable* createDataLine(int address, char* sourceCode){
+infoTable* createDataLine(int address, char* sourceCode,infoTable* thisInfo){
     int* num;
     char** words = mallocError(sizeof(int)*MAX_WORD_LENGTH*10);
     int nums;
@@ -57,8 +57,10 @@ infoTable* createDataLine(int address, char* sourceCode){
         }
         num[k] = atoi(words[k]);
     }
-    infoTable* temp;
-    temp = mallocError(5*sizeof(infoTable));
+    infoTable* temp=thisInfo;
+    while(temp -> next != NULL)
+        temp = temp->next;
+    temp = mallocError(8*sizeof(infoTable));
     int i;
     while(num[i]< (sizeof(num) / sizeof(num[0]))){
         temp -> binaryCode[i] = translateToTwosCompliment(num[i],NUM_OF_BITS);
@@ -97,5 +99,14 @@ void createCommandLine(char* command, int op1, int op2, int are,char* sourceCode
     int opcode= isCommand(command);
     int result=(opcode<<6)+(op1<<4)+(op2<<2)+are;
     char* binaryCode=translateToTwosCompliment(result,NUM_OF_BITS);
-
+    infoTable* temp=first_info;
+    while(temp -> next != NULL)
+        temp = temp->next;
+    temp->address[0] = address;
+    temp -> binaryCode[0] = mallocError(sizeof(char)*(NUM_OF_BITS+1));
+    temp-> binaryCode[0] = binaryCode;
+    temp -> sourceCode = mallocError(sizeof(sourceCode));
+    strcpy(temp->sourceCode, sourceCode);
+    temp -> next= NULL;
+    addSetLineToInfoTable(temp);
 }
