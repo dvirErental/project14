@@ -1,5 +1,5 @@
 #include "../Headers/firstPass.h"
-/*assuming max number of words in a line is 6*/
+/*assuming max number of words in a line is 10*/
 line_table firstPass(FILE* fp) {
     int IC = 0, DC = 0;
     int address = 100;
@@ -14,6 +14,10 @@ line_table firstPass(FILE* fp) {
     char* fourthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* fifthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
     char* sixthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+    char* SeventhWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+    char* EighthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+    char* ninthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+    char* TenthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
 
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
@@ -38,10 +42,20 @@ line_table firstPass(FILE* fp) {
                 symbolFlag = true;//לאתחל בסוף
             if (strcmp(secondWord, ".string") == 0 || strcmp(secondWord, ".data") == 0){
                 if (symbolFlag == true) {
-                    if(isFirst == true)
-                        make_symbol(firstWord, ".data", DC);
-                    //להוסיף את הנתונים לטבלה הגדולה
+                    if(isFirst == true) {
+                        first_Symbol = make_symbol(firstWord, ".data", DC);
+                        isFirst = false;
+                    }
+                    else
+                        add_to_list(firstWord, ".data", DC);
                 }
+                else
+                    printf("data without symbol");
+                if (strcmp(secondWord, ".string") == 0)
+                    createStringLine(DC, line);
+                else
+                    createDataline(DC, line);
+                DC += sscanf()
             }
             if (strcmp(firstWord, ".entry") == 0 || strcmp(firstWord, ".extern") == 0){
                 //להשלים

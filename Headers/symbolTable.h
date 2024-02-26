@@ -25,3 +25,4 @@ void free_table(line_table *head);
 void add_to_num(line_table *line,int num);
 
 #endif //PROJECT14REAL_SYMBOLTABLE_H
+extern line_table * first_Symbol;
