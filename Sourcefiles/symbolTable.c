@@ -4,7 +4,7 @@
 
 #include "../Headers/symbolTable.h"
 line_table * first_Symbol;
-line_table* make_line_table(char *name, char *type, int value){
+line_table* make_symbol(char *name, char *type, int value){
     line_table *temp;
 
     temp = mallocError(sizeof(line_table));
@@ -21,7 +21,7 @@ void add_to_list(char *name, char *type, int value){
     line_table *temp = first_Symbol;
     while (temp->next != NULL)
         temp = temp->next;
-    temp->next = make_line_table(name, type, value);
+    temp->next = make_symbol(name, type, value);
 }
 int searchList(char* name){
     line_table *temp = first_Symbol;

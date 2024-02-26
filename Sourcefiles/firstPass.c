@@ -39,7 +39,7 @@ line_table firstPass(FILE* fp) {
             if (strcmp(secondWord, ".string") == 0 || strcmp(secondWord, ".data") == 0){
                 if (symbolFlag == true) {
                     if(isFirst == true)
-                        make_line_table(firstWord, ".data", DC);
+                        make_symbol(firstWord, ".data", DC);
                     //להוסיף את הנתונים לטבלה הגדולה
                 }
             }
