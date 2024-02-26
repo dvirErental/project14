@@ -51,16 +51,16 @@ line_table firstPass(FILE* fp) {
 
 int discoverOperandType(const char* op){
     if(op[0] == '#')
-        return 0;
+        return TYPE0;
     else if (isLabel(op))
-        return 1;
+        return TYPE1;
     else if (isArrayAddress(op))
-        return 2;
+        return TYPE2;
     else if (isRegisterName(op))
-        return 3;
+        return TYPE3;
     else{
         printf("ERROR: illegal operand");
-        return -1;
+        return TYPE_ERROR;
     }
 }
 
@@ -69,8 +69,8 @@ int isLabel(const char* op){
     while (op[i] != '\0')
         i++;
     if (op[i-1] == ':')
-        return 1;
-    return 0;
+        return true;
+    return false;
 }
 
 int isArrayAddress(const char* op){
@@ -81,18 +81,18 @@ int isArrayAddress(const char* op){
             break;
     }
     if (op[i] == '\0')
-        return 0;
+        return false;
     while (op[i] != '\0')
         i++;
     if (op[i-1] == ']')
-        return 1;
-    return 0;
+        return true;
+    return false;
 }
 
 int isRegisterName(const char* op){
     if ((op[0] == 'r') && (op[1] >= '0') && (op[1] <= '7') && (op[2] == '\0'))
-        return 1;
-    return 0;
+        return true;
+    return false;
 }
 
 
