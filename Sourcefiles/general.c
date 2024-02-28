@@ -1,5 +1,7 @@
 #include "general.h"
-
+/**
+ * initializes the 16 commands into an commands array
+ */
 void initializeCommands(void){
     commands[0] = "mov";
     commands[1] = "cmp";
@@ -18,6 +20,11 @@ void initializeCommands(void){
     commands[14] = "rts";
     commands[15] = "hlt";
 }
+/**
+ * checks if parameter is the name of a command
+ * @param word parameter to check
+ * @return the index of the command if it is in fact a command, otherwise -1
+ */
 int isCommand(char* word){
     int index;
     for (index = 0; index <NUM_OF_COMMANDS; index++){
@@ -26,6 +33,12 @@ int isCommand(char* word){
     }
     return -1;
 }
+
+/**
+ * modified version of malloc, but checks for error
+ * @param object_size
+ * @return pointer to space for the object the function was called for
+ */
 void *mallocError(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
@@ -34,7 +47,11 @@ void *mallocError(long object_size) {
     return object_ptr;
 }
 
-
+/**
+ * checks if a is a legal name for a file (all caps, final letter ':'
+ * @param a name to check
+ * @return 1 if it's legal, otherwise 0.
+ */
 int isFileIndication(const char* a){
     int i = 0;
     while (a[i] != '\0'){
@@ -48,6 +65,12 @@ int isFileIndication(const char* a){
     return 1;
 }
 
+/**
+ * translates given number to it's binarary representation, keeps it to length of length - can lose data if used incorrectly
+ * @param num  - num to translate
+ * @param length - number of bits to return
+ * @return num's representation in binary (in 'length' bits)
+ */
 char* translateToTwosCompliment(int num,int length) {
     char *str = (char *)malloc((length + 1) * sizeof(char));
     if (str == NULL) {

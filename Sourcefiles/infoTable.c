@@ -2,7 +2,11 @@
 #include "infoTable.h"
 
 infoTable* first_info;
-
+/*
+ * creates first line of info table
+ * @param address address of first line to create
+ * @param sourceCode source code to base block off
+ * @param num
 void makeInfoTable(int address, char* sourceCode, int num){
     first_info = mallocError(sizeof(infoTable));
     first_info -> address[0] = address;
@@ -11,11 +15,23 @@ void makeInfoTable(int address, char* sourceCode, int num){
     strcpy(first_info->binaryCode, translateToTwosCompliment(num));
     first_info -> next = NULL;
 }
+*/
+
+/**
+ * creates info table with a parameter of a ready made block
+ * @param info block to place as 'first_info'
+ */
 void startInfoTable(infoTable* info){
     first_info = mallocError(sizeof(info));
     first_info = info;
 }
 
+/**
+ * adds line to info table with parameters of parts of a block.
+ * @param address address for block
+ * @param sourceCode source code for block
+ * @param num binary representaion for the source code
+ */
 void addLineToInfoTable(int address, char* sourceCode, int num){
     infoTable* temp = first_info;
     while(temp != NULL)

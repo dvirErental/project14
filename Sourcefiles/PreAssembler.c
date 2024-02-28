@@ -1,5 +1,10 @@
 #include "../Headers/PreAssembler.h"
 char* commands[16];
+/**
+ * main function of preAssembler.
+ * @param op - receives file to open macros for.
+ * @return copy of original file but with macros saved and opened.
+ */
 FILE* preAssemble(FILE* op) {
     int macsFound = 0;
     int lineNum = 1;
@@ -9,7 +14,7 @@ FILE* preAssemble(FILE* op) {
     char *thirdWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node *current;
     initializeCommands();
-    FILE *ModOrig = fopen("../Examples/postPreAssembler", "w");
+    FILE *ModOrig = fopen("../Examples/postPreAssembler", "w");/*create file for after macros have been opened.*/
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
         if(line[0] == ';')
@@ -44,7 +49,14 @@ FILE* preAssemble(FILE* op) {
     return ModOrig;
 }
 
-
+/**
+ *
+ * @param fp - original file to create macros from
+ * @param name name of macro to create
+ * @param lineNum line number the macro was created in.
+ * @param macsFound positive if a macro has already been create, otherwise false.
+ * @return returns the line number that was reached following the function
+ */
 int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     char line[MAX_LINE_LENGTH];
     char* tempCont = NULL;

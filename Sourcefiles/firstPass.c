@@ -1,5 +1,11 @@
 #include "../Headers/firstPass.h"
 /*assuming max number of words in a line is 10*/
+
+/**
+ * main functino of first Pass.
+ * @param file following macro creations.
+ * @return information table
+ */
 line_table firstPass(FILE* fp) {
     int IC = 0, DC = 0;
     int address = 100;
@@ -43,8 +49,10 @@ line_table firstPass(FILE* fp) {
                     else
                         add_to_symbol_list(words[0], ".data", DC);
                 }
-                else
+                else {
                     printf("data without symbol");
+                    errorFlag = true;
+                }
                 if (strcmp(words[1], ".string") == 0)
                     createStringLine(DC, line,isFirstInfoLine);
                 else
@@ -77,7 +85,11 @@ line_table firstPass(FILE* fp) {
         }
     }
 }
-
+/**
+ * discovers operand type
+ * @param name of function
+ * @return type of operand (by number)
+ */
 int discoverOperandType(const char* op){
     if(op[0] == '#')
         return TYPE0;
@@ -93,6 +105,11 @@ int discoverOperandType(const char* op){
     }
 }
 
+/**
+ * checks if parameter is a label.
+ * @param op name to check
+ * @return true(1) if paramater is a label, otherwise false(0)
+ */
 int isLabel(const char* op){
     int i = 0;
     while (op[i] != '\0')
@@ -101,7 +118,11 @@ int isLabel(const char* op){
         return true;
     return false;
 }
-
+/**
+ * checks is parameter is an array Address
+ * @param op name to check
+ * @return true if parameter is an array address, otherwise false.
+ */
 int isArrayAddress(const char* op){
     int i = 0;
 
@@ -117,7 +138,11 @@ int isArrayAddress(const char* op){
         return true;
     return false;
 }
-
+/**
+ * checks if parameter is a register name
+ * @param op name to check
+ * @return true if parameter is a register name, otherwise false.
+ */
 int isRegisterName(const char* op){
     if ((op[0] == 'r') && (op[1] >= '0') && (op[1] <= '7') && (op[2] == '\0'))
         return true;
