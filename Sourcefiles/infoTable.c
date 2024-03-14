@@ -31,6 +31,8 @@ void addSetLineToInfoTable(infoTable* info){
 }
 
 infoTable* createDataLine(int address, char* sourceCode){
+    //קשה לקרוא את הקוד, תוודא שעשית את כל מה שצריך:
+    // חצי השני של החלק התשיעי באלגוריתם המעבר הראשון.
     int* num;
     char** words = mallocError(sizeof(int)*MAX_WORD_LENGTH*10);
     int nums;
@@ -52,7 +54,7 @@ infoTable* createDataLine(int address, char* sourceCode){
             }
             else{
                 printf("error: %s is not a number", words[0]);
-                exit(1);
+                exit(1);//FOR US: NOT SUPPOSED TO GO OUT, NEED TO FINISH FIRST PASS!!!
             }
         }
         num[k] = atoi(words[k]);

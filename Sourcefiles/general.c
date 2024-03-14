@@ -48,22 +48,21 @@ void *mallocError(long object_size) {
 }
 
 /**
- * checks if a is a legal name for a file (all caps, final letter ':'
+ * checks if a is a legal name for a file (all caps, final letter ':')
  * @param a name to check
- * @return 1 if it's legal, otherwise 0.
+ * @return true if it's legal, otherwise false.
  */
-int isFileIndication(const char* a){
+int isSymbolDefinition(const char* a){
     int i = 0;
-    while (a[i] != '\0'){
-        if((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (strcmp(a, ".define") == 0) || (a[i] == ':'))
+    while (a[i] != '\0') {
+        if ((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0'))
             i++;
-        else
-            return 0;
     }
-    if (a[i-1] != ':')
-        return 0;
-    return 1;
+    if(a[i] == ':' && a[i+1] == '\0')
+        return true;
+    return false;
 }
+
 
 /**
  * translates given number to it's binarary representation, keeps it to length of length - can lose data if used incorrectly

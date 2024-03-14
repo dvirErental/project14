@@ -5,6 +5,7 @@
 #define NUM_OF_COMMANDS 16
 #define MAX_LINE_LENGTH 81
 #define MAX_WORD_LENGTH 10
+#define MAX_NUM_OF_WORDS 10
 #define NUM_OF_BITS 14
 #define BITS_IN_OPCODE 4
 #define BITS_IN_OP1 2
@@ -14,6 +15,7 @@
 extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/
+int isSymbolDefinition(const char* );
 
 typedef enum {
     false = 0,
