@@ -8,58 +8,55 @@ line_table firstPass(FILE* fp) {
     boolean isFirst = true;
     boolean symbolFlag = false;
     char line[MAX_LINE_LENGTH];
-    char* firstWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* secondWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* thirdWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* fourthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* fifthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* sixthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* seventhWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* eighthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* ninthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
-    char* tenthWord = mallocError(sizeof(int)*MAX_WORD_LENGTH);
+    char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*10);
 
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
-        if (sscanf(line, "%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord, fifthWord, sixthWord)) {
+        if (sscanf(line, "%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5])) {
 
-            if (!strcmp(firstWord, ".define")){
-                if (searchList(secondWord)) {
+            if (!strcmp(words[0], ".define")){
+                if (searchList(words[1])) {
                     printf("multiple definitions using same name");
                     continue;
                 }
                 else if (isFirst == true){
-                    make_symbol(secondWord, "mdefine", atoi(thirdWord));
+                    make_symbol(words[1], "mdefine", atoi(words[2]));
                     isFirst = false;
                     continue;
                 }
                 else {
-                    add_to_symbol_list(secondWord, "mdefine", atoi(thirdWord));
+                    add_to_symbol_list(words[1], "mdefine", atoi(words[2]));
                     continue;
                 }
             }
-            if (isFileIndication(firstWord))
+            if (isFileIndication(words[0]))
                 symbolFlag = true;//לאתחל בסוף
-            if (strcmp(secondWord, ".string") == 0 || strcmp(secondWord, ".data") == 0){
+            if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
                 if (symbolFlag == true) {
                     if(isFirst == true) {
-                        first_Symbol = make_symbol(firstWord, ".data", DC);
+                        first_Symbol = make_symbol(words[0], ".data", DC);
                         isFirst = false;
                     }
                     else
-                        add_to_list(firstWord, ".data", DC);
+                        add_to_symbol_list(words[0], ".data", DC);
                 }
                 else
                     printf("data without symbol");
-                if (strcmp(secondWord, ".string") == 0)
+                if (strcmp(words[1], ".string") == 0)
                     createStringLine(DC, line, 0, isFirst);
                 else
-                    createDataline(DC, line);
-                DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", firstWord, secondWord, thirdWord, fourthWord,
-                             fifthWord,sixthWord,seventhWord, eighthword, ninthWord, tenthWord);
+                    createDataLine(DC, line);
+                DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3],
+                             words[4],words[5],words[6], words[7], words[8], words[9]);
             }
-            if (strcmp(firstWord, ".entry") == 0 || strcmp(firstWord, ".extern") == 0){
-                //להשלים
+            if (strcmp(words[0], ".entry") == 0 || strcmp(words[0], ".extern") == 0){
+                if (isFirst == true) {
+                    first_Symbol = make_symbol(words[1],"external", DC);
+
+                    isFirst = false;
+                }
+                else
+                    add_to_symbol_list(words[1], words[0], 0);
             }
 
         }

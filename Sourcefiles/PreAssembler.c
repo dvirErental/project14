@@ -9,7 +9,7 @@ FILE* preAssemble(FILE* op) {
     char *thirdWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node *current;
     initializeCommands();
-    FILE *ModOrig = fopen("../TextFiles/postPreAssembler", "w");
+    FILE *ModOrig = fopen("../Examples/postPreAssembler", "w");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
         if(line[0] == ';')
