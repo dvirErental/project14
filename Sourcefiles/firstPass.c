@@ -15,6 +15,7 @@ line_table firstPass(FILE* fp) {
     char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*MAX_NUM_OF_WORDS);
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
+        lineNum++;
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
                    words[7], words[8], words[9])) {
 
@@ -100,11 +101,11 @@ line_table firstPass(FILE* fp) {
                 index = 1;
             else
                 index = 0;
-            if (!isCommand(words[index+1])){
+            if (!isCommand(words[index])){
                 printf("illegal Command, line %d", lineNum);
                 errorFlag = true;
             }
-
+            IC+=executeCommand(line, index, discoverOperandType(words[index+1]), discoverOperandType(words[index+2]));
 
 
         }
@@ -112,6 +113,8 @@ line_table firstPass(FILE* fp) {
 }
 
 int discoverOperandType(const char* op){
+    if(strcmp(op, "") == 0)
+        return -1;
     if(op[0] == '#')
         return TYPE0;
     else if (isLabel(op))

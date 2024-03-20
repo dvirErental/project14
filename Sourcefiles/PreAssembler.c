@@ -15,7 +15,7 @@ FILE* preAssemble(FILE* op) {
         if(line[0] == ';')
             continue;
         if (sscanf(line, "%s%s%s", firstWord, secondWord, thirdWord)) {
-            if (isFileIndication(firstWord)) {
+            if (isSymbolDefinition(firstWord)) {
                 strcpy(firstWord, secondWord);
                 strcpy(secondWord, thirdWord);
             }

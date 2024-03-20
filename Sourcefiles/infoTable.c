@@ -95,3 +95,19 @@ void createStringLine(int address, char* stringToSave, int index, int isFirst){
         return;
     }
 }
+
+int executeCommand(char* line, int index, int op1, int op2){
+    char** binaryWords = mallocError(sizeof(char)*MAX_WORD_LENGTH*(MAX_COMMAND_LENGTH));
+    char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*(MAX_COMMAND_LENGTH+1));
+    if(index == 0)
+        sscanf(line, "%s%s%s%s", words[0], words[1], words[2], words[3]);
+    else
+        sscanf(line, "%s%s%s", words[0], words[1], words[2]);
+    char* opCode = translateToTwosCompliment(isCommand(words[index]), BITS_IN_OPCODE);
+    char* op1Binary = translateToTwosCompliment(op1, BITS_IN_OP1);
+    char* op2Binary = translateToTwosCompliment(op2, BITS_IN_OP2);
+    char* are = "00";
+    strcpy(words[0], strcat(strcat(strcat("0000", opCode),
+                                   strcat(op1Binary, op2Binary)), are));
+    /*this translates the COMMAND NAME to binary, still need to translate the operands*/
+}

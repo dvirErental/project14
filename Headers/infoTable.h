@@ -21,6 +21,7 @@ void createStringLine(int, char*, int, int);
 
 void startInfoTable(infoTable*);
 
+int executeCommand(char*, int, int, int);
 
 char* dataToBinary()
 //שני מערכים דו ממדיים  = address והקוד הבינארי לכל מילה

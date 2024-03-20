@@ -7,6 +7,7 @@
 #define MAX_WORD_LENGTH 10
 #define MAX_NUM_OF_WORDS 10
 #define NUM_OF_BITS 14
+#define MAX_COMMAND_LENGTH 5
 #define BITS_IN_OPCODE 4
 #define BITS_IN_OP1 2
 #define BITS_IN_OP2 2
