@@ -30,43 +30,38 @@ void addSetLineToInfoTable(infoTable* info){
     temp->next = info;
 }
 
+int isValidDataString(const char *str) {
+    // מחזיר אפס אם המחרוזת חוקית, אחרת מחזיר את המספר הראשון שלא הצליחנו לקרוא
+    char *endptr;
+    strtol(str + 4, &endptr, 10);
+    while (isspace(*endptr)) endptr++; // דחיפות מרווחים
+    while (*endptr != '\0') {
+        if (*endptr != ',' && !isspace(*endptr)) // בודק אם יש תו שאינו פסיק או רווח
+            return 0;
+        strtol(endptr + 1, &endptr, 10); // הולך למספר הבא
+        while (isspace(*endptr)) endptr++; // דחיפות מרווחים
+    }
+    return 1;
+}
 infoTable* createDataLine(int address, char* sourceCode){
     //קשה לקרוא את הקוד, תוודא שעשית את כל מה שצריך:
     // חצי השני של החלק התשיעי באלגוריתם המעבר הראשון.
-    int* num;
-    char** words = mallocError(sizeof(int)*MAX_WORD_LENGTH*10);
-    int nums;
-    char* numsInput;
-    int location;
-    int  j;
-    int k;
-    line_table* thisSymbol=first_Symbol;
-    numsInput = strstr(sourceCode, ".data");
-    nums=sscanf(numsInput+strlen(".data"), "%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6], words[7]);
-    num = mallocError(nums*sizeof(int));
-    while (words[k] != NULL){
-        if (words[k][0] >= '0' && words[k][0] <= '9'){
-            location = searchList(words[k]);
-            for (j = 0; j < location; j++)
-                thisSymbol = thisSymbol->next;
-            if (strcmp(thisSymbol->type,"mdefine") == 0){
-                num[k] = thisSymbol->value;
-            }
-            else{
-                printf("error: %s is not a number", words[0]);
-                exit(1);//FOR US: NOT SUPPOSED TO GO OUT, NEED TO FINISH FIRST PASS!!!
-            }
-        }
-        num[k] = atoi(words[k]);
-    }
     infoTable* temp;
-    temp = mallocError(5*sizeof(infoTable));
-    int i;
-    while(num[i]< (sizeof(num) / sizeof(num[0]))){
-        temp -> binaryCode[i] = translateToTwosCompliment(num[i],NUM_OF_BITS);
-        i++;
-        temp->address[i]=address+i;
+
+    int numbers[40];
+    int count;
+    char *token;
+    char *mutable_str = strdup(sourceCode + 4); // מתחיל אחרי המילה "data"
+    token = strtok(mutable_str, ", ");
+    count = 0;
+    while (token != NULL) {
+        numbers[count] = atoi(token);
+        temp -> binaryCode[count] = translateToTwosCompliment(numbers[count],NUM_OF_BITS);
+        temp->address[count]=address+count;
+        (count)++;
+        token = strtok(NULL, ", ");
     }
+    free(mutable_str);
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
     temp -> next= NULL;

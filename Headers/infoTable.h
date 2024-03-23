@@ -1,6 +1,7 @@
 
 #define NUM_OF_BITS 14
 #include <string.h>
+#include <ctype.h>
 #include "symbolTable.h"
 
 
@@ -16,6 +17,7 @@ void makeInfoTable(int, char*, int);
 void addLineToInfoTable(int, char*, int);
 
 infoTable* createDataLine(int, char*);
+int isValidDataString(const char *str);
 
 void createStringLine(int, char*, int, int);
 

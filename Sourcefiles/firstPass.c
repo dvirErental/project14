@@ -50,8 +50,13 @@ line_table firstPass(FILE* fp) {
                     printf("data without symbol");
                 if (strcmp(words[1], ".string") == 0)
                     createStringLine(DC, line, 0, isFirstInfo);
-                else
-                    createDataLine(DC, line);
+                else{
+                    if (isValidDataString(line))
+                        createDataLine(DC, line);
+                    else
+                        error//להשלים
+                }
+
                 DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3],
                              words[4],words[5],words[6], words[7], words[8], words[9]);
                 continue;
