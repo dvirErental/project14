@@ -119,7 +119,7 @@ void firstPass(FILE* fp) {
         printf("error was found in first pass we will not continue to second pass\n");
     }
     addIC(IC);
-
+    printf("first pass finished");
 }
 
 int discoverOperandType(const char* op){

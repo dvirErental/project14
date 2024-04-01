@@ -47,14 +47,6 @@ void *mallocError(long object_size) {
     return object_ptr;
 }
 
-void *reallocError(void *object_ptr, long object_size) {
-    object_ptr = realloc(object_ptr, object_size);
-    if (object_ptr == NULL) {
-        printf("Failed dynamically memory");
-    }
-    return object_ptr;
-}
-
 /**
  * checks if a is a legal name for a file (final letter ':')
  * @param a name to check
@@ -75,10 +67,10 @@ int isSymbolDefinition(const char* a){
 
 
 /**
- * translates given number to it's binarary representation, keeps it to length of length - can lose data if used incorrectly
+ * translates given number to it's binary representation, keeps it to length of length - can lose data if used incorrectly
  * @param num  - num to translate
  * @param length - number of bits to return
- * @return num's representation in binary (in 'length' bits)
+ * @return nums' representation in binary (in 'length' bits)
  */
 char* translateToTwosCompliment(int num,int length) {
     char *str = (char *)malloc((length + 1) * sizeof(char));
@@ -107,7 +99,7 @@ int isRegisterName(const char* name){
 }
 
 
-void flipBits(char* word){
+/*void flipBits(char* word){
     int index;
     for(index = 0; index<NUM_OF_BITS; index++){
         if(word[index] == '0')
@@ -115,7 +107,7 @@ void flipBits(char* word){
         else
             word[index] = '0';
     }
-}
+}*/
 
 int wordLength(const char *word) {
     int length = 0;
@@ -144,9 +136,13 @@ int contains_brackets(const char *word) {
 int calculateL(char* line, int isSymbolDefinition){
     int L = 0;
     int index = 0;
-    char* currentWord;
+    char* currentWord = mallocError(sizeof(char)*MAX_WORD_LENGTH);
     while(index < MAX_LINE_LENGTH){
         sscanf(&line[index], "%s", currentWord);
+        if (isSymbolDefinition){
+            isSymbolDefinition = FALSE;
+            continue;
+        }
         if (strcmp(currentWord,"" ) == 0)
             break;
         if (contains_brackets(currentWord))
@@ -157,5 +153,3 @@ int calculateL(char* line, int isSymbolDefinition){
     }
     return L;
 }
-
-
