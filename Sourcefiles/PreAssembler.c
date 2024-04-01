@@ -9,7 +9,7 @@ FILE* preAssemble(FILE* op) {
     char *thirdWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node *current;
     initializeCommands();
-    FILE *ModOrig = fopen("../Examples/postPreAssembler", "w");
+    FILE *ModOrig = fopen("../TextFiles/postPreAssembler", "w+");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
         if(line[0] == ';')
@@ -31,6 +31,7 @@ FILE* preAssemble(FILE* op) {
                 }
                 else {
                     fputs(current->content, ModOrig);
+                    printf("\n%s", current->content);
                     lineNum++;
                 }
             }
@@ -45,18 +46,22 @@ FILE* preAssemble(FILE* op) {
 }
 
 
+
+
 int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     char line[MAX_LINE_LENGTH];
     char* tempCont = NULL;
     char* content = mallocError(MAX_LINE_LENGTH* sizeof(char));
+    content[0] = '\0';
     char* firstWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     while (!feof(fp)){
         fgets(line,MAX_LINE_LENGTH,fp);
         sscanf(line, "%s", firstWord);
 
+
         if(strcmp(firstWord, "endmcr") == 0){
             if (macsFound==0) {
-                first= mallocError(sizeof(node));
+                first=mallocError(sizeof(node));
                 first=make_node(name, content, lineNum);
                 return ++lineNum;
             }

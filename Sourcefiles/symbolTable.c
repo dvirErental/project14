@@ -17,13 +17,13 @@ line_table* make_symbol(char *name, char *type, int value){
     return temp;
 }
 
-void add_to_symbol_list(char *name, char *type, int value){
+void addToSymbolList(char *name, char *type, int value){
     line_table *temp = first_Symbol;
     while (temp->next != NULL)
         temp = temp->next;
     temp->next = make_symbol(name, type, value);
 }
-int searchList(char* name){
+int searchSymbolList(char* name){
     int location = 0;
     line_table *temp = first_Symbol;
     while (temp != NULL){
@@ -34,22 +34,22 @@ int searchList(char* name){
     return 0;
 }
 
-void free_line_table(line_table *line){
+void freeLine(line_table *line){
     /* Free memory allocated for the name, content and node */
     free(line->name);
     free(line->type);
     free(line);
 }
 
-void free_table(line_table *head){
+void freeTable(line_table *head){
     /* Free memory for the current node and its contents while storing the current node in a temporary pointer */
     while(head != NULL) {
         line_table *temp = head;
         head = head->next;
-        free_line_table(temp);
+        freeLine(temp);
     }
 }
 
-void add_to_num(line_table *line,int num){
+void addToNum(line_table *line,int num){
     line->value=line->value+num;
 }

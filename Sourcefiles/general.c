@@ -50,17 +50,19 @@ void *mallocError(long object_size) {
 /**
  * checks if a is a legal name for a file (final letter ':')
  * @param a name to check
- * @return true if it's legal, otherwise false.
+ * @return TRUE if it's legal, otherwise FALSE.
  */
 int isSymbolDefinition(const char* a){
     int i = 0;
     while (a[i] != '\0') {
         if ((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (a[i] <='z' && a[i] >= 'a'))
             i++;
+        else
+            return 0;
     }
-    if(a[i] == ':' && a[i+1] == '\0')
-        return true;
-    return false;
+    if((a[i] == ':' && a[i+1] == '\0') && ((a[0] >='a' &&a[0] <='z') || (a[0] >= 'A') && a[0] <='Z'))
+        return 1;
+    return 0;
 }
 
 
@@ -93,7 +95,7 @@ char* translateToTwosCompliment(int num,int length) {
 int isRegisterName(const char* name){
     if (name[0] == 'r' && name[1] >= '0' && name[1] <= '7' && name[2] == '\0')
         return name[1] - '0';
-    return false;
+    return FALSE;
 }
 
 

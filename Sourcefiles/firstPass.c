@@ -7,10 +7,10 @@ void firstPass(FILE* fp) {
     int lineLength = 0;
     int lineNum = 0;
     int index = 0;
-    boolean isFirstSymbol = true;
-    boolean isFirstInfo = true;
-    boolean symbolDefinitionFlag = false;
-    boolean errorFlag = false;
+    int isFirstSymbol = TRUE;
+    int isFirstInfo = TRUE;
+    int symbolDefinitionFlag = FALSE;
+    int errorFlag = FALSE;
     char line[MAX_LINE_LENGTH];
     char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*MAX_NUM_OF_WORDS);
     while (!feof(fp)) {
@@ -22,12 +22,12 @@ void firstPass(FILE* fp) {
             if (!strcmp(words[0], ".define")){
                 if (searchSymbolList(words[1])) {
                     printf("multiple definitions using same name");
-                    errorFlag = true;
+                    errorFlag = TRUE;
                     continue;
                 }
-                else if (isFirstSymbol == true){
+                else if (isFirstSymbol == TRUE){
                     make_symbol(words[1], "mdefine", atoi(words[2]));
-                    isFirstSymbol = false;
+                    isFirstSymbol = FALSE;
                     continue;
                 }
                 else {
@@ -36,12 +36,12 @@ void firstPass(FILE* fp) {
                 }
             }
             if (isSymbolDefinition(words[0]))
-                symbolDefinitionFlag = true;//לאתחל בסוף
+                symbolDefinitionFlag = TRUE;//לאתחל בסוף
             if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
-                if (symbolDefinitionFlag == true) {
-                    if(isFirstSymbol == true) {
+                if (symbolDefinitionFlag == TRUE) {
+                    if(isFirstSymbol == TRUE) {
                         first_Symbol = make_symbol(words[0], ".data", DC);
-                        isFirstSymbol = false;
+                        isFirstSymbol = FALSE;
                     }
                     else
                         addToSymbolList(words[0], ".data", DC);
@@ -64,11 +64,11 @@ void firstPass(FILE* fp) {
             if (!strcmp(words[0], ".extern")){
                 if (searchSymbolList(words[1])){
                     printf("Error, line %d, multiple declarations for same symbol", lineNum);
-                    errorFlag = true;
+                    errorFlag = TRUE;
                 }
-                if (isFirstSymbol == true) {
+                if (isFirstSymbol == TRUE) {
                     first_Symbol = make_symbol(words[1],"external", 0);
-                    isFirstSymbol = false;
+                    isFirstSymbol = FALSE;
                 }
                 else
                     addToSymbolList(words[1], "external", 0);
@@ -82,7 +82,7 @@ void firstPass(FILE* fp) {
             if (!strcmp(words[0], ".entry")){
                 if (searchSymbolList(words[1])){
                     printf("Error, line %d, multiple declarations for same symbol", lineNum);
-                    errorFlag = true;
+                    errorFlag = TRUE;
                 }
                 if (isFirstSymbol)
                     make_symbol(words[1], ".entry", 0);
@@ -93,11 +93,11 @@ void firstPass(FILE* fp) {
             if (isSymbolDefinition(words[0])){
                 if (searchSymbolList(words[0])){
                     printf("Error, line %d, multiple declarations for same symbol", lineNum);
-                    errorFlag = true;
+                    errorFlag = TRUE;
                 }
                 if (isFirstSymbol) {
                     first_Symbol = make_symbol(words[1], "code", IC + 100);
-                    isFirstSymbol = false;
+                    isFirstSymbol = FALSE;
                 }
                 else
                     addToSymbolList(words[0], "code", IC+100);
@@ -108,7 +108,7 @@ void firstPass(FILE* fp) {
                 index = 0;
             if (!isCommand(words[index])){
                 printf("illegal Command, line %d", lineNum);
-                errorFlag = true;
+                errorFlag = TRUE;
             }
             executeCommandFirstPass(line, index, discoverOperandType(words[index+1]),
                                     discoverOperandType(words[index+2]), isFirstInfo, IC);
@@ -119,7 +119,7 @@ void firstPass(FILE* fp) {
     if (errorFlag){
         /*stop here*/
     }
-    updateDataValue(IC);//דביר, תעשה את זה ואת מה שמעל ואז סיימנו את המעבר הראשון.
+    /*updateDataValue(IC);//דביר, תעשה את זה ואת מה שמעל ואז סיימנו את המעבר הראשון.*/
 
 }
 
@@ -145,8 +145,8 @@ int isLabel(const char* op){
     while (op[i] != '\0')
         i++;
     if (op[i-1] == ':')
-        return true;
-    return false;
+        return TRUE;
+    return FALSE;
 }
 
 int isArrayAddress(const char* op){
@@ -157,18 +157,13 @@ int isArrayAddress(const char* op){
             break;
     }
     if (op[i] == '\0')
-        return false;
+        return FALSE;
     while (op[i] != '\0')
         i++;
     if (op[i-1] == ']')
-        return true;
-    return false;
+        return TRUE;
+    return FALSE;
 }
 
-int isRegisterName(const char* op){
-    if ((op[0] == 'r') && (op[1] >= '0') && (op[1] <= '7') && (op[2] == '\0'))
-        return true;
-    return false;
-}
 
 

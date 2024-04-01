@@ -89,11 +89,11 @@ void createStringLine(int address, char* stringToSave, int index, int isFirst){/
         temp->binaryCode[0] = (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS));
         if(isFirst) {
             startInfoTable(temp);
-            return (createStringLine(++address, stringToSave, ++index, false));
+            return (createStringLine(++address, stringToSave, ++index, FALSE));
         }
         else{
             addSetLineToInfoTable(temp);
-            return (createStringLine(++address, stringToSave, ++index, false));
+            return (createStringLine(++address, stringToSave, ++index, FALSE));
         }
     }
     else {

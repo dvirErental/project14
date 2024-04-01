@@ -14,15 +14,14 @@
 #define BITS_IN_ARE 2
 #define BITS_IN_REGISTER_LENGTH 3
 #define MIN_NUM -32767
+#define FALSE 0
+#define TRUE 1
 extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/
 int isSymbolDefinition(const char* );
 
-typedef enum {
-    false = 0,
-    true = 1
-} boolean;
+
 
 void *mallocError(long object_size);
 int wordLength(const char*);
