@@ -57,7 +57,7 @@ int isValidDataString(const char *str) {
     }
     return 1;
 }
-infoTable* createDataLine(int address, char* sourceCode){
+int createDataLine(int address, char* sourceCode){
     //קשה לקרוא את הקוד, תוודא שעשית את כל מה שצריך:
     // חצי השני של החלק התשיעי באלגוריתם המעבר הראשון.
     infoTable* temp = mallocError(sizeof(infoTable));
@@ -79,6 +79,7 @@ infoTable* createDataLine(int address, char* sourceCode){
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
     temp -> next= NULL;
+    return address+count;
 }
 
 int createStringLine(int address, char* stringToSave, int isFirst){

@@ -67,10 +67,10 @@ int isSymbolDefinition(const char* a){
 
 
 /**
- * translates given number to its binary representation, keeps it to length of length - can lose data if used incorrectly
+ * translates given number to it's binarary representation, keeps it to length of length - can lose data if used incorrectly
  * @param num  - num to translate
  * @param length - number of bits to return
- * @return nums' representation in binary (in 'length' bits)
+ * @return num's representation in binary (in 'length' bits)
  */
 char* translateToTwosCompliment(int num,int length) {
     char *str = (char *)malloc((length + 1) * sizeof(char));
@@ -99,7 +99,7 @@ int isRegisterName(const char* name){
 }
 
 
-/*void flipBits(char* word){
+void flipBits(char* word){
     int index;
     for(index = 0; index<NUM_OF_BITS; index++){
         if(word[index] == '0')
@@ -107,7 +107,7 @@ int isRegisterName(const char* name){
         else
             word[index] = '0';
     }
-}*/
+}
 
 int wordLength(const char *word) {
     int length = 0;
@@ -136,13 +136,9 @@ int contains_brackets(const char *word) {
 int calculateL(char* line, int isSymbolDefinition){
     int L = 0;
     int index = 0;
-    char* currentWord = mallocError(sizeof(char) * MAX_WORD_LENGTH);
+    char* currentWord;
     while(index < MAX_LINE_LENGTH){
         sscanf(&line[index], "%s", currentWord);
-        if (isSymbolDefinition){
-            isSymbolDefinition = FALSE;
-            continue;
-        }
         if (strcmp(currentWord,"" ) == 0)
             break;
         if (contains_brackets(currentWord))
@@ -152,11 +148,4 @@ int calculateL(char* line, int isSymbolDefinition){
         index+= wordLength(currentWord);
     }
     return L;
-}
-
-long lengthOf(const char* word){
-    int counter = 0;
-    while(word[counter] != '\0')
-        counter++;
-    return counter;
 }

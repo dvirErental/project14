@@ -24,6 +24,8 @@ void freeTable(line_table *head);
 
 void addToNum(line_table *line,int num);
 
+void addIC(int IC);
+
 extern line_table * first_Symbol;
 #endif //PROJECT14REAL_SYMBOLTABLE_H
 extern line_table * first_Symbol;

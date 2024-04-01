@@ -71,12 +71,15 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
         }
         else{
             printf("\n*");
-            content = realloc(content, (strlen(content)+MAX_LINE_LENGTH)*sizeof(char));
+            char* temp = realloc(content, (strlen(content)+MAX_LINE_LENGTH)*sizeof(char));
+            if (temp == NULL) {
+                printf("Failed dynamically memory");
+                free(content);
+                exit(1);
+            }
+            content = temp;
             strcat(content, line);
         }
-    }
-    if(feof(fp)) {
-        //print error here
     }
     return lineNum;
 }
