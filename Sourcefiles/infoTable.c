@@ -8,7 +8,7 @@ void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternati
     first_info -> address[0] = address;
     first_info -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(first_info->sourceCode, sourceCode);
-    if(strcmp(stringAlternative, ""))
+    if(strcmp(stringAlternative, "")!=0)
        strcpy(first_info->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
     else
         strcpy(first_info->binaryCode[0], stringAlternative);
@@ -16,7 +16,7 @@ void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternati
     first_info -> next = NULL;
 }
 void startInfoTable(infoTable* info){
-    first_info = mallocError(sizeof(info));
+    first_info = mallocError(sizeof(*info));
     first_info = info;
 }
 
@@ -28,7 +28,7 @@ void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlte
     temp-> address[0] = address;
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
-    if(strcmp(stringAlternative, ""))
+    if(strcmp(stringAlternative, "") != 0)
         strcpy(temp->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
     else
         strcpy(temp->binaryCode[0], stringAlternative);
@@ -37,10 +37,10 @@ void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlte
 }
 
 void addSetLineToInfoTable(infoTable* info){
-    infoTable* temp;
+    infoTable* temp = first_info;
     while(temp -> next != NULL)
         temp = temp->next;
-    temp->next = mallocError(sizeof(info));
+    temp->next = mallocError(sizeof(*info));
     temp->next = info;
 }
 
@@ -60,7 +60,7 @@ int isValidDataString(const char *str) {
 infoTable* createDataLine(int address, char* sourceCode){
     //קשה לקרוא את הקוד, תוודא שעשית את כל מה שצריך:
     // חצי השני של החלק התשיעי באלגוריתם המעבר הראשון.
-    infoTable* temp;
+    infoTable* temp = mallocError(sizeof(infoTable));
 
     int numbers[40];
     int count;
@@ -121,7 +121,7 @@ void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirs
 }
 
 
-int isNumberValue(const char* word) {
+/*int isNumberValue(const char* word) {
     int num;
     if (searchForMdefine(word))
         return searchForMdefine(word);
@@ -130,15 +130,15 @@ int isNumberValue(const char* word) {
         return num;
     }
     return MIN_NUM;
-}
-int searchForMdefine(const char* name){
+}*/
+/*int searchForMdefine(const char* name){
     line_table *temp = first_Symbol;
     while (temp != NULL){
         if ((strcmp(temp->name,name) == 0) && (strcmp(temp->type, "mdefine") == 0))
             return temp->value;
     }
     return 0;
-}
+}*/
 
 
 /*to be used for executeCommand in secondPass

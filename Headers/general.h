@@ -30,3 +30,4 @@ char* translateToTwosCompliment(int,int);
 int isRegisterName(const char*);
 void flipBits(char* word);
 int calculateL(char* line, int isFileIndication);
+long lengthOf(const char*);

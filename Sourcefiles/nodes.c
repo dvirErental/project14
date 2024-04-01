@@ -7,12 +7,13 @@ node *make_node(char *name, char *content, int line_num){
     node *temp;
 
     temp = mallocError(sizeof(node));
-    temp->name = mallocError((strlen(name) + 1) * sizeof(char));
+    temp->name = mallocError(((strlen(name)) + 1) * sizeof(char));
     strcpy(temp->name, name);
     temp->content = mallocError((strlen(content) + 1) * sizeof(char));
     strcpy(temp->content, content);
     temp->line = line_num;
     temp->next = NULL;
+    return temp;
 }
 
 node* existNode(char *name){
