@@ -1,7 +1,8 @@
 #include "../Headers/firstPass.h"
 /*assuming max number of words in a line is 10*/
 /*Symbol declaration is done with all capital letters followed by a colon*/
-void firstPass(FILE* fp) {
+void firstPass(void) {
+    FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
     int i;
     int IC = 0, DC = 0;
     int address = 100;
@@ -9,12 +10,14 @@ void firstPass(FILE* fp) {
     int index = 0;
     int isFirstSymbol = TRUE;
     int isFirstInfo = TRUE;
-    int symbolDefinitionFlag = FALSE;
+    int symbolDefinitionFlag;
     int errorFlag = FALSE;
     char line[MAX_LINE_LENGTH];
     char words[10][MAX_WORD_LENGTH];
+    initializeCommands();
     while (!feof(fp)) {
-        printf("*");
+        symbolDefinitionFlag = FALSE;
+        printf("    %d   ", lineNum);
         fgets(line, MAX_LINE_LENGTH, fp);
         lineNum++;
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
@@ -26,8 +29,8 @@ void firstPass(FILE* fp) {
                     errorFlag = TRUE;
                     continue;
                 }
-                else if (isFirstSymbol == TRUE){
-                    make_symbol(words[1], "mdefine", atoi(words[2]));
+                else if (isFirstSymbol){
+                    first_Symbol = make_symbol(words[1], "mdefine", atoi(words[2]));
                     isFirstSymbol = FALSE;
                     continue;
                 }
@@ -36,12 +39,16 @@ void firstPass(FILE* fp) {
                     continue;
                 }
             }
-            if (isSymbolDefinition(words[0]))
+            if (isSymbolDefinition(words[0])) {
                 symbolDefinitionFlag = TRUE;//לאתחל בסוף
+                index = 1;
+            }
+            else
+                index = 0;
             if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
                 if (symbolDefinitionFlag == TRUE) {
                     if(isFirstSymbol == TRUE) {
-                        first_Symbol = make_symbol(words[0], ".data", DC);
+                        make_symbol(words[0], ".data", DC);
                         isFirstSymbol = FALSE;
                     }
                     else
@@ -50,7 +57,7 @@ void firstPass(FILE* fp) {
                 else
                     printf("data without symbol");
                 if (strcmp(words[1], ".string") == 0)
-                    address = createStringLine(address, line, isFirstInfo);
+                    address = createStringLine(address, words[index+1], isFirstInfo);
                 else{
                     if (isValidDataString(line))
                         address = createDataLine(DC, line);
@@ -68,7 +75,7 @@ void firstPass(FILE* fp) {
                     errorFlag = TRUE;
                 }
                 if (isFirstSymbol == TRUE) {
-                    first_Symbol = make_symbol(words[1],"external", 0);
+                    make_symbol(words[1],"external", 0);
                     isFirstSymbol = FALSE;
                 }
                 else
@@ -91,28 +98,31 @@ void firstPass(FILE* fp) {
                     addToSymbolList(words[1], ".entry", 0 );
                 continue;
             }
-            if (isSymbolDefinition(words[0])){
+            if (symbolDefinitionFlag){
                 if (searchSymbolList(words[0])){
                     printf("Error, line %d, multiple declarations for same symbol", lineNum);
                     errorFlag = TRUE;
                 }
                 if (isFirstSymbol) {
-                    first_Symbol = make_symbol(words[1], "code", IC + 100);
+                    make_symbol(words[1], "code", IC + 100);
                     isFirstSymbol = FALSE;
                 }
                 else
                     addToSymbolList(words[0], "code", IC+100);
             }
-            if(symbolDefinitionFlag)
-                index = 1;
-            else
-                index = 0;
-            if (!isCommand(words[index])){
+
+            if (isCommand(words[index]) == -1){
                 printf("illegal Command, line %d", lineNum);
                 errorFlag = TRUE;
             }
-            executeCommandFirstPass(line, index, discoverOperandType(words[index+1]),
+            if(isCommand(words[index])<=3 || isCommand(words[index]) == 6)//change 3 to define
+                executeCommandFirstPass(line, index, discoverOperandType(words[index+1]),
                                     discoverOperandType(words[index+2]), isFirstInfo, IC,words[index]);
+            else if ((isCommand(words[index]) != 14) && (isCommand(words[index]) != 15))
+                executeCommandFirstPass(line, index, 0, discoverOperandType(words[index+1]), isFirstInfo, IC,words[index]);
+            else
+                executeCommandFirstPass(line, index, 0, 0, isFirstInfo, IC,words[index]);
+
             IC+= calculateL(line, symbolDefinitionFlag);
 
         }
@@ -129,16 +139,12 @@ int discoverOperandType(const char* op){
         return -1;
     if(op[0] == '#')
         return TYPE0;
-    else if (isLabel(op))
-        return TYPE1;
     else if (isArrayAddress(op))
         return TYPE2;
     else if (isRegisterName(op))
         return TYPE3;
-    else{
-        printf("ERROR: illegal operand ");
-        return TYPE_ERROR;
-    }
+    else
+            return TYPE1;
 }
 
 int isLabel(const char* op){

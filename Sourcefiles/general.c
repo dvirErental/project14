@@ -42,7 +42,7 @@ int isCommand(char* word){
 void *mallocError(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
-        printf("Failed dynamically memory");
+        exit(-1);
     }
     return object_ptr;
 }
@@ -58,7 +58,7 @@ int isSymbolDefinition(const char* a){
         if ((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (a[i] <='z' && a[i] >= 'a'))
             i++;
         else
-            return 0;
+            break;
     }
     if((a[i] == ':' && a[i+1] == '\0') && ((a[0] >='a' &&a[0] <='z') || (a[0] >= 'A') && a[0] <='Z'))
         return 1;
@@ -93,8 +93,8 @@ char* translateToTwosCompliment(int num,int length) {
 }
 
 int isRegisterName(const char* name){
-    if (name[0] == 'r' && name[1] >= '0' && name[1] <= '7' && name[2] == '\0')
-        return name[1] - '0';
+    if (name[0] == 'r' && name[1] >= '0' && name[1] <= '7' && (name[2] == '\0' || (name[2] == ',' && name[3] == '\0')))
+        return TRUE;
     return FALSE;
 }
 

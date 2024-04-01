@@ -30,6 +30,7 @@ int searchSymbolList(char* name){
         location++;
         if (!(strcmp(temp->name,name)))
             return location;
+        temp = temp->next;
     }
     return 0;
 }

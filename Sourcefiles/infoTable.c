@@ -8,7 +8,6 @@ void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternati
     first_info -> address[0] = address;
     first_info -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(first_info->sourceCode, sourceCode);
-    first_info->binaryCode[0] = mallocError(sizeof(char)*NUM_OF_BITS);
     if(strcmp(stringAlternative, "")!=0)
         strcpy(first_info->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
     else
@@ -38,11 +37,7 @@ void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlte
 }
 
 void addSetLineToInfoTable(infoTable* info){
-    infoTable* temp = first_info;
-    while(temp -> next != NULL)
-        temp = temp->next;
-    temp->next = mallocError(sizeof(*info));
-    temp->next = info;
+    addLineToInfoTable(info->address[0], info->sourceCode,0, info->binaryCode);
 }
 
 int isValidDataString(const char *str) {
@@ -71,7 +66,7 @@ int createDataLine(int address, char* sourceCode){
     count = 0;
     while (token != NULL) {
         numbers[count] = atoi(token);
-        temp -> binaryCode[count] = translateToTwosCompliment(numbers[count],NUM_OF_BITS);
+        strcpy(temp -> binaryCode[count], translateToTwosCompliment(numbers[count],NUM_OF_BITS));
         temp->address[count]=address+count;
         (count)++;
         token = strtok(NULL, ", ");
@@ -88,8 +83,7 @@ int createStringLine(int address, char* stringToSave, int isFirst){
     infoTable* temp = mallocError(sizeof(infoTable));
     while (stringToSave[index] != '"') {
         temp->address[index] = address;
-        temp->binaryCode[index] = mallocError(sizeof(translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
-        temp->binaryCode[index] = (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS));
+        strcpy(temp->binaryCode[index], (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
         if(isFirst) {
             startInfoTable(temp);
         }
@@ -100,8 +94,7 @@ int createStringLine(int address, char* stringToSave, int isFirst){
         address++;
     }
     temp->address[index] = address;
-    temp -> binaryCode[index] = mallocError(sizeof(char)*(NUM_OF_BITS+1));
-    temp-> binaryCode[index] = "00000000000000";
+    strcpy(temp-> binaryCode[index], "00000000000000");
     addSetLineToInfoTable(temp);
     return address+1;
 }
