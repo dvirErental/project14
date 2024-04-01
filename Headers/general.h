@@ -20,9 +20,9 @@ extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/
 int isSymbolDefinition(const char* );
+int containsBrackets(const char*);
 
-
-
+int lengthOf(const char*)
 void *mallocError(long object_size);
 int wordLength(const char*);
 int isFileIndication(const char*);

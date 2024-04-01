@@ -117,7 +117,7 @@ int wordLength(const char *word) {
     }
     return length;
 }
-int contains_brackets(const char *word) {
+int containsBrackets(const char *word) {
     int found_open = 0;
     while (*word) {
         if (*word == '[')
@@ -145,11 +145,17 @@ int calculateL(char* line, int isSymbolDefinition){
         }
         if (strcmp(currentWord,"" ) == 0)
             break;
-        if (contains_brackets(currentWord))
+        if (containsBrackets(currentWord))
             L+=2;
         else
             L++;
         index+= wordLength(currentWord);
     }
     return L;
+}
+int lengthOf(const char* word){
+    int index = 0;
+    while(word[index] != '\0')
+        index++;
+    return index;
 }

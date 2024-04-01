@@ -2,6 +2,7 @@
 /*assuming max number of words in a line is 10*/
 /*Symbol declaration is done with all capital letters followed by a colon*/
 void firstPass(FILE* fp) {
+    int i;
     int IC = 0, DC = 0;
     int address = 100;
     int lineNum = 0;
@@ -11,7 +12,7 @@ void firstPass(FILE* fp) {
     int symbolDefinitionFlag = FALSE;
     int errorFlag = FALSE;
     char line[MAX_LINE_LENGTH];
-    char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*MAX_NUM_OF_WORDS);
+    char words[10][MAX_WORD_LENGTH];
     while (!feof(fp)) {
         fgets(line, MAX_LINE_LENGTH, fp);
         lineNum++;
@@ -109,6 +110,7 @@ void firstPass(FILE* fp) {
                 printf("illegal Command, line %d", lineNum);
                 errorFlag = TRUE;
             }
+
             executeCommandFirstPass(line, index, discoverOperandType(words[index+1]),
                                     discoverOperandType(words[index+2]), isFirstInfo, IC);
             IC+= calculateL(line, symbolDefinitionFlag);
@@ -149,17 +151,7 @@ int isLabel(const char* op){
 }
 
 int isArrayAddress(const char* op){
-    int i = 0;
-
-    while (op[i] != '\0'){
-        if (op[0] == '[')
-            break;
-    }
-    if (op[i] == '\0')
-        return FALSE;
-    while (op[i] != '\0')
-        i++;
-    if (op[i-1] == ']')
+    if (containsBrackets(op) && (op[wordLength(op)-1] == ']'))
         return TRUE;
     return FALSE;
 }
