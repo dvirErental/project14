@@ -52,8 +52,8 @@ void firstPass(FILE* fp) {
                 else{
                     if (isValidDataString(line))
                         createDataLine(DC, line);
-                    else;
-                        /*error//להשלים*/
+                    else
+                        printf("not valid string/data in line %d", lineNum);
                 }
 
                 DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3],
@@ -116,9 +116,9 @@ void firstPass(FILE* fp) {
         }
     }
     if (errorFlag){
-        /*stop here*/
+        printf("error was found in first pass we will not continue to second pass\n");
     }
-    /*updateDataValue(IC);//דביר, תעשה את זה ואת מה שמעל ואז סיימנו את המעבר הראשון.*/
+    addIC(IC);
 
 }
 
