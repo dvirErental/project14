@@ -4,7 +4,6 @@
 void firstPass(FILE* fp) {
     int IC = 0, DC = 0;
     int address = 100;
-    int lineLength = 0;
     int lineNum = 0;
     int index = 0;
     int isFirstSymbol = TRUE;
@@ -49,7 +48,7 @@ void firstPass(FILE* fp) {
                 else
                     printf("data without symbol");
                 if (strcmp(words[1], ".string") == 0)
-                    createStringLine(DC, line, 0, isFirstInfo);
+                    address = createStringLine(address, line, isFirstInfo);
                 else{
                     if (isValidDataString(line))
                         createDataLine(DC, line);

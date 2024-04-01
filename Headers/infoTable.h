@@ -19,7 +19,7 @@ void addLineToInfoTable(int, char*, int, char*);
 infoTable* createDataLine(int, char*);
 int isValidDataString(const char *str);
 
-void createStringLine(int, char*, int, int);
+int createStringLine(int, char*, int);
 
 void startInfoTable(infoTable*);
 

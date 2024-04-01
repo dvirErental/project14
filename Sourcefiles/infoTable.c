@@ -81,28 +81,27 @@ infoTable* createDataLine(int address, char* sourceCode){
     temp -> next= NULL;
 }
 
-void createStringLine(int address, char* stringToSave, int index, int isFirst){//make not recursive, and just plain better
-    infoTable* temp;
-    if (stringToSave[index] != '"') {
+int createStringLine(int address, char* stringToSave, int isFirst){
+    int index = 0;
+    infoTable* temp = mallocError(sizeof(infoTable));
+    while (stringToSave[index] != '"') {
         temp->address = &address;
         temp->binaryCode[0] = mallocError(sizeof(translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
         temp->binaryCode[0] = (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS));
         if(isFirst) {
             startInfoTable(temp);
-            return (createStringLine(++address, stringToSave, ++index, FALSE));
         }
         else{
             addSetLineToInfoTable(temp);
-            return (createStringLine(++address, stringToSave, ++index, FALSE));
         }
+        index++;
+        address++;
     }
-    else {
         temp->address = &address;
         temp -> binaryCode[0] = mallocError(sizeof(char)*(NUM_OF_BITS+1));
         temp-> binaryCode[0] = "00000000000000";
         addSetLineToInfoTable(temp);
-        return;
-    }
+        return address+1;
 }
 
 void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirst, int address){
