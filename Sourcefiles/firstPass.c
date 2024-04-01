@@ -14,6 +14,7 @@ void firstPass(FILE* fp) {
     char line[MAX_LINE_LENGTH];
     char words[10][MAX_WORD_LENGTH];
     while (!feof(fp)) {
+        printf("*");
         fgets(line, MAX_LINE_LENGTH, fp);
         lineNum++;
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
@@ -135,7 +136,7 @@ int discoverOperandType(const char* op){
     else if (isRegisterName(op))
         return TYPE3;
     else{
-        printf("ERROR: illegal operand");
+        printf("ERROR: illegal operand ");
         return TYPE_ERROR;
     }
 }

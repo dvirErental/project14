@@ -8,6 +8,7 @@ void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternati
     first_info -> address[0] = address;
     first_info -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(first_info->sourceCode, sourceCode);
+    first_info->binaryCode[0] = mallocError(sizeof(char)*NUM_OF_BITS);
     if(strcmp(stringAlternative, "")!=0)
         strcpy(first_info->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
     else
@@ -86,9 +87,9 @@ int createStringLine(int address, char* stringToSave, int isFirst){
     int index = 0;
     infoTable* temp = mallocError(sizeof(infoTable));
     while (stringToSave[index] != '"') {
-        temp->address = &address;
-        temp->binaryCode[0] = mallocError(sizeof(translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
-        temp->binaryCode[0] = (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS));
+        temp->address[index] = address;
+        temp->binaryCode[index] = mallocError(sizeof(translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
+        temp->binaryCode[index] = (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS));
         if(isFirst) {
             startInfoTable(temp);
         }
@@ -98,22 +99,25 @@ int createStringLine(int address, char* stringToSave, int isFirst){
         index++;
         address++;
     }
-    temp->address = &address;
-    temp -> binaryCode[0] = mallocError(sizeof(char)*(NUM_OF_BITS+1));
-    temp-> binaryCode[0] = "00000000000000";
+    temp->address[index] = address;
+    temp -> binaryCode[index] = mallocError(sizeof(char)*(NUM_OF_BITS+1));
+    temp-> binaryCode[index] = "00000000000000";
     addSetLineToInfoTable(temp);
     return address+1;
 }
 
 void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirst, int address, char* word){
-    char* binaryWord = mallocError(sizeof(char)*NUM_OF_BITS);
+    char binaryWord[NUM_OF_BITS] = "";
     char* opCode = translateToTwosCompliment(isCommand(word), BITS_IN_OPCODE);
     char* op1Binary = translateToTwosCompliment(op1, BITS_IN_OP1);
     char* op2Binary = translateToTwosCompliment(op2, BITS_IN_OP2);
     char* are = "00";
+    strcat(binaryWord, "0000");
+    strcat(binaryWord, opCode);
+    strcat(binaryWord, op1Binary);
+    strcat(binaryWord, op2Binary);
+    strcat(binaryWord, are);
 
-    strcpy(binaryWord, strcat(strcat(strcat("0000", opCode),
-                                     strcat(op1Binary, op2Binary)), are));
     if (isFirst)
         makeInfoTable(address, line, 0, binaryWord);
     else

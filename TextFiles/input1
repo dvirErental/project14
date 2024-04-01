@@ -1,4 +1,4 @@
-define sz = 2
+.define sz = 2
 MAIN: mov r3, LIST[sz]
 LOOP: jmp L1
 mcr m_mcr
