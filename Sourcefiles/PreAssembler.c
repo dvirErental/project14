@@ -50,7 +50,6 @@ FILE* preAssemble(FILE* op) {
 
 int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     char line[MAX_LINE_LENGTH];
-    char* tempCont = NULL;
     char* content = mallocError(MAX_LINE_LENGTH* sizeof(char));
     content[0] = '\0';
     char* firstWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
@@ -72,12 +71,15 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
         }
         else{
             printf("\n*");
-            content = realloc(content, (strlen(content)+MAX_LINE_LENGTH)*sizeof(char));
+            char* temp = realloc(content, (strlen(content)+MAX_LINE_LENGTH)*sizeof(char));
+            if (temp == NULL) {
+                printf("Failed dynamically memory");
+                free(content);
+                exit(1);
+            }
+            content = temp;
             strcat(content, line);
         }
-    }
-    if(feof(fp)) {
-        //print error here
     }
     return lineNum;
 }

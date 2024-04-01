@@ -51,7 +51,7 @@ void firstPass(FILE* fp) {
                     address = createStringLine(address, line, isFirstInfo);
                 else{
                     if (isValidDataString(line))
-                        createDataLine(DC, line);
+                        address = createDataLine(DC, line);
                     else
                         printf("not valid string/data in line %d", lineNum);
                 }

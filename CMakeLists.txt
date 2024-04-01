@@ -12,4 +12,6 @@ add_executable(project14_1
         Sourcefiles/PreAssembler.c
         Headers/general.h
         Sourcefiles/general.c
-        Sourcefiles/main.c)
+        Sourcefiles/main.c
+        Sourcefiles/infoTable.c
+        Sourcefiles/symbolTable.c)

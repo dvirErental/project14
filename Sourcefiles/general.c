@@ -47,6 +47,14 @@ void *mallocError(long object_size) {
     return object_ptr;
 }
 
+void *reallocError(void *object_ptr, long object_size) {
+    object_ptr = realloc(object_ptr, object_size);
+    if (object_ptr == NULL) {
+        printf("Failed dynamically memory");
+    }
+    return object_ptr;
+}
+
 /**
  * checks if a is a legal name for a file (final letter ':')
  * @param a name to check
@@ -149,3 +157,5 @@ int calculateL(char* line, int isSymbolDefinition){
     }
     return L;
 }
+
+

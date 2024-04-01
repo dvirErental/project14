@@ -59,6 +59,7 @@ void addIC(int IC){
         temp = temp->next;
     }
 }
+
 void addToNum(line_table *line,int num){
     line->value=line->value+num;
 }
