@@ -48,14 +48,14 @@ void *mallocError(long object_size) {
 }
 
 /**
- * checks if a is a legal name for a file (all caps, final letter ':')
+ * checks if a is a legal name for a file (final letter ':')
  * @param a name to check
  * @return true if it's legal, otherwise false.
  */
 int isSymbolDefinition(const char* a){
     int i = 0;
     while (a[i] != '\0') {
-        if ((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0'))
+        if ((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (a[i] <='z' && a[i] >= 'a'))
             i++;
     }
     if(a[i] == ':' && a[i+1] == '\0')
@@ -88,4 +88,62 @@ char* translateToTwosCompliment(int num,int length) {
     }
 
     return str;
+}
+
+int isRegisterName(const char* name){
+    if (name[0] == 'r' && name[1] >= '0' && name[1] <= '7' && name[2] == '\0')
+        return name[1] - '0';
+    return false;
+}
+
+
+void flipBits(char* word){
+    int index;
+    for(index = 0; index<NUM_OF_BITS; index++){
+        if(word[index] == '0')
+            word[index] = '1';
+        else
+            word[index] = '0';
+    }
+}
+
+int wordLength(const char *word) {
+    int length = 0;
+    while (*word && !isspace(*word)) {
+        length++;
+        word++;
+    }
+    return length;
+}
+int contains_brackets(const char *word) {
+    int found_open = 0;
+    while (*word) {
+        if (*word == '[')
+            found_open = 1;
+
+        else if (*word == ']') {
+            if (found_open)
+                return 1;
+        }
+
+        word++;
+    }
+    return 0;
+}
+
+int calculateL(char* line, int isSymbolDefinition){
+    int L = 0;
+    int index = 0;
+    char* currentWord;
+    while(index < MAX_LINE_LENGTH){
+        sscanf(&line[index], "%s", currentWord);
+        if (strcmp(currentWord,"" ) == 0)
+            break;
+        if (contains_brackets(currentWord))
+            L+=2;
+        else
+            L++;
+        index+= wordLength(currentWord);
+    }
+    return L;
 }

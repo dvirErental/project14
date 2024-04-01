@@ -53,4 +53,3 @@ void free_table(line_table *head){
 void add_to_num(line_table *line,int num){
     line->value=line->value+num;
 }
-

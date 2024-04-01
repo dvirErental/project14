@@ -1,7 +1,7 @@
 #include "../Headers/firstPass.h"
 /*assuming max number of words in a line is 10*/
-/*Symbol decleration is done with all capital letters followed by a colon*/
-line_table firstPass(FILE* fp) {
+/*Symbol declaration is done with all capital letters followed by a colon*/
+void firstPass(FILE* fp) {
     int IC = 0, DC = 0;
     int address = 100;
     int lineLength = 0;
@@ -53,8 +53,8 @@ line_table firstPass(FILE* fp) {
                 else{
                     if (isValidDataString(line))
                         createDataLine(DC, line);
-                    else
-                        error//להשלים
+                    else;
+                        /*error//להשלים*/
                 }
 
                 DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3],
@@ -63,7 +63,7 @@ line_table firstPass(FILE* fp) {
             }
             if (!strcmp(words[0], ".extern")){
                 if (searchSymbolList(words[1])){
-                    printf("Error, line %d, multiple declerations for same symbol", lineNum);
+                    printf("Error, line %d, multiple declarations for same symbol", lineNum);
                     errorFlag = true;
                 }
                 if (isFirstSymbol == true) {
@@ -110,11 +110,17 @@ line_table firstPass(FILE* fp) {
                 printf("illegal Command, line %d", lineNum);
                 errorFlag = true;
             }
-            IC+=executeCommand(line, index, discoverOperandType(words[index+1]), discoverOperandType(words[index+2]));
-
+            executeCommandFirstPass(line, index, discoverOperandType(words[index+1]),
+                                    discoverOperandType(words[index+2]), isFirstInfo, IC);
+            IC+= calculateL(line, symbolDefinitionFlag);
 
         }
     }
+    if (errorFlag){
+        /*stop here*/
+    }
+    updateDataValue(IC);//דביר, תעשה את זה ואת מה שמעל ואז סיימנו את המעבר הראשון.
+
 }
 
 int discoverOperandType(const char* op){

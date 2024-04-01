@@ -12,9 +12,9 @@ typedef struct infoTable{
     struct infoTable* next;
 }infoTable;
 
-void makeInfoTable(int, char*, int);
+void makeInfoTable(int, char*, int, char*);
 
-void addLineToInfoTable(int, char*, int);
+void addLineToInfoTable(int, char*, int, char*);
 
 infoTable* createDataLine(int, char*);
 int isValidDataString(const char *str);
@@ -23,7 +23,10 @@ void createStringLine(int, char*, int, int);
 
 void startInfoTable(infoTable*);
 
-int executeCommand(char*, int, int, int);
+void executeCommandFirstPass(char*, int, int, int, int, int);
 
-char* dataToBinary()
+char* dataToBinary();
 //שני מערכים דו ממדיים  = address והקוד הבינארי לכל מילה
+int isNumberValue(const char*);
+
+int searchForMdefine(const char*);

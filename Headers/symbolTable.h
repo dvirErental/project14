@@ -27,3 +27,4 @@ void add_to_num(line_table *line,int num);
 extern line_table * first_Symbol;
 #endif //PROJECT14REAL_SYMBOLTABLE_H
 extern line_table * first_Symbol;
+void updateDataValue(int);

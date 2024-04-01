@@ -3,12 +3,16 @@
 
 infoTable* first_info;
 
-void makeInfoTable(int address, char* sourceCode, int num){
+void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
     first_info = mallocError(sizeof(infoTable));
     first_info -> address[0] = address;
     first_info -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(first_info->sourceCode, sourceCode);
-    strcpy(first_info->binaryCode, translateToTwosCompliment(num));
+    if(strcmp(stringAlternative, ""))
+       strcpy(first_info->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
+    else
+        strcpy(first_info->binaryCode[0], stringAlternative);
+
     first_info -> next = NULL;
 }
 void startInfoTable(infoTable* info){
@@ -16,12 +20,22 @@ void startInfoTable(infoTable* info){
     first_info = info;
 }
 
-void addLineToInfoTable(int address, char* sourceCode, int num){
+void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
     infoTable* temp = first_info;
     while(temp != NULL)
         temp = temp->next;
+    temp = mallocError(sizeof(infoTable));
+    temp-> address[0] = address;
+    temp -> sourceCode = mallocError(sizeof(sourceCode));
+    strcpy(temp->sourceCode, sourceCode);
+    if(strcmp(stringAlternative, ""))
+        strcpy(temp->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
+    else
+        strcpy(temp->binaryCode[0], stringAlternative);
 
+    temp -> next = NULL;
 }
+
 void addSetLineToInfoTable(infoTable* info){
     infoTable* temp;
     while(temp -> next != NULL)
@@ -67,7 +81,7 @@ infoTable* createDataLine(int address, char* sourceCode){
     temp -> next= NULL;
 }
 
-void createStringLine(int address, char* stringToSave, int index, int isFirst){
+void createStringLine(int address, char* stringToSave, int index, int isFirst){//make not recursive, and just plain better
     infoTable* temp;
     if (stringToSave[index] != '"') {
         temp->address = &address;
@@ -91,18 +105,57 @@ void createStringLine(int address, char* stringToSave, int index, int isFirst){
     }
 }
 
-int executeCommand(char* line, int index, int op1, int op2){
-    char** binaryWords = mallocError(sizeof(char)*MAX_WORD_LENGTH*(MAX_COMMAND_LENGTH));
+void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirst, int address){
+    char* binaryWord = mallocError(sizeof(char)*NUM_OF_BITS);
     char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*(MAX_COMMAND_LENGTH+1));
-    if(index == 0)
-        sscanf(line, "%s%s%s%s", words[0], words[1], words[2], words[3]);
-    else
-        sscanf(line, "%s%s%s", words[0], words[1], words[2]);
     char* opCode = translateToTwosCompliment(isCommand(words[index]), BITS_IN_OPCODE);
     char* op1Binary = translateToTwosCompliment(op1, BITS_IN_OP1);
     char* op2Binary = translateToTwosCompliment(op2, BITS_IN_OP2);
     char* are = "00";
-    strcpy(words[0], strcat(strcat(strcat("0000", opCode),
+
+    strcpy(binaryWord, strcat(strcat(strcat("0000", opCode),
                                    strcat(op1Binary, op2Binary)), are));
-    /*this translates the COMMAND NAME to binary, still need to translate the operands*/
+    if (isFirst)
+        makeInfoTable(address, line, 0, binaryWord);
+    else
+        addLineToInfoTable(address, line, 0, binaryWord);
 }
+
+
+int isNumberValue(const char* word) {
+    int num;
+    if (searchForMdefine(word))
+        return searchForMdefine(word);
+    else if (word[0] == '#') {
+        num = atoi(&word[1]);
+        return num;
+    }
+    return MIN_NUM;
+}
+int searchForMdefine(const char* name){
+    line_table *temp = first_Symbol;
+    while (temp != NULL){
+        if ((strcmp(temp->name,name) == 0) && (strcmp(temp->type, "mdefine") == 0))
+            return temp->value;
+    }
+    return 0;
+}
+
+
+/*to be used for executeCommand in secondPass
+if (isCommand(words[index])>=0 && isCommand(words[index])<= 4) {
+for (goTwice = 0; goTwice < 2; goTwice++){
+if (isRegisterName(words[index + 1])) {
+registerNum = isRegisterName(words[index + 1]);
+binaryWords[goTwice] = "000000";
+strcat(binaryWords[goTwice], translateToTwosCompliment(registerNum, BITS_IN_REGISTER_LENGTH));
+strcat(binaryWords[goTwice], "11");
+}
+else if (isNumberValue(words[index+1]) != MIN_NUM){
+numberValue = isNumberValue(words[index+1]);
+
+}
+index++;
+}
+}
+ */
