@@ -110,9 +110,8 @@ void firstPass(FILE* fp) {
                 printf("illegal Command, line %d", lineNum);
                 errorFlag = TRUE;
             }
-
             executeCommandFirstPass(line, index, discoverOperandType(words[index+1]),
-                                    discoverOperandType(words[index+2]), isFirstInfo, IC);
+                                    discoverOperandType(words[index+2]), isFirstInfo, IC,words[index]);
             IC+= calculateL(line, symbolDefinitionFlag);
 
         }

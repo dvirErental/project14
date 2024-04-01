@@ -23,7 +23,7 @@ int createStringLine(int, char*, int);
 
 void startInfoTable(infoTable*);
 
-void executeCommandFirstPass(char*, int, int, int, int, int);
+void executeCommandFirstPass(char*, int, int, int, int, int, char*);
 
 char* dataToBinary();
 //שני מערכים דו ממדיים  = address והקוד הבינארי לכל מילה

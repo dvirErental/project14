@@ -105,10 +105,9 @@ int createStringLine(int address, char* stringToSave, int isFirst){
     return address+1;
 }
 
-void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirst, int address){
+void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirst, int address, char* word){
     char* binaryWord = mallocError(sizeof(char)*NUM_OF_BITS);
-    char** words = mallocError(sizeof(char)*MAX_WORD_LENGTH*(MAX_COMMAND_LENGTH+1));
-    char* opCode = translateToTwosCompliment(isCommand(words[index]), BITS_IN_OPCODE);
+    char* opCode = translateToTwosCompliment(isCommand(word), BITS_IN_OPCODE);
     char* op1Binary = translateToTwosCompliment(op1, BITS_IN_OP1);
     char* op2Binary = translateToTwosCompliment(op2, BITS_IN_OP2);
     char* are = "00";
