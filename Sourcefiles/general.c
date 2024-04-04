@@ -60,7 +60,7 @@ int isSymbolDefinition(const char* a){
         else
             break;
     }
-    if((a[i] == ':' && a[i+1] == '\0') && ((a[0] >='a' &&a[0] <='z') || (a[0] >= 'A') && a[0] <='Z'))
+    if((a[i] == ':' && a[i+1] == '\0') && ((a[0] >='a' &&a[0] <='z') || ((a[0] >= 'A') && a[0] <='Z')))
         return 1;
     return 0;
 }
@@ -158,4 +158,24 @@ int lengthOf(const char* word){
     while(word[index] != '\0')
         index++;
     return index;
+}
+
+char* cutString(char *str, char delimiter) {
+    char *delimiterPtr = strchr(str, delimiter);
+    if (delimiterPtr != NULL) {
+        char *substring = delimiterPtr + 1;
+        return substring;
+    }
+    return str;
+}
+
+int isWord(const char *str) {
+    int wordLength = strspn(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    const char *pos = str + wordLength;
+
+    if (*pos == ' ' || *pos == '\n' || *pos == '\0') {
+        return 1;
+    }
+
+    return 0;
 }

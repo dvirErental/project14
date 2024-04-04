@@ -3,9 +3,10 @@
 #include "../Headers/firstPass.h"
 
 int main(){
-    /*FILE* pa = fopen("../TextFiles/input1", "r");
+    FILE* pa = fopen("../TextFiles/input1", "r");
     FILE* ppa = preAssemble(pa);
     fclose(ppa);
-    printf("the code worked");*/
+    fclose(pa);
+    printf("the code worked");
     firstPass();
 }

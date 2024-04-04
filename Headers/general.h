@@ -30,3 +30,5 @@ char* translateToTwosCompliment(int,int);
 int isRegisterName(const char*);
 void flipBits(char* word);
 int calculateL(char* line, int isFileIndication);
+char* cutString(char *str, char delimiter) ;
+int isWord(const char *str) ;

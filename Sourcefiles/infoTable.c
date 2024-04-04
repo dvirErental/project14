@@ -22,32 +22,35 @@ void startInfoTable(infoTable* info){
 
 void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
     infoTable* temp = first_info;
-    while(temp != NULL)
+    while(temp->next != NULL)
         temp = temp->next;
-    temp = mallocError(sizeof(infoTable));
-    temp-> address[0] = address;
-    temp -> sourceCode = mallocError(sizeof(sourceCode));
+    temp->next = mallocError(sizeof(infoTable));
+    temp->next-> address[0] = address;
+    temp->next -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
     if(strcmp(stringAlternative, "") != 0)
-        strcpy(temp->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
+        strcpy(temp->next->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
     else
-        strcpy(temp->binaryCode[0], stringAlternative);
+        strcpy(temp->next->binaryCode[0], stringAlternative);
 
-    temp -> next = NULL;
+    temp ->next-> next = NULL;
 }
 
 void addSetLineToInfoTable(infoTable* info){
-    addLineToInfoTable(info->address[0], info->sourceCode,0, info->binaryCode);
+    addLineToInfoTable(info->address[0], info->sourceCode,0, info->binaryCode[0]);
 }
 
 int isValidDataString(const char *str) {
     // מחזיר אפס אם המחרוזת חוקית, אחרת מחזיר את המספר הראשון שלא הצליחנו לקרוא
     char *endptr;
-    strtol(str + 4, &endptr, 10);
+    char* deleteLabel= cutString(str, ':');
+    while (isspace(*deleteLabel)) deleteLabel++; // דחיפות מרווחים
+    strtol(deleteLabel + 5, &endptr, 10);
     while (isspace(*endptr)) endptr++; // דחיפות מרווחים
     while (*endptr != '\0') {
         if (*endptr != ',' && !isspace(*endptr)) // בודק אם יש תו שאינו פסיק או רווח
-            return 0;
+            if (isWord(endptr)) return 1;
+            else return 0;
         strtol(endptr + 1, &endptr, 10); // הולך למספר הבא
         while (isspace(*endptr)) endptr++; // דחיפות מרווחים
     }
@@ -79,13 +82,14 @@ int createDataLine(int address, char* sourceCode){
 }
 
 int createStringLine(int address, char* stringToSave, int isFirst){
-    int index = 0;
+    int index = 1;
     infoTable* temp = mallocError(sizeof(infoTable));
-    while (stringToSave[index] != '"') {
+    while ((stringToSave[index] >='a'&& stringToSave[index]<='z') || (stringToSave[index] >='A' && stringToSave[index]<='Z')){
         temp->address[index] = address;
         strcpy(temp->binaryCode[index], (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
         if(isFirst) {
             startInfoTable(temp);
+            isFirst=0;
         }
         else{
             addSetLineToInfoTable(temp);
@@ -95,6 +99,9 @@ int createStringLine(int address, char* stringToSave, int isFirst){
     }
     temp->address[index] = address;
     strcpy(temp-> binaryCode[index], "00000000000000");
+    temp -> sourceCode = mallocError(sizeof(stringToSave));
+    strcpy(temp->sourceCode, stringToSave);
+    temp -> next= NULL;
     addSetLineToInfoTable(temp);
     return address+1;
 }
@@ -115,6 +122,14 @@ void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirs
         makeInfoTable(address, line, 0, binaryWord);
     else
         addLineToInfoTable(address, line, 0, binaryWord);
+}
+
+void printInfoTable(){
+    infoTable* temp = first_info;
+    while (temp != NULL){
+        printf("%s %s %d\n", temp->sourceCode, temp->binaryCode[0], temp->address[0]);
+        temp = temp->next;
+    }
 }
 
 

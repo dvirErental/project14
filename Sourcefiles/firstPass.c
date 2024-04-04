@@ -1,13 +1,13 @@
 #include "../Headers/firstPass.h"
 /*assuming max number of words in a line is 10*/
 /*Symbol declaration is done with all capital letters followed by a colon*/
+
 void firstPass(void) {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
-    int i;
     int IC = 0, DC = 0;
     int address = 100;
     int lineNum = 0;
-    int index = 0;
+    int index;
     int isFirstSymbol = TRUE;
     int isFirstInfo = TRUE;
     int symbolDefinitionFlag;
@@ -131,6 +131,9 @@ void firstPass(void) {
         printf("error was found in first pass we will not continue to second pass\n");
     }
     addIC(IC);
+    freeTable(first_Symbol);
+
+    fclose(fp);
     printf("first pass finished");
 }
 
@@ -145,15 +148,6 @@ int discoverOperandType(const char* op){
         return TYPE3;
     else
             return TYPE1;
-}
-
-int isLabel(const char* op){
-    int i = 0;
-    while (op[i] != '\0')
-        i++;
-    if (op[i-1] == ':')
-        return TRUE;
-    return FALSE;
 }
 
 int isArrayAddress(const char* op){
