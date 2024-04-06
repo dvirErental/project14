@@ -17,9 +17,8 @@ void firstPass(void) {
     initializeCommands();
     while (!feof(fp)) {
         symbolDefinitionFlag = FALSE;
-        printf("    %d   ", lineNum);
+        printf("    %d   ", ++lineNum);
         fgets(line, MAX_LINE_LENGTH, fp);
-        lineNum++;
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
                    words[7], words[8], words[9])) {
 
@@ -35,9 +34,10 @@ void firstPass(void) {
                 else {
                     addToSymbolList(words[1], "mdefine", atoi(words[2]));
                 }
+                continue;
             }
             if (isSymbolDefinition(words[0])) {
-                symbolDefinitionFlag = TRUE;//לאתחל בסוף
+                symbolDefinitionFlag = TRUE;
                 index = 1;
             }
             else
@@ -73,7 +73,7 @@ void firstPass(void) {
                     errorFlag = TRUE;
                 }
                 if (isFirstSymbol == TRUE) {
-                    make_symbol(words[1],"external", 0);
+                    first_Symbol = make_symbol(words[1],"external", 0);
                     isFirstSymbol = FALSE;
                 }
                 else
@@ -91,7 +91,7 @@ void firstPass(void) {
                     errorFlag = TRUE;
                 }
                 if (isFirstSymbol)
-                    make_symbol(words[1], ".entry", 0);
+                    first_Symbol = make_symbol(words[1], ".entry", 0);
                 else
                     addToSymbolList(words[1], ".entry", 0 );
                 continue;
@@ -102,7 +102,7 @@ void firstPass(void) {
                     errorFlag = TRUE;
                 }
                 if (isFirstSymbol) {
-                    make_symbol(words[1], "code", IC + 100);
+                    first_Symbol = make_symbol(words[1], "code", IC + 100);
                     isFirstSymbol = FALSE;
                 }
                 else
@@ -122,7 +122,6 @@ void firstPass(void) {
                 executeCommandFirstPass(line, index, 0, 0, isFirstInfo, IC,words[index]);
 
             IC+= calculateL(line, symbolDefinitionFlag);
-
         }
     }
     if (errorFlag){

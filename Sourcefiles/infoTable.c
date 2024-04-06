@@ -124,6 +124,7 @@ void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirs
         makeInfoTable(address, line, 0, binaryWord);
     else
         addLineToInfoTable(address, line, 0, binaryWord);
+
 }
 
 void printInfoTable(){

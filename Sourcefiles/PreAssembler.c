@@ -31,7 +31,6 @@ FILE* preAssemble(FILE* op) {
                 }
                 else {
                     fputs(current->content, ModOrig);
-                    printf("\n%s", current->content);
                     lineNum++;
                 }
             }
