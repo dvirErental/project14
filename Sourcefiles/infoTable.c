@@ -43,7 +43,9 @@ void addSetLineToInfoTable(infoTable* info){
 int isValidDataString(const char *str) {
     // מחזיר אפס אם המחרוזת חוקית, אחרת מחזיר את המספר הראשון שלא הצליחנו לקרוא
     char *endptr;
-    char* deleteLabel= cutString(str, ':');
+    char *deleteLabel;
+    strcpy(deleteLabel,str);
+    strcpy( deleteLabel,cutString(deleteLabel, ':'));
     while (isspace(*deleteLabel)) deleteLabel++; // דחיפות מרווחים
     strtol(deleteLabel + 5, &endptr, 10);
     while (isspace(*endptr)) endptr++; // דחיפות מרווחים
