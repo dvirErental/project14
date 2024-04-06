@@ -21,13 +21,13 @@ void startInfoTable(infoTable* info){
 }
 
 void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
-    if (first_info == NULL){
+    if (first_info == NULL) {
         makeInfoTable(address, sourceCode, num, stringAlternative);
-        return;}
+        return;
+    }
     infoTable* temp = first_info;
-    while(temp->next != NULL) {
+    while(temp->next != NULL)
         temp = temp->next;
-        printf("%d",first_info->address[0]);}
     temp->next = mallocError(sizeof(infoTable));
     temp->next-> address[0] = address;
     temp->next -> sourceCode = mallocError(sizeof(sourceCode));
@@ -125,10 +125,7 @@ void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirs
     strcat(binaryWord, op2Binary);
     strcat(binaryWord, are);
 
-    if (isFirst)
-        makeInfoTable(address, line, 0, binaryWord);
-    else
-        addLineToInfoTable(address, line, 0, binaryWord);
+    addLineToInfoTable(address, line, 0, binaryWord);
 
 }
 
