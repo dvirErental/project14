@@ -27,16 +27,13 @@ void firstPass(void) {
                 if (searchSymbolList(words[1])) {
                     printf("multiple definitions using same name");
                     errorFlag = TRUE;
-                    continue;
                 }
                 else if (isFirstSymbol){
                     first_Symbol = make_symbol(words[1], "mdefine", atoi(words[2]));
                     isFirstSymbol = FALSE;
-                    continue;
                 }
                 else {
                     addToSymbolList(words[1], "mdefine", atoi(words[2]));
-                    continue;
                 }
             }
             if (isSymbolDefinition(words[0])) {
@@ -46,16 +43,17 @@ void firstPass(void) {
             else
                 index = 0;
             if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
-                if (symbolDefinitionFlag == TRUE) {
-                    if(isFirstSymbol == TRUE) {
-                        make_symbol(words[0], ".data", DC);
-                        isFirstSymbol = FALSE;
+                if (strcmp(words[1],".data")==0){
+                    if (symbolDefinitionFlag == TRUE) {
+                        if(isFirstSymbol == TRUE) {
+                            first_Symbol = make_symbol(words[0], ".data", DC);
+                            isFirstSymbol = FALSE;
+                        }
+                        else
+                            addToSymbolList(words[0], ".data", DC);
                     }
                     else
-                        addToSymbolList(words[0], ".data", DC);
-                }
-                else
-                    printf("data without symbol");
+                        printf("data without symbol");}
                 if (strcmp(words[1], ".string") == 0)
                     address = createStringLine(address, words[index+1], isFirstInfo);
                 else{

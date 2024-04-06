@@ -53,8 +53,8 @@ void freeTable(line_table *head){
 
 void addIC(int IC){
     line_table *temp = first_Symbol;
-    while (temp!= NULL){
-        if (strcmp(temp->type,"data")==0){
+    while ((temp!= NULL)&&(temp->type!=NULL)){
+        if (strcmp(temp->type,".data")==0){
             temp->value += 100+IC;
         }
         temp = temp->next;
