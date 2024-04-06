@@ -54,11 +54,15 @@ void firstPass(void) {
                     }
                     else
                         printf("data without symbol");}
-                if (strcmp(words[1], ".string") == 0)
-                    address = createStringLine(address, words[index+1], isFirstInfo);
+                if (strcmp(words[1], ".string") == 0) {
+                    address = createStringLine(address, words[index + 1], isFirstInfo);
+                    isFirstInfo = FALSE;
+                }
                 else{
-                    if (isValidDataString(line))
+                    if (isValidDataString(line)) {
                         address = createDataLine(DC, line);
+                        isFirstInfo = FALSE;
+                    }
                     else
                         printf("not valid string/data in line %d", lineNum);
                 }
@@ -127,9 +131,9 @@ void firstPass(void) {
     if (errorFlag){
         printf("error was found in first pass we will not continue to second pass\n");
     }
-    addIC(IC);
-    freeTable(first_Symbol);
-
+    //addIC(IC);
+    //freeTable(first_Symbol);
+    printInfoTable();
     fclose(fp);
     printf("first pass finished");
 }

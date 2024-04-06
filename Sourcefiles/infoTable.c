@@ -21,6 +21,8 @@ void startInfoTable(infoTable* info){
 }
 
 void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
+    if (first_info == NULL)
+        makeInfoTable(address, sourceCode, num, stringAlternative);
     infoTable* temp = first_info;
     while(temp->next != NULL)
         temp = temp->next;
@@ -130,7 +132,7 @@ void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirs
 void printInfoTable(){
     infoTable* temp = first_info;
     while (temp != NULL){
-        printf("%s %s %d\n", temp->sourceCode, temp->binaryCode[0], temp->address[0]);
+        printf("\n%s %s %d", temp->sourceCode, temp->binaryCode[0], temp->address[0]);
         temp = temp->next;
     }
 }
