@@ -14,4 +14,6 @@ add_executable(project14_1
         Sourcefiles/general.c
         Sourcefiles/main.c
         Sourcefiles/infoTable.c
-        Sourcefiles/symbolTable.c)
+        Sourcefiles/symbolTable.c
+        Sourcefiles/firstPass.c
+        Headers/infoTable.h)

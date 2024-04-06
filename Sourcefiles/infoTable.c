@@ -21,11 +21,13 @@ void startInfoTable(infoTable* info){
 }
 
 void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
-    if (first_info == NULL)
+    if (first_info == NULL){
         makeInfoTable(address, sourceCode, num, stringAlternative);
+        return;}
     infoTable* temp = first_info;
-    while(temp->next != NULL)
+    while(temp->next != NULL) {
         temp = temp->next;
+        printf("%d",first_info->address[0]);}
     temp->next = mallocError(sizeof(infoTable));
     temp->next-> address[0] = address;
     temp->next -> sourceCode = mallocError(sizeof(sourceCode));
@@ -82,6 +84,7 @@ int createDataLine(int address, char* sourceCode){
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
     temp -> next= NULL;
+    addSetLineToInfoTable(temp);
     return address+count;
 }
 

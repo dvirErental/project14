@@ -22,6 +22,7 @@ void addToSymbolList(char *name, char *type, int value){
     while (temp->next != NULL)
         temp = temp->next;
     temp->next = make_symbol(name, type, value);
+    int i=0;
 }
 int searchSymbolList(char* name){
     int location = 0;
@@ -46,8 +47,8 @@ void freeTable(line_table *head){
     /* Free memory for the current node and its contents while storing the current node in a temporary pointer */
     while(head != NULL) {
         line_table *temp = head;
-        head = head->next;
         freeLine(temp);
+        head = head->next;
     }
 }
 
