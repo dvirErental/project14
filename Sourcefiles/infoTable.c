@@ -21,8 +21,10 @@ void startInfoTable(infoTable* info){
 }
 
 void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
-    if (first_info == NULL)
+    if (first_info == NULL) {
         makeInfoTable(address, sourceCode, num, stringAlternative);
+        return;
+    }
     infoTable* temp = first_info;
     while(temp->next != NULL)
         temp = temp->next;
@@ -82,6 +84,7 @@ int createDataLine(int address, char* sourceCode){
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
     temp -> next= NULL;
+    addSetLineToInfoTable(temp);
     return address+count;
 }
 
@@ -122,10 +125,7 @@ void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirs
     strcat(binaryWord, op2Binary);
     strcat(binaryWord, are);
 
-    if (isFirst)
-        makeInfoTable(address, line, 0, binaryWord);
-    else
-        addLineToInfoTable(address, line, 0, binaryWord);
+    addLineToInfoTable(address, line, 0, binaryWord);
 
 }
 
