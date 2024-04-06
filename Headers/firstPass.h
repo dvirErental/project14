@@ -10,7 +10,7 @@
 #define TYPE3 3
 #define TYPE_ERROR (-1)
 
-void firstPass(FILE*);
+void firstPass(void);
 int discoverOperandType(const char*);
 int isLabel(const char*);
 int isArrayAddress(const char*);

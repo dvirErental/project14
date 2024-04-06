@@ -20,9 +20,9 @@ extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/
 int isSymbolDefinition(const char* );
+int containsBrackets(const char*);
 
-
-
+int lengthOf(const char*);
 void *mallocError(long object_size);
 int wordLength(const char*);
 int isFileIndication(const char*);
@@ -30,4 +30,5 @@ char* translateToTwosCompliment(int,int);
 int isRegisterName(const char*);
 void flipBits(char* word);
 int calculateL(char* line, int isFileIndication);
-long lengthOf(const char*);
+char* cutString(char *str, char delimiter) ;
+int isWord(const char *str) ;

@@ -30,20 +30,20 @@ node* existNode(char *name){
 }
 
 void add_to_list(char *name, char *content, int line_num){
-   node* temp = first;
-   while (temp->next != NULL)
-       temp = temp->next;
-   temp->next = make_node(name, content, line_num);
+    node* temp = first;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = make_node(name, content, line_num);
 }
-void copy_head(node* old,node* new){
-   /* old = mallocError(strlen(new->name)*sizeof(char)+(strlen(new->content)*sizeof(char))+sizeof(new->next));*/
+/*void copy_head(node* old,node* new){
+    old = mallocError(strlen(new->name)*sizeof(char)+(strlen(new->content)*sizeof(char))+sizeof(new->next));
     old = mallocError(sizeof(new));
     if(new->name == NULL)
         old->name = NULL;
-    old->name = new->name;        /* Set the name of the node */
-    old->content = new->content;  /* Set the content string of the node */
-    old->line = new->line;    /* Set the line number associated with the content */
-}
+    old->name = new->name;
+    old->content = new->content;
+    old->line = new->line;
+}*/
 
 void free_node(node *node1){
     /* Free memory allocated for the name, content and node */

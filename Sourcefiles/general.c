@@ -42,7 +42,7 @@ int isCommand(char* word){
 void *mallocError(long object_size) {
     void *object_ptr = malloc(object_size);
     if (object_ptr == NULL) {
-        printf("Failed dynamically memory");
+        exit(-1);
     }
     return object_ptr;
 }
@@ -58,19 +58,19 @@ int isSymbolDefinition(const char* a){
         if ((a[i] <= 'Z' && a[i] >= 'A') || (a[i] <= '9' && a[i] >= '0') || (a[i] <='z' && a[i] >= 'a'))
             i++;
         else
-            return 0;
+            break;
     }
-    if((a[i] == ':' && a[i+1] == '\0') && ((a[0] >='a' &&a[0] <='z') || (a[0] >= 'A') && a[0] <='Z'))
+    if((a[i] == ':' && a[i+1] == '\0') && ((a[0] >='a' &&a[0] <='z') || ((a[0] >= 'A') && a[0] <='Z')))
         return 1;
     return 0;
 }
 
 
 /**
- * translates given number to it's binarary representation, keeps it to length of length - can lose data if used incorrectly
+ * translates given number to it's binary representation, keeps it to length of length - can lose data if used incorrectly
  * @param num  - num to translate
  * @param length - number of bits to return
- * @return num's representation in binary (in 'length' bits)
+ * @return nums' representation in binary (in 'length' bits)
  */
 char* translateToTwosCompliment(int num,int length) {
     char *str = (char *)malloc((length + 1) * sizeof(char));
@@ -93,13 +93,13 @@ char* translateToTwosCompliment(int num,int length) {
 }
 
 int isRegisterName(const char* name){
-    if (name[0] == 'r' && name[1] >= '0' && name[1] <= '7' && name[2] == '\0')
-        return name[1] - '0';
+    if (name[0] == 'r' && name[1] >= '0' && name[1] <= '7' && (name[2] == '\0' || (name[2] == ',' && name[3] == '\0')))
+        return TRUE;
     return FALSE;
 }
 
 
-void flipBits(char* word){
+/*void flipBits(char* word){
     int index;
     for(index = 0; index<NUM_OF_BITS; index++){
         if(word[index] == '0')
@@ -107,7 +107,7 @@ void flipBits(char* word){
         else
             word[index] = '0';
     }
-}
+}*/
 
 int wordLength(const char *word) {
     int length = 0;
@@ -117,7 +117,7 @@ int wordLength(const char *word) {
     }
     return length;
 }
-int contains_brackets(const char *word) {
+int containsBrackets(const char *word) {
     int found_open = 0;
     while (*word) {
         if (*word == '[')
@@ -136,16 +136,46 @@ int contains_brackets(const char *word) {
 int calculateL(char* line, int isSymbolDefinition){
     int L = 0;
     int index = 0;
-    char* currentWord;
+    char* currentWord = mallocError(sizeof(char)*MAX_WORD_LENGTH);
     while(index < MAX_LINE_LENGTH){
         sscanf(&line[index], "%s", currentWord);
+        if (isSymbolDefinition){
+            isSymbolDefinition = FALSE;
+            continue;
+        }
         if (strcmp(currentWord,"" ) == 0)
             break;
-        if (contains_brackets(currentWord))
+        if (containsBrackets(currentWord))
             L+=2;
         else
             L++;
         index+= wordLength(currentWord);
     }
     return L;
+}
+int lengthOf(const char* word){
+    int index = 0;
+    while(word[index] != '\0')
+        index++;
+    return index;
+}
+
+char* cutString(char *str, char delimiter) {
+    char *delimiterPtr = strchr(str, delimiter);
+    if (delimiterPtr != NULL) {
+        char *substring = delimiterPtr + 1;
+        return substring;
+    }
+    return str;
+}
+
+int isWord(const char *str) {
+    int wordLength = strspn(str, "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz");
+    const char *pos = str + wordLength;
+
+    if (*pos == ' ' || *pos == '\n' || *pos == '\0') {
+        return 1;
+    }
+
+    return 0;
 }
