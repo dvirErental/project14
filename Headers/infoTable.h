@@ -20,11 +20,11 @@ int createDataLine(int, char*);
 
 int isValidDataString(const char *str);
 
-int createStringLine(int, char*, int);
+int createStringLine(int, char*);
 
 void startInfoTable(infoTable*);
 
-void executeCommandFirstPass(char*, int, int, int, int, int, char*);
+void executeCommandFirstPass(char*, int, int, int, char*);
 
 void addSetLineToInfoTable(infoTable* info);
 

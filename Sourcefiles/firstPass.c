@@ -6,10 +6,10 @@ void firstPass(void) {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
     int IC = 0, DC = 0;
     int address = 100;
+    int addressIndex = 0;
     int lineNum = 0;
     int index;
     int isFirstSymbol = TRUE;
-    int isFirstInfo = TRUE;
     int symbolDefinitionFlag;
     int errorFlag = FALSE;
     char line[MAX_LINE_LENGTH];
@@ -56,13 +56,11 @@ void firstPass(void) {
                 }
                 if (strcmp(words[1], ".string") == 0) {
                     addLineToInfoTable(address++, line, 0, translateToTwosCompliment((int)words[index+1][1], NUM_OF_BITS));
-                    address = createStringLine(address, &words[index + 1][2], isFirstInfo);
-                    isFirstInfo = FALSE;
+                    address = createStringLine(address, &words[index + 1][2]);
                 }
                 else{
                     if (isValidDataString(line)) {
                         address = createDataLine(DC, line);
-                        isFirstInfo = FALSE;
                     }
                     else
                         printf("not valid string/data in line %d", lineNum);
@@ -101,17 +99,16 @@ void firstPass(void) {
                     addToSymbolList(words[1], ".entry", 0 );
                 continue;
             }
-            if (symbolDefinitionFlag){
-                if (searchSymbolList(words[0])){
+            if (symbolDefinitionFlag) {
+                if (searchSymbolList(words[0])) {
                     printf("Error, line %d, multiple declarations for same symbol", lineNum);
                     errorFlag = TRUE;
                 }
                 if (isFirstSymbol) {
                     first_Symbol = make_symbol(words[1], "code", IC + 100);
                     isFirstSymbol = FALSE;
-                }
-                else
-                    addToSymbolList(words[0], "code", IC+100);
+                } else
+                    addToSymbolList(words[0], "code", IC + 100);
             }
 
             if (isCommand(words[index]) == -1){
@@ -119,14 +116,15 @@ void firstPass(void) {
                 errorFlag = TRUE;
             }
             if(isCommand(words[index])<=3 || isCommand(words[index]) == 6)//change 3 to define
-                executeCommandFirstPass(line, index, discoverOperandType(words[index+1]),
-                                    discoverOperandType(words[index+2]), isFirstInfo, IC,words[index]);
+                executeCommandFirstPass(line, discoverOperandType(words[index+1]),
+                                    discoverOperandType(words[index+2]), address,words[index]);
             else if ((isCommand(words[index]) != 14) && (isCommand(words[index]) != 15))
-                executeCommandFirstPass(line, index, 0, discoverOperandType(words[index+1]), isFirstInfo, IC,words[index]);
+                executeCommandFirstPass(line, 0, discoverOperandType(words[index+1]), address,words[index]);
             else
-                executeCommandFirstPass(line, index, 0, 0, isFirstInfo, IC,words[index]);
-            isFirstInfo = FALSE;
+                executeCommandFirstPass(line, 0, 0, address,words[index]);
             IC+= calculateL(line, symbolDefinitionFlag);
+
+
         }
     }
     if (errorFlag){
@@ -142,7 +140,7 @@ void firstPass(void) {
 int discoverOperandType(const char* op){
     if(strcmp(op, "") == 0)
         return -1;
-    if(op[0] == '#')
+    if(op[0] == '#'|| existDefine(op))
         return TYPE0;
     else if (isArrayAddress(op))
         return TYPE2;
