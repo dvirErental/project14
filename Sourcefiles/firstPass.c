@@ -55,7 +55,8 @@ void firstPass(void) {
                     errorFlag = TRUE;
                 }
                 if (strcmp(words[1], ".string") == 0) {
-                    address = createStringLine(address, words[index + 1], isFirstInfo);
+                    addLineToInfoTable(address++, line, 0, translateToTwosCompliment((int)words[index+1][1], NUM_OF_BITS));
+                    address = createStringLine(address, &words[index + 1][2], isFirstInfo);
                     isFirstInfo = FALSE;
                 }
                 else{
