@@ -1,10 +1,6 @@
-//
-// Created by dvir on 10/02/2024.
-//
 
-#ifndef PROJECT14REAL_SYMBOLTABLE_H
-#define PROJECT14REAL_SYMBOLTABLE_H
 #include "general.h"
+
 typedef struct line_table{
     int value;
     char *name;
@@ -26,7 +22,10 @@ void addToNum(line_table *line,int num);
 
 void addIC(int IC);
 
+int getValue(char* name);
+
+int existDefine(char* name);
+
 extern line_table * first_Symbol;
-#endif //PROJECT14REAL_SYMBOLTABLE_H
-extern line_table * first_Symbol;
+
 void updateDataValue(int);

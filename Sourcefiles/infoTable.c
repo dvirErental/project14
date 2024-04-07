@@ -8,7 +8,7 @@ void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternati
     first_info -> address[0] = address;
     first_info -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(first_info->sourceCode, sourceCode);
-    if(strcmp(stringAlternative, "")!=0)
+    if(strcmp(stringAlternative, "")==0)
         strcpy(first_info->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
     else
         strcpy(first_info->binaryCode[0], stringAlternative);
@@ -32,7 +32,7 @@ void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlte
     temp->next-> address[0] = address;
     temp->next -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
-    if(strcmp(stringAlternative, "") != 0)
+    if(strcmp(stringAlternative, "") == 0)
         strcpy(temp->next->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
     else
         strcpy(temp->next->binaryCode[0], stringAlternative);
@@ -42,6 +42,19 @@ void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlte
 
 void addSetLineToInfoTable(infoTable* info){
     addLineToInfoTable(info->address[0], info->sourceCode,0, info->binaryCode[0]);
+}
+
+void addCompleteLineToInfoTable(infoTable* info){
+    if (first_info == NULL){
+        first_info = mallocError(sizeof(*info));
+        first_info = info;
+        return;
+    }
+    infoTable* temp = first_info;
+    while(temp->next != NULL)
+        temp = temp->next;
+    temp->next = mallocError(sizeof(infoTable));
+    temp->next = info;
 }
 
 int isValidDataString(const char *str) {
@@ -70,21 +83,29 @@ int createDataLine(int address, char* sourceCode){
     int numbers[40];
     int count;
     char *token;
-    char *mutable_str = strdup(sourceCode + 4); // מתחיל אחרי המילה "data"
+    char *mutable_str= mallocError(sizeof(sourceCode));
+    strcpy(mutable_str, sourceCode);
+    mutable_str = cutString(mutable_str, '.');
+    mutable_str +=4;
+     // מתחיל אחרי המילה "data"
     token = strtok(mutable_str, ", ");
     count = 0;
     while (token != NULL) {
-        numbers[count] = atoi(token);
-        strcpy(temp -> binaryCode[count], translateToTwosCompliment(numbers[count],NUM_OF_BITS));
-        temp->address[count]=address+count;
-        (count)++;
-        token = strtok(NULL, ", ");
+        if ((token[0]<='0' || token[0]>='9')&&token[0]!='-'){
+            if (token[lengthOf(token) - 1] == '\n') token[lengthOf(token) - 1] = '\0';
+            if (existDefine(token))
+                numbers[count] = getValue(token);}
+        else{
+            numbers[count] = atoi(token);
+            strcpy(temp -> binaryCode[count], translateToTwosCompliment(numbers[count],NUM_OF_BITS));
+            temp->address[count]=address+count;
+            (count)++;
+            token = strtok(NULL, ", ");}
     }
-    free(mutable_str);
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
     temp -> next= NULL;
-    addSetLineToInfoTable(temp);
+    addCompleteLineToInfoTable(temp);
     return address+count;
 }
 
@@ -124,8 +145,12 @@ void executeCommandFirstPass(char* line, int index, int op1, int op2, int isFirs
     strcat(binaryWord, op1Binary);
     strcat(binaryWord, op2Binary);
     strcat(binaryWord, are);
-
-    addLineToInfoTable(address, line, 0, binaryWord);
+    if(isFirst) {
+        makeInfoTable(address, line, 0, binaryWord);
+    }
+    else{
+        addLineToInfoTable(address, line, 0, binaryWord);
+    }
 
 }
 

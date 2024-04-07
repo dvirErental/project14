@@ -28,11 +28,11 @@ void firstPass(void) {
                     errorFlag = TRUE;
                 }
                 else if (isFirstSymbol){
-                    first_Symbol = make_symbol(words[1], "mdefine", atoi(words[2]));
+                    first_Symbol = make_symbol(words[1], "mdefine", atoi(words[3]));
                     isFirstSymbol = FALSE;
                 }
                 else {
-                    addToSymbolList(words[1], "mdefine", atoi(words[2]));
+                    addToSymbolList(words[1], "mdefine", atoi(words[3]));
                 }
                 continue;
             }
@@ -43,17 +43,15 @@ void firstPass(void) {
             else
                 index = 0;
             if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
-                if (strcmp(words[1],".data")==0){
-                    if (symbolDefinitionFlag == TRUE) {
-                        if(isFirstSymbol == TRUE) {
-                            first_Symbol = make_symbol(words[0], ".data", DC);
-                            isFirstSymbol = FALSE;
-                        }
-                        else
-                            addToSymbolList(words[0], ".data", DC);
+                if (symbolDefinitionFlag == TRUE) {
+                    if(isFirstSymbol == TRUE) {
+                        first_Symbol = make_symbol(words[0], ".data", DC);
+                        isFirstSymbol = FALSE;
                     }
                     else
-                        printf("data without symbol");}
+                        addToSymbolList(words[0], ".data", DC);}
+                else
+                        printf("data without symbol");
                 if (strcmp(words[1], ".string") == 0) {
                     address = createStringLine(address, words[index + 1], isFirstInfo);
                     isFirstInfo = FALSE;
@@ -124,7 +122,7 @@ void firstPass(void) {
                 executeCommandFirstPass(line, index, 0, discoverOperandType(words[index+1]), isFirstInfo, IC,words[index]);
             else
                 executeCommandFirstPass(line, index, 0, 0, isFirstInfo, IC,words[index]);
-
+            isFirstInfo = FALSE;
             IC+= calculateL(line, symbolDefinitionFlag);
         }
     }

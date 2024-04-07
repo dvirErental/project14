@@ -21,8 +21,8 @@ void addToSymbolList(char *name, char *type, int value){
     line_table *temp = first_Symbol;
     while (temp->next != NULL)
         temp = temp->next;
+    temp->next = mallocError(sizeof(line_table));
     temp->next = make_symbol(name, type, value);
-    int i=0;
 }
 int searchSymbolList(char* name){
     int location = 0;
@@ -31,6 +31,28 @@ int searchSymbolList(char* name){
         location++;
         if (!(strcmp(temp->name,name)))
             return location;
+        temp = temp->next;
+    }
+    return 0;
+}
+
+int getValue(char* name){
+    line_table *temp = first_Symbol;
+    while (temp != NULL){
+        if (!(strcmp(temp->name,name)))
+            return temp->value;
+        temp = temp->next;
+    }
+    return 0;
+}
+
+int existDefine(char* name){
+    line_table *temp = first_Symbol;
+    while (temp != NULL){
+        if (strcmp(temp->type,"mdefine")==0){
+            if (!(strcmp(temp->name,name)))
+                return 1;
+        }
         temp = temp->next;
     }
     return 0;

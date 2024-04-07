@@ -30,6 +30,8 @@ void addSetLineToInfoTable(infoTable* info);
 
 void printInfoTable();
 
+void addCompleteLineToInfoTable(infoTable* info);
+
 void freeInfoLine(infoTable *line);
 
 void freeInfoTable(infoTable *head);
