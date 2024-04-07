@@ -1,3 +1,8 @@
-#include "firstPass.h"
+//
+// Created by shaih on 4/7/2024.
+//
 
-void secondPass(infoTable* infoTable, line_table * symbolTable);
+#ifndef PROJECT14REAL_SECONDPASS_H
+#define PROJECT14REAL_SECONDPASS_H
+
+#endif //PROJECT14REAL_SECONDPASS_H

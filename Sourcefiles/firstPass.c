@@ -50,8 +50,10 @@ void firstPass(void) {
                     }
                     else
                         addToSymbolList(words[0], ".data", DC);}
-                else
-                        printf("data without symbol");
+                else {
+                    printf("data without symbol");
+                    errorFlag = TRUE;
+                }
                 if (strcmp(words[1], ".string") == 0) {
                     address = createStringLine(address, words[index + 1], isFirstInfo);
                     isFirstInfo = FALSE;

@@ -112,16 +112,16 @@ int createDataLine(int address, char* sourceCode){
 int createStringLine(int address, char* stringToSave, int isFirst){
     int index = 1;
     infoTable* temp = mallocError(sizeof(infoTable));
-    while ((stringToSave[index] >='a'&& stringToSave[index]<='z') || (stringToSave[index] >='A' && stringToSave[index]<='Z')){
+
+    printf("\nTHE CURRENT CHARACTER AT INDEX IS %c\n", stringToSave[index]);
+    while (((stringToSave[index] >='a') && (stringToSave[index]<='z')) ||
+    ((stringToSave[index] >='A') && (stringToSave[index]<='Z'))){
         temp->address[index] = address;
         strcpy(temp->binaryCode[index], (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
-        if(isFirst) {
-            startInfoTable(temp);
-            isFirst=0;
-        }
-        else{
-            addSetLineToInfoTable(temp);
-        }
+        temp->sourceCode = "";
+
+        addSetLineToInfoTable(temp);
+
         index++;
         address++;
     }
