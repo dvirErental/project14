@@ -98,9 +98,9 @@ int createDataLine(int address, char* sourceCode){
         else{
             numbers[count] = atoi(token);
             strcpy(temp -> binaryCode[count], translateToTwosCompliment(numbers[count],NUM_OF_BITS));
-            temp->address[count]=address+count;
+            temp->address[count]=address+count;}
             (count)++;
-            token = strtok(NULL, ", ");}
+            token = strtok(NULL, ", ");
     }
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
