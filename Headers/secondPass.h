@@ -1,8 +1,5 @@
-//
-// Created by shaih on 4/7/2024.
-//
+#include "firstPass.h"
 
-#ifndef PROJECT14REAL_SECONDPASS_H
-#define PROJECT14REAL_SECONDPASS_H
+void secondPass(infoTable* first, line_table* first_sym, FILE* fp);
 
-#endif //PROJECT14REAL_SECONDPASS_H
+int discoverOperandTypeSecondPass(char* op);

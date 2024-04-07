@@ -36,6 +36,19 @@ int searchSymbolList(char* name){
     return 0;
 }
 
+int searchOperandSymbolList(char* name){
+    int location = 0;
+    line_table *temp = first_Symbol;
+    while (temp != NULL){
+        location++;
+        if (!(strcmp(temp->name,name)))
+            if ((strcmp(temp->type,"data")==0)||(strcmp(temp->type,"external")==0))
+            return location;
+        temp = temp->next;
+    }
+    return 0;
+}
+
 int getValue(char* name){
     line_table *temp = first_Symbol;
     while (temp != NULL){

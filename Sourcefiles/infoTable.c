@@ -172,22 +172,3 @@ void printInfoTable(){
     }
     return 0;
 }*/
-
-
-/*to be used for executeCommand in secondPass
-if (isCommand(words[index])>=0 && isCommand(words[index])<= 4) {
-for (goTwice = 0; goTwice < 2; goTwice++){
-if (isRegisterName(words[index + 1])) {
-registerNum = isRegisterName(words[index + 1]);
-binaryWords[goTwice] = "000000";
-strcat(binaryWords[goTwice], translateToTwosCompliment(registerNum, BITS_IN_REGISTER_LENGTH));
-strcat(binaryWords[goTwice], "11");
-}
-else if (isNumberValue(words[index+1]) != MIN_NUM){
-numberValue = isNumberValue(words[index+1]);
-
-}
-index++;
-}
-}
- */

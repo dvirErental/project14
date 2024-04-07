@@ -89,14 +89,6 @@ void firstPass(void) {
                 continue;
             }
             if (!strcmp(words[0], ".entry")){
-                if (searchSymbolList(words[1])){
-                    printf("Error, line %d, multiple declarations for same symbol", lineNum);
-                    errorFlag = TRUE;
-                }
-                if (isFirstSymbol)
-                    first_Symbol = make_symbol(words[1], ".entry", 0);
-                else
-                    addToSymbolList(words[1], ".entry", 0 );
                 continue;
             }
             if (symbolDefinitionFlag) {
