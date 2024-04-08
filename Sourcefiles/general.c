@@ -155,9 +155,8 @@ int containsBrackets(const char *word) {
 }
 
 int calculateL(char *line, int isFileIndication) {
-    int wordCount = 0;
     int index;
-    char words[MAX_NUM_OF_WORDS][MAX_WORD_LENGTH];
+    char words[MAX_NUM_OF_WORDS][MAX_WORD_LENGTH] = {"","","","","","","","","",""};
     int numOfWords = sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
            words[7], words[8], words[9]);
     int actualNum = numOfWords;

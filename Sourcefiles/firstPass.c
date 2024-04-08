@@ -6,14 +6,14 @@ void firstPass(void) {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
     int IC = 0, DC = 0;
     int address = 100;
-    int addressIndex = 0;
     int lineNum = 0;
     int index;
     int isFirstSymbol = TRUE;
     int symbolDefinitionFlag;
     int errorFlag = FALSE;
-    char line[MAX_LINE_LENGTH];
-    char words[10][MAX_WORD_LENGTH] = {"","","","","","","","","",""};
+    char line[MAX_LINE_LENGTH] = "";
+    char words[MAX_NUM_OF_WORDS][MAX_WORD_LENGTH] = {"","","","",
+                                                     "","","","","",""};
     initializeCommands();
     while (!feof(fp)) {
         symbolDefinitionFlag = FALSE;

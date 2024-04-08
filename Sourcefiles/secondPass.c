@@ -9,7 +9,7 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
     int operand1Type;
     int operand2Type;
     int errorFlag = FALSE;
-    char words[MAX_WORD_LENGTH][MAX_WORD_LENGTH];
+    char words[MAX_WORD_LENGTH][MAX_WORD_LENGTH] = {"","","","","","","","","",""};
     int address=100;
     infoTable *temp;
     char are1[2];
