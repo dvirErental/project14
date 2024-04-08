@@ -7,7 +7,7 @@
 
 typedef struct infoTable{
     int address[MAX_NUM_OF_WORDS];
-    char* sourceCode;
+    char sourceCode[MAX_LINE_LENGTH];
     char binaryCode[MAX_NUM_OF_WORDS][NUM_OF_BITS+1];/*for \0*/
     struct infoTable* next;
 }infoTable;

@@ -6,7 +6,6 @@ infoTable* first_info = NULL;
 void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
     first_info = mallocError(sizeof(infoTable));
     first_info -> address[0] = address;
-    first_info -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(first_info->sourceCode, sourceCode);
     if(strcmp(stringAlternative, "")==0)
         strcpy(first_info->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
@@ -27,7 +26,6 @@ void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlte
         temp = temp->next;
     temp->next = mallocError(sizeof(infoTable));
     temp->next-> address[0] = address;
-    temp->next -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy((temp->next)->sourceCode, sourceCode);
     if(strcmp(stringAlternative, "") == 0)
         strcpy(temp->next->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
@@ -78,43 +76,42 @@ int isValidDataString(const char *str) {
     }
     return 1;
 }
-int createDataLine(int address, char* sourceCode){
+int createDataLine(int address, char* sourceCode) {
     infoTable* temp = mallocError(sizeof(infoTable));
-
     int numbers[MAX_NUM_OF_WORDS];
-    int count;
+    int count = 0;
     char *token;
-    char *mutable_str= mallocError(sizeof(sourceCode));
+    char *mutable_str = mallocError(strlen(sourceCode) + 1); // Allocate memory for mutable_str
     strcpy(mutable_str, sourceCode);
     mutable_str = cutString(mutable_str, '.');
-    mutable_str +=4;
-     // מתחיל אחרי המילה "data"
+    mutable_str += 4; // Skip the "data" keyword
     token = strtok(mutable_str, ", ");
-    count = 0;
     while (token != NULL) {
-        if ((token[0]<'0' || token[0]>'9')&&token[0]!='-') {
-            if (token[lengthOf(token) - 1] == '\n')
-                token[lengthOf(token) - 1] = '\0';
+        // Check if token is a number or a defined symbol
+        if ((token[0] >= '0' && token[0] <= '9') || token[0] == '-') {
+            numbers[count] = atoi(token);
+        }
+        else {
+            if (token[strlen(token) - 1] == '\n')
+                token[strlen(token) - 1] = '\0'; // Remove newline character if present
             if (existDefine(token))
                 numbers[count] = getValue(token);
-        }
-        else
-            numbers[count] = atoi(token);
-
-        strcpy(temp->binaryCode[count], translateToTwosCompliment(numbers[count],NUM_OF_BITS));
+            }
+            // Translate number to binary and store in temp->binaryCode
+        strcpy(temp->binaryCode[count], translateToTwosCompliment(numbers[count], NUM_OF_BITS));
         count++;
         token = strtok(NULL, ", ");
     }
-    temp->address[0]=address;
-    temp -> sourceCode = mallocError(sizeof(sourceCode));
+
+    temp->address[0] = address;
     strcpy(temp->sourceCode, sourceCode);
-    temp -> next= NULL;
+    temp->next = NULL;
     addCompleteLineToInfoTable(temp);
-    free(token);
-    return address+count;
+    return address + count;
 }
 
-int createStringLine(int address, char* stringToSave) {
+
+    int createStringLine(int address, char* stringToSave) {
     int index = 0;
     infoTable temp;  // Declare temp as a regular variable, not a pointer
 
@@ -122,7 +119,7 @@ int createStringLine(int address, char* stringToSave) {
            ((stringToSave[index] >= 'A') && (stringToSave[index] <= 'Z'))) {
         temp.address[0] = address;
         strcpy(temp.binaryCode[0], (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
-        temp.sourceCode = "";  // Assuming sourceCode is a string pointer
+        strcpy(temp.sourceCode, "");  // Assuming sourceCode is a string pointer
 
         addSetLineToInfoTable(&temp);  // Pass the address of temp to the function
 

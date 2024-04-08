@@ -61,6 +61,7 @@ void firstPass(void) {
                 else{
                     if (isValidDataString(line)) {
                         address = createDataLine(address, line);
+                        printf("Data line was added");
                     }
                     else
                         printf("not valid string/data in line %d", lineNum);

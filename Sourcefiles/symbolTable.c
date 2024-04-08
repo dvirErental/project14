@@ -8,9 +8,7 @@ line_table* make_symbol(char *name, char *type, int value){
     line_table *temp;
 
     temp = mallocError(sizeof(line_table));
-    temp->name = "mallocError((strlen(name) + 1) * sizeof(char))";
     strcpy(temp->name, name);
-    temp->type = mallocError((strlen(type) + 1) * sizeof(char));
     strcpy(temp->type, type);
     temp->value = value;
     temp->next = NULL;

@@ -3,8 +3,8 @@
 
 typedef struct line_table{
     int value;
-    char *name;
-    char* type;
+    char name[MAX_WORD_LENGTH];
+    char type[MAX_WORD_LENGTH];
     struct line_table *next;  /* Pointer to the next line */
 } line_table;
 
