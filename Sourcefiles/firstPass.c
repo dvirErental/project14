@@ -13,7 +13,7 @@ void firstPass(void) {
     int symbolDefinitionFlag;
     int errorFlag = FALSE;
     char line[MAX_LINE_LENGTH];
-    char words[10][MAX_WORD_LENGTH];
+    char words[10][MAX_WORD_LENGTH] = {"","","","","","","","","",""};
     initializeCommands();
     while (!feof(fp)) {
         symbolDefinitionFlag = FALSE;
