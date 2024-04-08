@@ -1,7 +1,7 @@
 
 #include "infoTable.h"
 
-infoTable* first_info;
+infoTable* first_info = NULL;
 
 void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
     first_info = mallocError(sizeof(infoTable));
@@ -60,7 +60,8 @@ int isValidDataString(const char *str) {
     char *deleteLabel = mallocError(sizeof(char)* lengthOf(str));
     strcpy(deleteLabel,str);
     strcpy( deleteLabel,cutString(deleteLabel, ':'));
-    while (isspace(*deleteLabel)) deleteLabel++; // דחיפות מרווחים
+    while (isspace(*deleteLabel))
+        deleteLabel++; // דחיפות מרווחים
     strtol(deleteLabel + 5, &endptr, 10);
     while (isspace(*endptr))
         endptr++; // דחיפות מרווחים
@@ -109,26 +110,28 @@ int createDataLine(int address, char* sourceCode){
     strcpy(temp->sourceCode, sourceCode);
     temp -> next= NULL;
     addCompleteLineToInfoTable(temp);
+    free(token);
     return address+count;
 }
 
-int createStringLine(int address, char* stringToSave){
+int createStringLine(int address, char* stringToSave) {
     int index = 0;
-    infoTable* temp = mallocError(sizeof(infoTable));
-    while (((stringToSave[index] >='a') && (stringToSave[index]<='z')) ||
-    ((stringToSave[index] >='A') && (stringToSave[index]<='Z'))){
-        temp->address[0] = address;
-        strcpy(temp->binaryCode[0], (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
-        temp->sourceCode = "";
+    infoTable temp;  // Declare temp as a regular variable, not a pointer
 
-        addSetLineToInfoTable(temp);
+    while (((stringToSave[index] >= 'a') && (stringToSave[index] <= 'z')) ||
+           ((stringToSave[index] >= 'A') && (stringToSave[index] <= 'Z'))) {
+        temp.address[0] = address;
+        strcpy(temp.binaryCode[0], (translateToTwosCompliment(stringToSave[index], NUM_OF_BITS)));
+        temp.sourceCode = "";  // Assuming sourceCode is a string pointer
+
+        addSetLineToInfoTable(&temp);  // Pass the address of temp to the function
 
         index++;
         address++;
     }
-    free(temp);
+
     addLineToInfoTable(address, "", 0, "00000000000000");
-    return address+1;
+    return address + 1;
 }
 
 void executeCommandFirstPass(char* line, int op1, int op2, int address, char* word){
