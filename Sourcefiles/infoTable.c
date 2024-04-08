@@ -100,11 +100,11 @@ int createDataLine(int address, char* sourceCode){
         else
             numbers[count] = atoi(token);
 
-        strcpy(temp -> binaryCode[count], translateToTwosCompliment(numbers[count],NUM_OF_BITS));
-        temp->address[count]=address+count;
+        strcpy(temp->binaryCode[count], translateToTwosCompliment(numbers[count],NUM_OF_BITS));
         count++;
         token = strtok(NULL, ", ");
     }
+    temp->address[0]=address;
     temp -> sourceCode = mallocError(sizeof(sourceCode));
     strcpy(temp->sourceCode, sourceCode);
     temp -> next= NULL;
@@ -151,6 +151,7 @@ void printInfoTable(){
         printf("\n%s %s %d", temp->sourceCode, temp->binaryCode[0], temp->address[0]);
         temp = temp->next;
     }
+
 }
 
 infoTable* searchInfoTable(char* sourceCode){

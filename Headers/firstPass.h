@@ -10,6 +10,6 @@
 #define TYPE_ERROR (-1)
 
 void firstPass(void);
-int discoverOperandType(const char*);
+int discoverOperandType(char*);
 int isLabel(const char*);
 int isArrayAddress(const char*);

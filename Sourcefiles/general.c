@@ -154,25 +154,21 @@ int containsBrackets(const char *word) {
     return 0;
 }
 
-int calculateL(char* line, int isSymbolDefinition){
-    int L = 0;
-    int index = 0;
-    char* currentWord = mallocError(sizeof(char)*MAX_WORD_LENGTH);
-    while(index < MAX_LINE_LENGTH){
-        sscanf(&line[index], "%s", currentWord);
-        if (isSymbolDefinition){
-            isSymbolDefinition = FALSE;
-            continue;
-        }
-        if (strcmp(currentWord,"" ) == 0)
-            break;
-        if (containsBrackets(currentWord))
-            L+=2;
-        else
-            L++;
-        index+= wordLength(currentWord);
+int calculateL(char *line, int isFileIndication) {
+    int wordCount = 0;
+    int index;
+    char words[MAX_NUM_OF_WORDS][MAX_WORD_LENGTH];
+    int numOfWords = sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
+           words[7], words[8], words[9]);
+    int actualNum = numOfWords;
+    for(index = 0; index<numOfWords; index++){
+        if (containsBrackets(words[index]))
+            actualNum++;
     }
-    return L;
+    if (actualNum-isFileIndication == 3 && isRegisterName(words[isFileIndication+1]) &&
+    isRegisterName(words[isFileIndication+2]))
+        actualNum--;
+    return actualNum-isFileIndication;
 }
 int lengthOf(const char* word){
     int index = 0;

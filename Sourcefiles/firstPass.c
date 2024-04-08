@@ -60,7 +60,7 @@ void firstPass(void) {
                 }
                 else{
                     if (isValidDataString(line)) {
-                        address = createDataLine(DC, line);
+                        address = createDataLine(address, line);
                     }
                     else
                         printf("not valid string/data in line %d", lineNum);
@@ -115,7 +115,7 @@ void firstPass(void) {
             else
                 executeCommandFirstPass(line, 0, 0, address,words[index]);
             IC+= calculateL(line, symbolDefinitionFlag);
-
+            address+= calculateL(line, symbolDefinitionFlag);
 
         }
     }
@@ -125,11 +125,12 @@ void firstPass(void) {
     //addIC(IC);
     //freeTable(first_Symbol);
     printInfoTable();
+
     fclose(fp);
     printf("first pass finished");
 }
 
-int discoverOperandType(const char* op){
+int discoverOperandType(char* op){
     if(strcmp(op, "") == 0)
         return -1;
     if(op[0] == '#'|| existDefine(op))
