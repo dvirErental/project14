@@ -60,10 +60,8 @@ int searchOperandSymbolList(char* name){
 }
 
 int existDataSymbolList(char* name){
-    int location = 0;
     line_table *temp = first_Symbol;
     while (temp != NULL){
-        location++;
         if (!(strcmp(temp->name,name)))
             if (strcmp(temp->type,"data")==0)
                 return 1;
@@ -111,16 +109,6 @@ void freeTable(line_table *head){
     }
 }
 
-void addIC(int IC){
-    line_table *temp = first_Symbol;
-    while ((temp != NULL)&&(temp->type!=NULL)){
-        if (strcmp(temp->type,".data")==0){
-            temp->value += 100+IC;
-        }
-        temp = temp->next;
-    }
-}
-
 void addToNum(line_table *line,int num){
     line->value=line->value+num;
 }
@@ -135,5 +123,12 @@ int isExternal(char* name){
         temp = temp->next;
     }
     return 0;
+}
+void printSymbolTable(){
+    line_table* temp = first_Symbol;
+    while(temp!=NULL){
+        printf("%s\t%s\t%d\n", temp->type, temp->name, temp->value);
+        temp = temp->next;
+    }
 }
 

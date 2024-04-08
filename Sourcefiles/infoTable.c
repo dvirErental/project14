@@ -2,7 +2,13 @@
 #include "infoTable.h"
 
 infoTable* first_info = NULL;
-
+/**
+ * one of two main functions of infotable, initializes first_info
+ * @param address - the address for the first line (generally 100)
+ * @param sourceCode - the source code for the first line
+ * @param num - the number to be translated into binary and saved as the binary code
+ * @param stringAlternative - alternate way to save the binary code is just by sending it in as you want it.
+ */
 void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
     first_info = mallocError(sizeof(infoTable));
     first_info -> address[0] = address;
@@ -15,7 +21,13 @@ void makeInfoTable(int address, char* sourceCode, int num, char* stringAlternati
     first_info -> next = NULL;
 }
 
-
+/**
+ * other main function of infotable.c, creates the lines that aren't the first info table.
+ * @param address
+ * @param sourceCode
+ * @param num
+ * @param stringAlternative
+ */
 void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlternative){
     if (first_info == NULL) {
         makeInfoTable(address, sourceCode, num, stringAlternative);

@@ -1,30 +1,30 @@
 #include "secondPass.h"
 
-void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
-    int IC = 0;
+void secondPass() {
+    FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
     char* line = mallocError(sizeof(char) * MAX_LINE_LENGTH);
     int lineNum = 1;
     int index;
-    int goTwice;
     int operand1Type;
     int operand2Type;
     int errorFlag = FALSE;
     char words[MAX_WORD_LENGTH][MAX_WORD_LENGTH] = {"","","","","","","","","",""};
-    int address=100;
     infoTable *temp;
     char are1[2];
     char are2[2];
     int countBinaryLines;
+    printf("\n%s\n", extractSubstringUntilBrackets("LIST[sz]"));
     while (!feof(fp)) {
-        countBinaryLines=0;
         fgets(line, MAX_LINE_LENGTH, fp);
         cutString(line, ':');
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
                    words[7], words[8], words[9])) {
             if (isSymbolDefinition(words[0])) {
                 index = 1;
-            } else
+            }
+            else
                 index = 0;
+
             if ((!strcmp(words[index], ".define")) || (!strcmp(words[index], ".string")) ||
                 (!strcmp(words[index], ".data"))) {
                 continue;
@@ -125,9 +125,7 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                         }
                         continue;
                     }
-                    if (operand2Type == TYPE0) {
-                        strcpy(temp->binaryCode[countBinaryLines], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 2],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
-                    }
+                    strcpy(temp->binaryCode[countBinaryLines], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 2],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
                 }
                 if (((isCommand(words[index]) >= 4 && isCommand(words[index]) <= 5)) || isCommand(words[index]) < 14){
                     operand1Type = discoverOperandTypeSecondPass(words[index + 1]);
@@ -139,7 +137,6 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                     }
                     if (operand1Type == TYPE3) {
                         strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], "r0",are1));
-                        countBinaryLines++;
                     }
                     if (operand1Type == TYPE2) {
                         if (existDataSymbolList(words[index + 1])){
@@ -171,7 +168,7 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
     }
 
     if (errorFlag){
-        printf("error was found in first pass we will not continue to second pass\n");
+        printf("Error was found in second pass\n");
         exit(0);
     }
 }
@@ -225,10 +222,44 @@ int discoverOperandTypeSecondPass(char* op) {
         return TYPE0;
     else if (searchOperandSymbolList(op))
         return TYPE1;
-    else if (isArrayAddress(op))
+    else if (isArrayAddressSecondPass(op))
         return TYPE2;
     else if (isRegisterName(op))
         return TYPE3;
     else
         return -1;
+}
+
+int isArrayAddressSecondPass(const char* op){
+
+    if (containsBrackets(op) && (existDataSymbolList(extractSubstringUntilBrackets(op))))
+        return TRUE;
+    return FALSE;
+}
+
+
+char* extractSubstringUntilBrackets(char* str) {
+    // Find the position of '[' character
+    char* pos = strchr(str, '[');
+
+    if (pos != NULL) {
+        // Calculate the length of the substring before '['
+        size_t length = pos - str;
+
+        // Allocate memory for the new string (including null terminator)
+        char* substring = (char*)malloc((length + 1) * sizeof(char));
+        if (substring == NULL) {
+            perror("Memory allocation failed");
+            exit(EXIT_FAILURE);
+        }
+
+        // Copy characters from the original string to the new string
+        strncpy(substring, str, length);
+        substring[length] = '\0'; // Null-terminate the string
+
+        return substring;
+    } else {
+        // If '[' is not found, return a copy of the original string
+        return strdup(str);
+    }
 }

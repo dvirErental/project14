@@ -37,3 +37,4 @@ extern line_table * first_Symbol;
 int existDataSymbolList(char* name);
 
 void updateDataValue(int);
+void printSymbolTable(void);

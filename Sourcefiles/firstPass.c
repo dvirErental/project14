@@ -17,7 +17,7 @@ void firstPass(void) {
     initializeCommands();
     while (!feof(fp)) {
         symbolDefinitionFlag = FALSE;
-        printf("    %d   ", ++lineNum);
+        ++lineNum;
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
                    words[7], words[8], words[9])) {
@@ -45,11 +45,11 @@ void firstPass(void) {
             if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
                 if (symbolDefinitionFlag == TRUE) {
                     if(isFirstSymbol == TRUE) {
-                        first_Symbol = make_symbol(words[0], ".data", DC);
+                        first_Symbol = make_symbol(words[0], ".data", address);
                         isFirstSymbol = FALSE;
                     }
                     else
-                        addToSymbolList(words[0], ".data", DC);}
+                        addToSymbolList(words[0], ".data", address);}
                 else {
                     printf("data without symbol");
                     errorFlag = TRUE;
@@ -124,9 +124,6 @@ void firstPass(void) {
         printf("error was found in first pass we will not continue to second pass\n");
         exit(0);
     }
-    //addIC(IC);
-    //freeTable(first_Symbol);
-    printInfoTable();
 
     fclose(fp);
     printf("first pass finished");
