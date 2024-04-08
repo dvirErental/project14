@@ -113,7 +113,7 @@ int createDataLine(int address, char* sourceCode) {
 
     int createStringLine(int address, char* stringToSave) {
     int index = 0;
-    infoTable temp;  // Declare temp as a regular variable, not a pointer
+    infoTable temp;  
 
     while (((stringToSave[index] >= 'a') && (stringToSave[index] <= 'z')) ||
            ((stringToSave[index] >= 'A') && (stringToSave[index] <= 'Z'))) {
