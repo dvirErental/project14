@@ -50,8 +50,8 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                 if (((isCommand(words[index]) >= 0 && isCommand(words[index]) <= 3)) || isCommand(words[index]) == 6) {
                     operand1Type = discoverOperandTypeSecondPass(words[index + 1]);
                     operand2Type = discoverOperandTypeSecondPass(words[index + 2]);
-                    strcpy(are1,words[index + 1]);
-                    strcpy(are2,words[index + 2]);
+                    strcpy(are1, discoverARE(words[index + 1]));
+                    strcpy(are2, discoverARE(words[index + 2]));
                     if (operand1Type == -1) {
                         printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
                         errorFlag = TRUE;
@@ -131,20 +131,11 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                 }
                 if (((isCommand(words[index]) >= 4 && isCommand(words[index]) <= 5)) || isCommand(words[index]) < 14){
                     operand1Type = discoverOperandTypeSecondPass(words[index + 1]);
-                    strcpy(are1,words[index + 1]);
+                    strcpy(are1, discoverARE(words[index + 1]));
                     if (operand1Type == -1) {
                         printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
                         errorFlag = TRUE;
                         break;
-                    }
-                    if (operand2Type == -1) {
-                        printf("Error, line %d, invalid operand %s", lineNum, words[index + 2]);
-                        errorFlag = TRUE;
-                        break;
-                    }
-                    if (operand1Type == TYPE3 && operand2Type == TYPE3) {
-                        strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], words[index + 2],are1));
-                        continue;
                     }
                     if (operand1Type == TYPE3) {
                         strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], "r0",are1));
@@ -154,7 +145,6 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                         if (existDataSymbolList(words[index + 1])){
                             strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
                             strcpy(temp->binaryCode[2], strcat(translateToTwosCompliment(theIndexArray(words[index + 1]),NUM_OF_BITS-BITS_IN_ARE),"00"));
-                            countBinaryLines+=2;
                         }
                         else{
                             printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
@@ -165,7 +155,6 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                     if (operand1Type == TYPE1) {
                         if (existDataSymbolList(words[index + 1])){
                             strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
-                            countBinaryLines++;
                         }
                         else{
                             printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
@@ -175,44 +164,16 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                     }
                     if (operand1Type == TYPE0) {
                         strcpy(temp->binaryCode[1], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 1],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
-                        countBinaryLines++;
-                    }
-                    if (operand2Type == TYPE3) {
-                        strcpy(temp->binaryCode[countBinaryLines], buildRegisterBinaryCode(words[index + 2], "r0",are1));
-                        continue;
-                    }
-                    if (operand2Type == TYPE2) {
-                        if (existDataSymbolList(words[index + 2])){
-                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
-                            strcpy(temp->binaryCode[countBinaryLines+1], strcat(translateToTwosCompliment(theIndexArray(words[index + 2]),NUM_OF_BITS-BITS_IN_ARE),"00"));
-                        }
-                        else{
-                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 2]);
-                            errorFlag = TRUE;
-                            break;
-                        }
-                        continue;
-                    }
-                    if (operand2Type == TYPE1) {
-                        if (existDataSymbolList(words[index + 2])){
-                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
-
-                        }
-                        else{
-                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 2]);
-                            errorFlag = TRUE;
-                            break;
-                        }
-                        continue;
-                    }
-                    if (operand2Type == TYPE0) {
-                        strcpy(temp->binaryCode[countBinaryLines], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 2],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
                     }
                 }
             }
         }
     }
 
+    if (errorFlag){
+        printf("error was found in first pass we will not continue to second pass\n");
+        exit(0);
+    }
 }
 
 int theIndexArray(char* word) {
@@ -257,12 +218,6 @@ char* buildRegisterBinaryCode(char* reg1, char* reg2,char* are) {
     return binary;
 }
 
-char* buildType2BinaryCode(char* name, char* are) {
-    if (searchSymbolList(name)) {
-
-    }
-}
-
 int discoverOperandTypeSecondPass(char* op) {
     if(strcmp(op, "") == 0)
         return -1;
@@ -277,20 +232,3 @@ int discoverOperandTypeSecondPass(char* op) {
     else
         return -1;
 }
-
-/*
-if (((isCommand(words[index])>=0 && isCommand(words[index])<= 3))|| isCommand(words[index]) == 6) {
-for (goTwice = 0; goTwice < 2; goTwice++){
-if (isRegisterName(words[index + 1])) {
-registerNum = isRegisterName(words[index + 1]);
-binaryWords[goTwice] = "000000";
-strcat(binaryWords[goTwice], translateToTwosCompliment(registerNum, BITS_IN_REGISTER_LENGTH));
-strcat(binaryWords[goTwice], "11");
-}
-else if (isNumberValue(words[index+1]) != MIN_NUM){
-numberValue = isNumberValue(words[index+1]);
-
-}
-index++;
-}
-} */

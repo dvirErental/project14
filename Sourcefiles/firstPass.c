@@ -121,6 +121,7 @@ void firstPass(void) {
     }
     if (errorFlag){
         printf("error was found in first pass we will not continue to second pass\n");
+        exit(0);
     }
     //addIC(IC);
     //freeTable(first_Symbol);
