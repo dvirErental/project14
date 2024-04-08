@@ -32,6 +32,8 @@ void printInfoTable();
 
 void addCompleteLineToInfoTable(infoTable* info);
 
+infoTable* searchInfoTable(char*);
+
 void freeInfoLine(infoTable *line);
 
 void freeInfoTable(infoTable *head);

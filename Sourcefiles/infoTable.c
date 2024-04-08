@@ -153,6 +153,15 @@ void printInfoTable(){
     }
 }
 
+infoTable* searchInfoTable(char* sourceCode){
+    infoTable* temp = first_info;
+    while (temp != NULL){
+        if (strcmp(temp->sourceCode, sourceCode) == 0)
+            return temp;
+        temp = temp->next;
+    }
+    return NULL;
+}
 
 /*int isNumberValue(const char* word) {
     int num;

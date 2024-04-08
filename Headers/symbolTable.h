@@ -16,6 +16,8 @@ int searchSymbolList(char*);
 
 int searchOperandSymbolList(char* name);
 
+int findValue(char* name);
+
 void free_line_table(line_table *line);
 
 void freeTable(line_table *head);

@@ -98,6 +98,27 @@ int isRegisterName(const char* name){
     return FALSE;
 }
 
+int whichRegister(const char* name){
+    if (name[1] == '0')
+        return 0;
+    if (name[1] == '1')
+        return 1;
+    if (name[1] == '2')
+        return 2;
+    if (name[1] == '3')
+        return 3;
+    if (name[1] == '4')
+        return 4;
+    if (name[1] == '5')
+        return 5;
+    if (name[1] == '6')
+        return 6;
+    if (name[1] == '7')
+        return 7;
+    return -1;
+}
+
+
 
 /*void flipBits(char* word){
     int index;

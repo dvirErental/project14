@@ -21,7 +21,7 @@ void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/
 int isSymbolDefinition(const char* );
 int containsBrackets(const char*);
-
+int whichRegister(const char* name);
 int lengthOf(const char*);
 void *mallocError(long object_size);
 int wordLength(const char*);
