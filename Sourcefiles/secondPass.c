@@ -12,7 +12,11 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
     char words[MAX_WORD_LENGTH][MAX_WORD_LENGTH];
     int address=100;
     infoTable *temp;
+    char are1[2];
+    char are2[2];
+    int countBinaryLines;
     while (!feof(fp)) {
+        countBinaryLines=0;
         fgets(line, MAX_LINE_LENGTH, fp);
         cutString(line, ':');
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
@@ -36,6 +40,7 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
 
             }
             if (isCommand(words[index]) != -1) {
+                countBinaryLines=1;
                 if ((temp = searchInfoTable(line)) == NULL) {
                     printf("Error, line %d, invalid command %s", lineNum, words[index]);
                     errorFlag = TRUE;
@@ -45,6 +50,8 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                 if (((isCommand(words[index]) >= 0 && isCommand(words[index]) <= 3)) || isCommand(words[index]) == 6) {
                     operand1Type = discoverOperandTypeSecondPass(words[index + 1]);
                     operand2Type = discoverOperandTypeSecondPass(words[index + 2]);
+                    strcpy(are1,words[index + 1]);
+                    strcpy(are2,words[index + 2]);
                     if (operand1Type == -1) {
                         printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
                         errorFlag = TRUE;
@@ -56,44 +63,185 @@ void secondPass(infoTable* first, line_table* first_sym, FILE* fp) {
                         break;
                     }
                     if (operand1Type == TYPE3 && operand2Type == TYPE3) {
-                        strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], words[index + 2]));
+                        strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], words[index + 2],are1));
                         continue;
                     }
                     if (operand1Type == TYPE3) {
-                        strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], "r0"));
+                        strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], "r0",are1));
+                        countBinaryLines++;
                     }
                     if (operand1Type == TYPE2) {
-                        searchSymbolList(words[index + 1]);
+                        if (existDataSymbolList(words[index + 1])){
+                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            strcpy(temp->binaryCode[2], strcat(translateToTwosCompliment(theIndexArray(words[index + 1]),NUM_OF_BITS-BITS_IN_ARE),"00"));
+                            countBinaryLines+=2;
+                        }
+                        else{
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
+                            errorFlag = TRUE;
+                            break;
+                        }
                     }
-                    if (operand1Type == TYPE0 && operand2Type == TYPE0) {
-                            if (temp->binaryCode[0] != NULL) {
-                                strcpy(temp->binaryCode[1],
-                                       translateToTwosCompliment(atoi(words[index + 1]), NUM_OF_BITS));
-                                strcpy(temp->binaryCode[2],
-                                       translateToTwosCompliment(atoi(words[index + 2]), NUM_OF_BITS));
-                            }
+                    if (operand1Type == TYPE1) {
+                        if (existDataSymbolList(words[index + 1])){
+                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            countBinaryLines++;
                         }
-                        if (operand1Type == TYPE0 && operand2Type == TYPE1) {
-                            if (temp->binaryCode[0] != NULL) {
-                                strcpy(temp->binaryCode[1],
-                                       translateToTwosCompliment(atoi(words[index + 1]), NUM_OF_BITS));
-                                strcpy(temp->binaryCode[2],
-                                       translateToTwosCompliment(atoi(words[index + 2]), NUM_OF_BITS));
-                            }
+                        else{
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
+                            errorFlag = TRUE;
+                            break;
                         }
-                    } else {
-                        printf("Error, line %d, invalid command %s", lineNum, words[index]);
+                    }
+                    if (operand1Type == TYPE0) {
+                        strcpy(temp->binaryCode[1], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 1],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
+                        countBinaryLines++;
+                    }
+                    if (operand2Type == TYPE3) {
+                        strcpy(temp->binaryCode[countBinaryLines], buildRegisterBinaryCode(words[index + 2], "r0",are1));
+                        continue;
+                    }
+                    if (operand2Type == TYPE2) {
+                        if (existDataSymbolList(words[index + 2])){
+                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            strcpy(temp->binaryCode[countBinaryLines+1], strcat(translateToTwosCompliment(theIndexArray(words[index + 2]),NUM_OF_BITS-BITS_IN_ARE),"00"));
+                        }
+                        else{
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 2]);
+                            errorFlag = TRUE;
+                            break;
+                        }
+                        continue;
+                    }
+                    if (operand2Type == TYPE1) {
+                        if (existDataSymbolList(words[index + 2])){
+                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
+
+                        }
+                        else{
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 2]);
+                            errorFlag = TRUE;
+                            break;
+                        }
+                        continue;
+                    }
+                    if (operand2Type == TYPE0) {
+                        strcpy(temp->binaryCode[countBinaryLines], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 2],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
+                    }
+                }
+                if (((isCommand(words[index]) >= 4 && isCommand(words[index]) <= 5)) || isCommand(words[index]) < 14){
+                    operand1Type = discoverOperandTypeSecondPass(words[index + 1]);
+                    strcpy(are1,words[index + 1]);
+                    if (operand1Type == -1) {
+                        printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
                         errorFlag = TRUE;
                         break;
                     }
+                    if (operand2Type == -1) {
+                        printf("Error, line %d, invalid operand %s", lineNum, words[index + 2]);
+                        errorFlag = TRUE;
+                        break;
+                    }
+                    if (operand1Type == TYPE3 && operand2Type == TYPE3) {
+                        strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], words[index + 2],are1));
+                        continue;
+                    }
+                    if (operand1Type == TYPE3) {
+                        strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], "r0",are1));
+                        countBinaryLines++;
+                    }
+                    if (operand1Type == TYPE2) {
+                        if (existDataSymbolList(words[index + 1])){
+                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            strcpy(temp->binaryCode[2], strcat(translateToTwosCompliment(theIndexArray(words[index + 1]),NUM_OF_BITS-BITS_IN_ARE),"00"));
+                            countBinaryLines+=2;
+                        }
+                        else{
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
+                            errorFlag = TRUE;
+                            break;
+                        }
+                    }
+                    if (operand1Type == TYPE1) {
+                        if (existDataSymbolList(words[index + 1])){
+                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            countBinaryLines++;
+                        }
+                        else{
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
+                            errorFlag = TRUE;
+                            break;
+                        }
+                    }
+                    if (operand1Type == TYPE0) {
+                        strcpy(temp->binaryCode[1], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 1],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
+                        countBinaryLines++;
+                    }
+                    if (operand2Type == TYPE3) {
+                        strcpy(temp->binaryCode[countBinaryLines], buildRegisterBinaryCode(words[index + 2], "r0",are1));
+                        continue;
+                    }
+                    if (operand2Type == TYPE2) {
+                        if (existDataSymbolList(words[index + 2])){
+                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            strcpy(temp->binaryCode[countBinaryLines+1], strcat(translateToTwosCompliment(theIndexArray(words[index + 2]),NUM_OF_BITS-BITS_IN_ARE),"00"));
+                        }
+                        else{
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 2]);
+                            errorFlag = TRUE;
+                            break;
+                        }
+                        continue;
+                    }
+                    if (operand2Type == TYPE1) {
+                        if (existDataSymbolList(words[index + 2])){
+                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
 
+                        }
+                        else{
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 2]);
+                            errorFlag = TRUE;
+                            break;
+                        }
+                        continue;
+                    }
+                    if (operand2Type == TYPE0) {
+                        strcpy(temp->binaryCode[countBinaryLines], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 2],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
+                    }
                 }
             }
         }
     }
 
 }
-char* buildRegisterBinaryCode(char* reg1, char* reg2) {
+
+int theIndexArray(char* word) {
+    char *index;
+    strcpy(index, word);
+    index = strtok(index, "[");
+    index = strtok(NULL, "]");
+    if (index != NULL) {
+        if (index[0] >= '0' && index[0] <= '9')
+            return atoi(index);
+        else if (existDefine(index))
+            return getValue(index);
+    }
+    exit(0);
+}
+
+char* discoverARE(char* op) {
+    if(strcmp(op, "") == 0)
+        return "ERROR";
+    if ((op[0] == '#') || (isRegisterName(op)))
+        return "00";
+    else if (existDataSymbolList(op) || isArrayAddress(op))
+        return "10";
+    else if (isExternal(op))
+        return "01";
+    else
+        return "ERROR";
+}
+char* buildRegisterBinaryCode(char* reg1, char* reg2,char* are) {
     int numreg1 =whichRegister(reg1);
     int numreg2 =whichRegister(reg2);
     char* binary= (char*)mallocError(sizeof(char) * NUM_OF_BITS);
@@ -105,9 +253,16 @@ char* buildRegisterBinaryCode(char* reg1, char* reg2) {
     binary[5] = '0';
     strcat(binary, translateToTwosCompliment(numreg1, BITS_IN_REGISTER_LENGTH));
     strcat(binary, translateToTwosCompliment(numreg2, BITS_IN_REGISTER_LENGTH));
-    strcat(binary, "00");
+    strcat(binary, are);
     return binary;
 }
+
+char* buildType2BinaryCode(char* name, char* are) {
+    if (searchSymbolList(name)) {
+
+    }
+}
+
 int discoverOperandTypeSecondPass(char* op) {
     if(strcmp(op, "") == 0)
         return -1;

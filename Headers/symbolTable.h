@@ -28,8 +28,12 @@ void addIC(int IC);
 
 int getValue(char* name);
 
+int isExternal(char* name);
+
 int existDefine(char* name);
 
 extern line_table * first_Symbol;
+
+int existDataSymbolList(char* name);
 
 void updateDataValue(int);
