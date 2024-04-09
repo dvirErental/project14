@@ -42,9 +42,9 @@ void buildOB(infoTable* firstInfo) {
 
     }
     while(firstInfo != NULL){
-        while(firstInfo->address[i]!=NULL){
+        while(firstInfo->address[i]>100){
             fprintf(filePointer, "%d ", firstInfo->address[i]);
-            encodeBits(firstInfo->binaryCode[i], filePointer);
+            encodeBits((int*)(firstInfo->binaryCode[i]-'0'), filePointer);
             i++;
         }
         i=0;

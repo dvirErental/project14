@@ -3,7 +3,7 @@
 
 
 node* first;
-node *make_node(char *name, char *content, int line_num){
+node *make_node(char *name, char *content, int line_num){/* Create a new node */
     node *temp;
 
     temp = mallocError(sizeof(node));
@@ -16,7 +16,7 @@ node *make_node(char *name, char *content, int line_num){
     return temp;
 }
 
-node* existNode(char *name){
+node* existNode(char *name){/* Check if the node exists in the list */
     node *temp = copyNode(first);
 
     while (temp != NULL) {
@@ -29,21 +29,12 @@ node* existNode(char *name){
     return NULL;
 }
 
-void add_to_list(char *name, char *content, int line_num){
+void add_to_list(char *name, char *content, int line_num){/* Add a new node to the list */
     node* temp = first;
     while (temp->next != NULL)
         temp = temp->next;
     temp->next = make_node(name, content, line_num);
 }
-/*void copy_head(node* old,node* new){
-    old = mallocError(strlen(new->name)*sizeof(char)+(strlen(new->content)*sizeof(char))+sizeof(new->next));
-    old = mallocError(sizeof(new));
-    if(new->name == NULL)
-        old->name = NULL;
-    old->name = new->name;
-    old->content = new->content;
-    old->line = new->line;
-}*/
 
 void free_node(node *node1){
     /* Free memory allocated for the name, content and node */
@@ -60,7 +51,7 @@ void free_list(node *head){
         free_node(temp);
     }
 }
-node* copyNode(node* old){
+node* copyNode(node* old){ /*copy a node to a new node*/
     node* new;
     new = mallocError(sizeof(node));
     new->name = mallocError((strlen(old->name) + 1) * sizeof(char));
