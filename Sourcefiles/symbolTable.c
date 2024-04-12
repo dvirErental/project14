@@ -62,11 +62,8 @@ int searchOperandSymbolList(char* name){
 
 int existDataSymbolList(char* name){
     line_table *temp = first_Symbol;
-    char* name2 = mallocError((strlen(name) + 1) * sizeof(char));
-    strcpy(name2, name);
-    strcat(name2,":");
     while (temp != NULL){
-        if (!(strcmp(temp->name,name2)))
+        if (!(strcmp(temp->name,name)))
             if (strcmp(temp->type,"data")==0)
                 return 1;
         temp = temp->next;

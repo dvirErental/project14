@@ -248,10 +248,7 @@ int discoverOperandTypeSecondPass(char* op) {
         return -1;
     if(op[0] == '#')
         return TYPE0;
-    char* op2= (char*)mallocError(sizeof(char) * 10);
-    strcpy(op2, op);
-    strcat(op2,":");
-    if (searchSymbolList(op2))
+    else if (searchSymbolList(op))
         return TYPE1;
     else if (isArrayAddressSecondPass(op))
         return TYPE2;
