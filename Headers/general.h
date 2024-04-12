@@ -14,6 +14,10 @@
 #define BITS_IN_REGISTER_LENGTH 3
 #define FALSE 0
 #define TRUE 1
+#define TWO_OPERAND_COMMANDS 3
+#define OTHER_TWO_OPERAND_COMMAND 6
+#define ZERO_OPERAND_COMMAND 14
+#define OTHER_ZERO_OPERAND_COMMAND 15
 extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/

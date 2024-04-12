@@ -47,10 +47,17 @@ void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlte
     ((temp -> next) -> next) = NULL;
 }
 
+/**
+ * adds an already built line into the info Table(assuming only one binary code needed)
+ * @param info the built line
+ */
 void addSetLineToInfoTable(infoTable* info){
     addLineToInfoTable(info->address[0], info->sourceCode,0, info->binaryCode[0]);
 }
-
+/**
+ * similar to previous function, with the difference that it can contain more than one binary code.
+ * @param info the built line to add
+ */
 void addCompleteLineToInfoTable(infoTable* info){
     if (first_info == NULL){
         first_info = mallocError(sizeof(*info));
@@ -63,31 +70,42 @@ void addCompleteLineToInfoTable(infoTable* info){
     temp->next = mallocError(sizeof(infoTable));
     temp->next = info;
 }
-
+/**
+ * checks if a given string is a valid representaion of a .data command.
+ * @param str the string to check
+ * @return true if it is, otherwise false.
+ */
 int isValidDataString(const char *str) {
-    // מחזיר אפס אם המחרוזת חוקית, אחרת מחזיר את המספר הראשון שלא הצליחנו לקרוא
+    /* מחזיר אפס אם המחרוזת חוקית, אחרת מחזיר את המספר הראשון שלא הצליחנו לקרוא*/
     char *endptr = mallocError(sizeof(char)* MAX_WORD_LENGTH);
     char *deleteLabel = mallocError(sizeof(char)* lengthOf(str));
     strcpy(deleteLabel,str);
     strcpy( deleteLabel,cutString(deleteLabel, ':'));
     while (isspace(*deleteLabel))
-        deleteLabel++; // דחיפות מרווחים
+        deleteLabel++; /*דחיפות מרווחים*/
     strtol(deleteLabel + 5, &endptr, 10);
     while (isspace(*endptr))
         endptr++; // דחיפות מרווחים
     while (*endptr != '\0') {
-        if (*endptr != ',' && !isspace(*endptr)) { // בודק אם יש תו שאינו פסיק או רווח
+        if (*endptr != ',' && !isspace(*endptr)) { /* בודק אם יש תו שאינו פסיק או רווח*/
             if (isWord(endptr))
-                return 1;
+                return TRUE;
             else
-                return 0;
+                return FALSE;
         }
-        strtol(endptr + 1, &endptr, 10); // הולך למספר הבא
+        strtol(endptr + 1, &endptr, 10); /* הולך למספר הבא*/
         while (isspace(*endptr))
-            endptr++; // דחיפות מרווחים
+            endptr++; /* דחיפות מרווחים*/
     }
     return 1;
 }
+
+/**
+ * creates a data line
+ * @param address the starting address of the given line to create
+ * @param sourceCode - the source code for the line
+ * @return the new address following the addition of the data line.
+ */
 int createDataLine(int address, char* sourceCode) {
     infoTable* temp = mallocError(sizeof(infoTable));
     int numbers[MAX_NUM_OF_WORDS];
@@ -122,10 +140,15 @@ int createDataLine(int address, char* sourceCode) {
     return address + count;
 }
 
-
-    int createStringLine(int address, char* stringToSave) {
+/**
+ * creates a string line in the info table
+ * @param address - the starting address for the info table.
+ * @param stringToSave - the word to save as a string.
+ * @return the new address following the addtion of the string line.
+ */
+int createStringLine(int address, char* stringToSave) {
     int index = 0;
-    infoTable temp;  
+    infoTable temp;
 
     while (((stringToSave[index] >= 'a') && (stringToSave[index] <= 'z')) ||
            ((stringToSave[index] >= 'A') && (stringToSave[index] <= 'Z'))) {
@@ -143,6 +166,14 @@ int createDataLine(int address, char* sourceCode) {
     return address + 1;
 }
 
+/**
+ * creates a info line for the first word of a command.
+ * @param line the line in which the command appears  (will become the source code)
+ * @param op1 the type of the first operand(if there is one)
+ * @param op2 the type of the second operand(if there is one)
+ * @param address the address that should be stored in the info table with the command.
+ * @param word the command name.
+ */
 void executeCommandFirstPass(char* line, int op1, int op2, int address, char* word){
     char binaryWord[NUM_OF_BITS] = "";
     char* opCode = translateToTwosCompliment(isCommand(word), BITS_IN_OPCODE);
@@ -157,6 +188,7 @@ void executeCommandFirstPass(char* line, int op1, int op2, int address, char* wo
     addLineToInfoTable(address, line, 0, binaryWord);
 }
 
+/*
 void printInfoTable(){
     infoTable* temp = first_info;
     while (temp != NULL){
@@ -165,7 +197,13 @@ void printInfoTable(){
     }
 
 }
+*/
 
+/**
+ * searches the info table for a line with a matching source code to the given parameter
+ * @param sourceCode the parameter to compare with.
+ * @return the pointer to the line with the matching source code if there is one, otherwise NULL.
+ */
 infoTable* searchInfoTable(char* sourceCode){
     infoTable* temp = first_info;
     while (temp != NULL){

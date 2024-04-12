@@ -1,5 +1,8 @@
 #include "secondPass.h"
 
+/**
+ * primary function of the second pass - finishes the info table and follows the given algorithm
+ */
 void secondPass() {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
     char* line = mallocError(sizeof(char) * MAX_LINE_LENGTH);
@@ -173,6 +176,11 @@ void secondPass() {
     }
 }
 
+/**
+ *
+ * @param word
+ * @return
+ */
 int theIndexArray(char* word) {
     char *index;
     strcpy(index, word);
@@ -187,6 +195,11 @@ int theIndexArray(char* word) {
     exit(0);
 }
 
+/**
+ * discovers the ARE of a given operand
+ * @param op - the operand
+ * @return the appropriate ARE (or ERROR if there is none)
+ */
 char* discoverARE(char* op) {
     if(strcmp(op, "") == 0)
         return "ERROR";
@@ -199,6 +212,14 @@ char* discoverARE(char* op) {
     else
         return "ERROR";
 }
+
+/**
+ * creates the binary code of a register
+ * @param reg1 the first register
+ * @param reg2 the second register
+ * @param are the ARE of the register
+ * @return the translation into binary code.
+ */
 char* buildRegisterBinaryCode(char* reg1, char* reg2,char* are) {
     int numreg1 =whichRegister(reg1);
     int numreg2 =whichRegister(reg2);
@@ -215,6 +236,12 @@ char* buildRegisterBinaryCode(char* reg1, char* reg2,char* are) {
     return binary;
 }
 
+/**
+ * discovers the operand type of the given operand (different than the original version of the function because here
+ * we're checking if it's actually an array, as opposed to just a legal name for one)
+ * @param op the operand to check
+ * @return the type of operand.
+ */
 int discoverOperandTypeSecondPass(char* op) {
     if(strcmp(op, "") == 0)
         return -1;
@@ -230,6 +257,11 @@ int discoverOperandTypeSecondPass(char* op) {
         return -1;
 }
 
+/**
+ * checks if the given operand is the name for an array(needed because of the '[]'
+ * @param op the operand to check
+ * @return True if it is, otherwise false.
+ */
 int isArrayAddressSecondPass(const char* op){
 
     if (containsBrackets(op) && (existDataSymbolList(extractSubstringUntilBrackets(op))))
@@ -237,7 +269,11 @@ int isArrayAddressSecondPass(const char* op){
     return FALSE;
 }
 
-
+/**
+ * extract all the letters of a string until the brackets.
+ * @param str the string from which to extract
+ * @return a copy of the string until the brackets
+ */
 char* extractSubstringUntilBrackets(char* str) {
     // Find the position of '[' character
     char* pos = strchr(str, '[');

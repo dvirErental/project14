@@ -79,7 +79,7 @@ char* translateToTwosCompliment(int num,int length) {
         exit(1);
     }
     str[length] = '\0'; // Null-terminate the string
-    // Filling the string with '0' or '1' based on the two's complement representation
+    /* Filling the string with '0' or '1' based on the two's complement representation*/
     int mask = 1 << (length - 1);
     for (int i = 0; i < length; i++) {
         if (num & mask)
@@ -91,13 +91,21 @@ char* translateToTwosCompliment(int num,int length) {
 
     return str;
 }
-
+/**
+ * checks if a given char* is identical to the name of one of the registers
+ * @param name the char* to check
+ * @return 1(True) if the given string is a register, otherwise 0(False)
+ */
 int isRegisterName(const char* name){
     if (name[0] == 'r' && name[1] >= '0' && name[1] <= '7' && (name[2] == '\0' || (name[2] == ',' && name[3] == '\0')))
         return TRUE;
     return FALSE;
 }
-
+/**
+ * return which number register the given string is representing
+ * @param name the string to check
+ * @return the number of the register.
+ */
 int whichRegister(const char* name){
     if (name[1] == '0')
         return 0;

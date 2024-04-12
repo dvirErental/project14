@@ -1,7 +1,10 @@
 #include "../Headers/firstPass.h"
 /*assuming max number of words in a line is 10*/
-/*Symbol declaration is done with all capital letters followed by a colon*/
 
+/**
+ * Main function of first pass
+ * does what the recommended algorithm does.
+ */
 void firstPass(void) {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
     int IC = 0, DC = 0;
@@ -14,17 +17,17 @@ void firstPass(void) {
     char line[MAX_LINE_LENGTH] = "";
     char words[MAX_NUM_OF_WORDS][MAX_WORD_LENGTH] = {"","","","",
                                                      "","","","","",""};
-    initializeCommands();
+    initializeCommands();/*fills the command array with the commands*/
     while (!feof(fp)) {
         symbolDefinitionFlag = FALSE;
         ++lineNum;
         fgets(line, MAX_LINE_LENGTH, fp);
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
-                   words[7], words[8], words[9])) {
+                   words[7], words[8], words[9])) {/*separates the line from one long string into words in an array*/
 
             if (!strcmp(words[0], ".define")){
                 if (searchSymbolList(words[1])) {
-                    printf("multiple definitions using same name");
+                    printf("ERROR: multiple definitions using same name");
                     errorFlag = TRUE;
                 }
                 else if (isFirstSymbol){
@@ -38,7 +41,7 @@ void firstPass(void) {
             }
             if (isSymbolDefinition(words[0])) {
                 symbolDefinitionFlag = TRUE;
-                index = 1;
+                index = 1;/*know to start from second word from now on*/
             }
             else
                 index = 0;
@@ -51,7 +54,7 @@ void firstPass(void) {
                     else
                         addToSymbolList(words[0], ".data", address);}
                 else {
-                    printf("data without symbol");
+                    printf("ERROR: data without symbol");
                     errorFlag = TRUE;
                 }
                 if (strcmp(words[1], ".string") == 0) {
@@ -61,7 +64,6 @@ void firstPass(void) {
                 else{
                     if (isValidDataString(line)) {
                         address = createDataLine(address, line);
-                        printf("Data line was added");
                     }
                     else
                         printf("not valid string/data in line %d", lineNum);
@@ -108,10 +110,10 @@ void firstPass(void) {
                 printf("illegal Command, line %d", lineNum);
                 errorFlag = TRUE;
             }
-            if(isCommand(words[index])<=3 || isCommand(words[index]) == 6)//change 3 to define
+            if(isCommand(words[index])<=TWO_OPERAND_COMMANDS || isCommand(words[index]) == OTHER_TWO_OPERAND_COMMAND)
                 executeCommandFirstPass(line, discoverOperandType(words[index+1]),
                                     discoverOperandType(words[index+2]), address,words[index]);
-            else if ((isCommand(words[index]) != 14) && (isCommand(words[index]) != 15))
+            else if ((isCommand(words[index]) != ZERO_OPERAND_COMMAND) && (isCommand(words[index]) != OTHER_ZERO_OPERAND_COMMAND))
                 executeCommandFirstPass(line, 0, discoverOperandType(words[index+1]), address,words[index]);
             else
                 executeCommandFirstPass(line, 0, 0, address,words[index]);
@@ -126,9 +128,14 @@ void firstPass(void) {
     }
 
     fclose(fp);
-    printf("first pass finished");
+    printf("first pass finished\n");
 }
 
+/**
+ * discovers which type of operand a given word is.
+ * @param op the operand to discover
+ * @return the number which represents the type of operand.
+ */
 int discoverOperandType(char* op){
     if(strcmp(op, "") == 0)
         return -1;
@@ -142,6 +149,11 @@ int discoverOperandType(char* op){
             return TYPE1;
 }
 
+/**
+ * checks if a given char* is an array address based off the way it's written.
+ * @param op the char* to check
+ * @return 1(True) if it can represent an array, otherwise 0(false)
+ */
 int isArrayAddress(const char* op){
     if (containsBrackets(op) && (op[wordLength(op)-1] == ']'))
         return TRUE;

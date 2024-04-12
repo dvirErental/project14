@@ -1,5 +1,11 @@
 #include "../Headers/PreAssembler.h"
 char* commands[16];
+
+/**
+ * one of two primary functions of the preAssembler.
+ * @param op - the file to "PreAssemble".
+ * @return a pointer to a new file following the preAssembly of the original file.
+ */
 FILE* preAssemble(FILE* op) {
     int macsFound = 0;
     int lineNum = 1;
@@ -46,7 +52,14 @@ FILE* preAssemble(FILE* op) {
 
 
 
-
+/**
+ * other primary function of the preAssembler, this one creates a macro.
+ * @param fp - the file to PreAssemble.
+ * @param name the name of the new macro
+ * @param lineNum - the line number in which the macro was declared
+ * @param macsFound - positive a a macro has already been found in the file, otherwise zero.
+ * @return the new line number after the macro.
+ */
 int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
     char line[MAX_LINE_LENGTH];
     char* content = mallocError(MAX_LINE_LENGTH* sizeof(char));
