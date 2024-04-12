@@ -47,6 +47,7 @@ void firstPass(void) {
                 index = 0;
             if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
                 if (symbolDefinitionFlag == TRUE) {
+                    words[0][strlen(words[0])-1] = '\0';
                     if(isFirstSymbol == TRUE) {
                         first_Symbol = make_symbol(words[0], "data", address);
                         isFirstSymbol = FALSE;

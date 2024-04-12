@@ -16,7 +16,6 @@ void secondPass() {
     char are1[2];
     char are2[2];
     int countBinaryLines;
-    printf("\n%s\n", extractSubstringUntilBrackets("LIST[sz]"));
     while (!feof(fp)) {
         lineNum++;
         fgets(line, MAX_LINE_LENGTH, fp);
@@ -148,7 +147,7 @@ void secondPass() {
                             strcpy(temp->binaryCode[2], strcat(translateToTwosCompliment(theIndexArray(words[index + 1]),NUM_OF_BITS-BITS_IN_ARE),"00"));
                         }
                         else{
-                            printf("Error, line %d, invalid operand % s", lineNum, words[index + 1]);
+                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
                             errorFlag = TRUE;
                             break;
                         }
