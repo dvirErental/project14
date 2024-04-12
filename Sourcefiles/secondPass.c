@@ -16,6 +16,7 @@ void secondPass() {
     char are1[2];
     char are2[2];
     int countBinaryLines;
+    int i;
     while (!feof(fp)) {
         lineNum++;
         fgets(line, MAX_LINE_LENGTH, fp);
@@ -49,12 +50,10 @@ void secondPass() {
                     errorFlag = TRUE;
                     break;
                 }
-
                 if (((isCommand(words[index]) >= 0 && isCommand(words[index]) <= 3)) || isCommand(words[index]) == 6) {
                     operand1Type = discoverOperandTypeSecondPass(words[index + 1]);
                     operand2Type = discoverOperandTypeSecondPass(words[index + 2]);
                     strcpy(are1, discoverARE(words[index + 1]));
-                    strcpy(are2, discoverARE(words[index + 2]));
                     if (operand1Type == -1) {
                         printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
                         errorFlag = TRUE;
@@ -67,6 +66,13 @@ void secondPass() {
                     }
                     if (operand1Type == TYPE3 && operand2Type == TYPE3) {
                         strcpy(temp->binaryCode[1], buildRegisterBinaryCode(words[index + 1], words[index + 2],are1));
+                        countBinaryLines++;
+                        i=0;
+                        printf("line %d: \n", lineNum);
+
+                        for (; i <countBinaryLines ; ++i) {
+                            printf("%s\n", temp->binaryCode[i]);
+                        }
                         continue;
                     }
                     if (operand1Type == TYPE3) {
@@ -75,7 +81,8 @@ void secondPass() {
                     }
                     if (operand1Type == TYPE2) {
                         if (existDataSymbolList(extractSubstringUntilBrackets(words[index + 1]))){
-                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(
+                                    extractSubstringUntilBrackets(words[index + 1])), NUM_OF_BITS-BITS_IN_ARE), are1));
                             strcpy(temp->binaryCode[2], strcat(translateToTwosCompliment(theIndexArray(words[index + 1]),NUM_OF_BITS-BITS_IN_ARE),"00"));
                             countBinaryLines+=2;
                         }
@@ -97,16 +104,27 @@ void secondPass() {
                         }
                     }
                     if (operand1Type == TYPE0) {
-                        strcpy(temp->binaryCode[1], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 1],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
+                        strcpy(temp->binaryCode[1], strcpy(translateToTwosCompliment(atoi(words[index + 1]+1), NUM_OF_BITS-BITS_IN_ARE),are1));
+                        if (existDefine(words[index+1]+1)){
+                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]+1), NUM_OF_BITS-BITS_IN_ARE), are1));
+                        }
                         countBinaryLines++;
                     }
+                    strcpy(are2, discoverARE(words[index + 2]));
                     if (operand2Type == TYPE3) {
-                        strcpy(temp->binaryCode[countBinaryLines], buildRegisterBinaryCode(words[index + 2], "r0",are1));
+                        strcpy(temp->binaryCode[countBinaryLines], buildRegisterBinaryCode(words[index + 2], "r0",are2));
+                        countBinaryLines++;
+                        i=0;
+                        printf("line %d: \n", lineNum);
+
+                        for (; i <countBinaryLines ; ++i) {
+                            printf("%s\n", temp->binaryCode[i]);
+                        }
                         continue;
                     }
                     if (operand2Type == TYPE2) {
                         if (existDataSymbolList(extractSubstringUntilBrackets(words[index + 2]))){
-                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(extractSubstringUntilBrackets(words[index + 2])), NUM_OF_BITS-BITS_IN_ARE), are2));
                             strcpy(temp->binaryCode[countBinaryLines+1], strcat(translateToTwosCompliment(theIndexArray(words[index + 2]),NUM_OF_BITS-BITS_IN_ARE),"00"));
                         }
                         else{
@@ -114,11 +132,18 @@ void secondPass() {
                             errorFlag = TRUE;
                             break;
                         }
+                        countBinaryLines+=2;
+                        i=0;
+                        printf("line %d: \n", lineNum);
+
+                        for (; i <countBinaryLines ; ++i) {
+                            printf("%s\n", temp->binaryCode[i]);
+                        }
                         continue;
                     }
                     if (operand2Type == TYPE1) {
                         if (existDataSymbolList(words[index + 2])){
-                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are2));
 
                         }
                         else{
@@ -126,9 +151,19 @@ void secondPass() {
                             errorFlag = TRUE;
                             break;
                         }
+                        countBinaryLines++;
+                        i=0;
+                        printf("line %d: \n", lineNum);
+
+                        for (; i <countBinaryLines ; ++i) {
+                            printf("%s\n", temp->binaryCode[i]);
+                        }
                         continue;
                     }
-                    strcpy(temp->binaryCode[countBinaryLines], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 2],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
+                    strcpy(temp->binaryCode[countBinaryLines], strcpy(translateToTwosCompliment(atoi(words[index + 2]+1), NUM_OF_BITS-BITS_IN_ARE),are2));
+                    if (existDefine(words[index+2]+1)){
+                        strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]+1), NUM_OF_BITS-BITS_IN_ARE), are2));
+                    }
                 }
                 if (((isCommand(words[index]) >= 4 && isCommand(words[index]) <= 5)) || isCommand(words[index]) < 14){
                     operand1Type = discoverOperandTypeSecondPass(words[index + 1]);
@@ -143,7 +178,8 @@ void secondPass() {
                     }
                     if (operand1Type == TYPE2) {
                         if (existDataSymbolList(words[index + 1])){
-                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(
+                                    extractSubstringUntilBrackets(words[index + 1])), NUM_OF_BITS-BITS_IN_ARE), are1));
                             strcpy(temp->binaryCode[2], strcat(translateToTwosCompliment(theIndexArray(words[index + 1]),NUM_OF_BITS-BITS_IN_ARE),"00"));
                         }
                         else{
@@ -163,8 +199,20 @@ void secondPass() {
                         }
                     }
                     if (operand1Type == TYPE0) {
-                        strcpy(temp->binaryCode[1], strcpy(translateToTwosCompliment(atoi(cutString(words[index + 1],'#')), NUM_OF_BITS-BITS_IN_ARE),are1));
+                        strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(atoi(words[index + 1]+1), NUM_OF_BITS-BITS_IN_ARE),are1));
+                        if (existDefine(words[index+1])){
+                            strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
+                        }
                     }
+                }
+                else{
+                    countBinaryLines--;
+                }
+                i=0;
+                printf("line %d: \n", lineNum);
+                countBinaryLines++;
+                for (; i <countBinaryLines ; ++i) {
+                    printf("%s\n", temp->binaryCode[i]);
                 }
             }
         }
@@ -208,7 +256,7 @@ char* discoverARE(char* op) {
         return "ERROR";
     if ((op[0] == '#') || (isRegisterName(op)))
         return "00";
-    else if (existDataSymbolList(op) || isArrayAddress(op))
+    else if (searchSymbolList(extractSubstringUntilBrackets(op)) || isArrayAddress(op))
         return "10";
     else if (isExternal(op))
         return "01";
@@ -233,6 +281,7 @@ char* buildRegisterBinaryCode(char* reg1, char* reg2,char* are) {
     binary[3] = '0';
     binary[4] = '0';
     binary[5] = '0';
+    binary[6] = '\0';
     strcat(binary, translateToTwosCompliment(numreg1, BITS_IN_REGISTER_LENGTH));
     strcat(binary, translateToTwosCompliment(numreg2, BITS_IN_REGISTER_LENGTH));
     strcat(binary, are);
