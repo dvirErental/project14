@@ -153,7 +153,7 @@ void secondPass() {
                         }
                     }
                     if (operand1Type == TYPE1) {
-                        if (existDataSymbolList(words[index + 1])){
+                        if (searchSymbolList(words[index + 1])){
                             strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
                         }
                         else{
