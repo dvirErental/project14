@@ -74,7 +74,7 @@ void secondPass() {
                         countBinaryLines++;
                     }
                     if (operand1Type == TYPE2) {
-                        if (existDataSymbolList(words[index + 1])){
+                        if (existDataSymbolList(extractSubstringUntilBrackets(words[index + 1]))){
                             strcpy(temp->binaryCode[1], strcat(translateToTwosCompliment(getValue(words[index + 1]), NUM_OF_BITS-BITS_IN_ARE), are1));
                             strcpy(temp->binaryCode[2], strcat(translateToTwosCompliment(theIndexArray(words[index + 1]),NUM_OF_BITS-BITS_IN_ARE),"00"));
                             countBinaryLines+=2;
@@ -174,6 +174,9 @@ void secondPass() {
         printf("Error was found in second pass\n");
         exit(0);
     }
+
+    fclose(fp);
+    printf("second pass finished\n");
 }
 
 /**
