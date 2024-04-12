@@ -6,7 +6,7 @@
 void secondPass() {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
     char* line = mallocError(sizeof(char) * MAX_LINE_LENGTH);
-    int lineNum = 1;
+    int lineNum = 0;
     int index;
     int operand1Type;
     int operand2Type;
@@ -18,6 +18,8 @@ void secondPass() {
     int countBinaryLines;
     printf("\n%s\n", extractSubstringUntilBrackets("LIST[sz]"));
     while (!feof(fp)) {
+        lineNum++;
+        countBinaryLines=0;
         fgets(line, MAX_LINE_LENGTH, fp);
         cutString(line, ':');
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
@@ -105,7 +107,7 @@ void secondPass() {
                         continue;
                     }
                     if (operand2Type == TYPE2) {
-                        if (existDataSymbolList(words[index + 2])){
+                        if (existDataSymbolList(extractSubstringUntilBrackets(words[index + 2]))){
                             strcpy(temp->binaryCode[countBinaryLines], strcat(translateToTwosCompliment(getValue(words[index + 2]), NUM_OF_BITS-BITS_IN_ARE), are1));
                             strcpy(temp->binaryCode[countBinaryLines+1], strcat(translateToTwosCompliment(theIndexArray(words[index + 2]),NUM_OF_BITS-BITS_IN_ARE),"00"));
                         }
@@ -147,7 +149,7 @@ void secondPass() {
                             strcpy(temp->binaryCode[2], strcat(translateToTwosCompliment(theIndexArray(words[index + 1]),NUM_OF_BITS-BITS_IN_ARE),"00"));
                         }
                         else{
-                            printf("Error, line %d, invalid operand %s", lineNum, words[index + 1]);
+                            printf("Error, line %d, invalid operand % s", lineNum, words[index + 1]);
                             errorFlag = TRUE;
                             break;
                         }
@@ -182,7 +184,7 @@ void secondPass() {
  * @return
  */
 int theIndexArray(char* word) {
-    char *index;
+    char *index=(char*)mallocError(sizeof(char) * 10);
     strcpy(index, word);
     index = strtok(index, "[");
     index = strtok(NULL, "]");
@@ -247,14 +249,16 @@ int discoverOperandTypeSecondPass(char* op) {
         return -1;
     if(op[0] == '#')
         return TYPE0;
-    else if (searchOperandSymbolList(op))
+    char* op2= (char*)mallocError(sizeof(char) * 10);
+    strcpy(op2, op);
+    strcat(op2,":");
+    if (searchSymbolList(op2))
         return TYPE1;
     else if (isArrayAddressSecondPass(op))
         return TYPE2;
     else if (isRegisterName(op))
         return TYPE3;
-    else
-        return -1;
+    return -1;
 }
 
 /**

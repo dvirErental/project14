@@ -48,11 +48,11 @@ void firstPass(void) {
             if (strcmp(words[1], ".string") == 0 || strcmp(words[1], ".data") == 0){
                 if (symbolDefinitionFlag == TRUE) {
                     if(isFirstSymbol == TRUE) {
-                        first_Symbol = make_symbol(words[0], ".data", address);
+                        first_Symbol = make_symbol(words[0], "data", address);
                         isFirstSymbol = FALSE;
                     }
                     else
-                        addToSymbolList(words[0], ".data", address);}
+                        addToSymbolList(words[0], "data", address);}
                 else {
                     printf("ERROR: data without symbol");
                     errorFlag = TRUE;
