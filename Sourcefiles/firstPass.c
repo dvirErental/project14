@@ -95,6 +95,7 @@ void firstPass(void) {
                 continue;
             }
             if (symbolDefinitionFlag) {
+                words[0][strlen(words[0])-1] = '\0';
                 if (searchSymbolList(words[0])) {
                     printf("Error, line %d, multiple declarations for same symbol", lineNum);
                     errorFlag = TRUE;

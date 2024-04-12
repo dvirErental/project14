@@ -19,7 +19,6 @@ void secondPass() {
     printf("\n%s\n", extractSubstringUntilBrackets("LIST[sz]"));
     while (!feof(fp)) {
         lineNum++;
-        countBinaryLines=0;
         fgets(line, MAX_LINE_LENGTH, fp);
         cutString(line, ':');
         if (sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
@@ -266,7 +265,7 @@ int discoverOperandTypeSecondPass(char* op) {
  * @param op the operand to check
  * @return True if it is, otherwise false.
  */
-int isArrayAddressSecondPass(const char* op){
+int isArrayAddressSecondPass(char* op){
 
     if (containsBrackets(op) && (existDataSymbolList(extractSubstringUntilBrackets(op))))
         return TRUE;
@@ -279,27 +278,25 @@ int isArrayAddressSecondPass(const char* op){
  * @return a copy of the string until the brackets
  */
 char* extractSubstringUntilBrackets(char* str) {
-    // Find the position of '[' character
     char* pos = strchr(str, '[');
 
     if (pos != NULL) {
-        // Calculate the length of the substring before '['
         size_t length = pos - str;
 
-        // Allocate memory for the new string (including null terminator)
+        /* Allocate memory for the new string (including null terminator)*/
         char* substring = (char*)malloc((length + 1) * sizeof(char));
         if (substring == NULL) {
             perror("Memory allocation failed");
             exit(EXIT_FAILURE);
         }
 
-        // Copy characters from the original string to the new string
+        /*Copy characters from the original string to the new string*/
         strncpy(substring, str, length);
-        substring[length] = '\0'; // Null-terminate the string
+        substring[length] = '\0'; /*Null-terminate the string*/
 
         return substring;
-    } else {
-        // If '[' is not found, return a copy of the original string
+    }
+    else {
         return strdup(str);
     }
 }
