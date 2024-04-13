@@ -7,17 +7,19 @@
  */
 void firstPass(void) {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
+    FILE* file = fopen("../TextFiles/ps.ext", "w");
     int IC = 0, DC = 0;
     int address = 100;
     int lineNum = 0;
     int index;
-    int isFirstSymbol = TRUE;
+    int isFirstSymbol;
     int symbolDefinitionFlag;
     int errorFlag = FALSE;
     char line[MAX_LINE_LENGTH] = "";
     char words[MAX_NUM_OF_WORDS][MAX_WORD_LENGTH] = {"","","","",
                                                      "","","","","",""};
     initializeCommands();/*fills the command array with the commands*/
+    isFirstSymbol= getFromExtern();
     while (!feof(fp)) {
         symbolDefinitionFlag = FALSE;
         ++lineNum;
@@ -159,6 +161,59 @@ int isArrayAddress(const char* op){
     if (containsBrackets(op) && (op[wordLength(op)-1] == ']'))
         return TRUE;
     return FALSE;
+}
+
+int getFromExtern(){
+    char line[MAX_WORD_LENGTH*2];
+    char* name = (char*)mallocError(sizeof(char)*MAX_WORD_LENGTH);
+    char* value = (char*)mallocError(sizeof(char)*MAX_WORD_LENGTH);
+    int firstFlag=TRUE;
+    if (fileExist("../TextFiles/ps.ext")) {
+        FILE* fp=fopen()
+        if (!FileEmpty("../TextFiles/ps.ext")) {
+            while (!feof(fp)) {
+                fgets(line, MAX_WORD_LENGTH * 2, fp);
+                if (sscanf(line, "%s%s", name, value)) {
+                    if (firstFlag) {
+                        first_Symbol = make_symbol(name, "external", atoi(value));
+                        firstFlag = FALSE;
+                    } else
+                        addToSymbolList(name, "external", atoi(value));
+                }
+
+            }
+        }
+    }
+    return firstFlag;
+}
+
+int FileEmpty(const char *filename) {
+    FILE *file = fopen(filename, "r");
+    if (file == NULL) {
+        perror("Error opening file");
+        return -1; /* Return -1 to indicate error */
+    }
+
+    /* Seek to the end of the file */
+    fseek(file, 0, SEEK_END);
+
+    /* Get the current position (which is the file size) */
+    long size = ftell(file);
+
+    fclose(file);
+
+    /* Return 1 if file size is 0, otherwise return 0 */
+    return (size == 0) ? 1 : 0;
+}
+
+int isFileExist(const char *filename) {
+    if (access(filename, F_OK) != -1) {
+        /* File exists */
+        return 1;
+    } else {
+        /* File doesn't exist */
+        return 0;
+    }
 }
 
 

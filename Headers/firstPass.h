@@ -13,3 +13,6 @@ void firstPass(void);
 int discoverOperandType(char*);
 int isLabel(const char*);
 int isArrayAddress(const char*);
+int getFromExtern();
+int FileEmpty(const char *filename);
+int isFileExist(const char *filename);

@@ -70,7 +70,7 @@ void buildEnt(line_table* firstSym) {
 
 void buildExt(line_table* firstSym) {
     FILE *filePointer;
-    filePointer = fopen("ps.ent", "w");
+    filePointer = fopen("../TextFiles/ps.ext", "w");
     if (filePointer == NULL) {
         printf("לא ניתן לפתוח את הקובץ.\n");
         return;
