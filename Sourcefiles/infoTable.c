@@ -163,7 +163,7 @@ int createStringLine(int address, char* stringToSave) {
     }
 
     addLineToInfoTable(address, "", 0, "00000000000000");
-    return address + 1;
+    return address + 2;
 }
 
 /**
@@ -188,16 +188,7 @@ void executeCommandFirstPass(char* line, int op1, int op2, int address, char* wo
     addLineToInfoTable(address, line, 0, binaryWord);
 }
 
-/*
-void printInfoTable(){
-    infoTable* temp = first_info;
-    while (temp != NULL){
-        printf("\n%s %s %d", temp->sourceCode, temp->binaryCode[0], temp->address[0]);
-        temp = temp->next;
-    }
 
-}
-*/
 
 /**
  * searches the info table for a line with a matching source code to the given parameter
@@ -212,6 +203,20 @@ infoTable* searchInfoTable(char* sourceCode){
         temp = temp->next;
     }
     return NULL;
+}
+
+void printInfoTable(void){
+    infoTable* temp = first_info;
+    int index;
+    while(temp!=NULL){
+        index = 0;
+        printf("%d\t", temp->address[0]);
+        while(temp->binaryCode[index][0] =='0'||temp->binaryCode[index][0] == '1'){
+            printf("%s\n", temp->binaryCode[index]);
+            temp++;
+        }
+        temp = temp->next;
+    }
 }
 
 /*int isNumberValue(const char* word) {

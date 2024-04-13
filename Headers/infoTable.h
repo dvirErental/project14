@@ -43,3 +43,5 @@ char* dataToBinary();
 int isNumberValue(const char*);
 
 int searchForMdefine(const char*);
+
+int howManyLines(void);

@@ -49,29 +49,27 @@ void firstPass(void) {
                 if (symbolDefinitionFlag == TRUE) {
                     words[0][strlen(words[0])-1] = '\0';
                     if(isFirstSymbol == TRUE) {
-                        first_Symbol = make_symbol(words[0], "data", address);
+                        first_Symbol = make_symbol(words[0], "data", DC);
                         isFirstSymbol = FALSE;
                     }
                     else
-                        addToSymbolList(words[0], "data", address);}
+                        addToSymbolList(words[0], "data", DC);}
                 else {
                     printf("ERROR: data without symbol");
                     errorFlag = TRUE;
                 }
                 if (strcmp(words[1], ".string") == 0) {
                     addLineToInfoTable(address++, line, 0, translateToTwosCompliment((int)words[index+1][1], NUM_OF_BITS));
-                    address = createStringLine(address, &words[index + 1][2]);
+                    DC = createStringLine(DC, &words[index + 1][2]);
                 }
                 else{
                     if (isValidDataString(line)) {
-                        address = createDataLine(address, line);
+                        DC = createDataLine(DC, line);
                     }
                     else
                         printf("not valid string/data in line %d", lineNum);
                 }
 
-                DC += sscanf(line, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3],
-                             words[4],words[5],words[6], words[7], words[8], words[9]);
                 continue;
             }
             if (!strcmp(words[0], ".extern")){
@@ -128,9 +126,10 @@ void firstPass(void) {
         printf("error was found in first pass we will not continue to second pass\n");
         exit(0);
     }
-
+    updateData(IC);
     fclose(fp);
     printf("first pass finished\n");
+    printSymbolTable();
 }
 
 /**

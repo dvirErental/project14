@@ -126,10 +126,21 @@ int isExternal(char* name){
     return 0;
 }
 void printSymbolTable(){
+    printf("\n\n\n SymbolTable:\n");
     line_table* temp = first_Symbol;
     while(temp!=NULL){
         printf("%s\t%s\t%d\n", temp->type, temp->name, temp->value);
         temp = temp->next;
     }
+    printf("end of symbol Table\n");
 }
 
+void updateData(int IC){
+    line_table* temp = first_Symbol;
+    while(temp!=NULL){
+        if (strcmp(temp->type, "data") == 0){
+            temp->value+=(IC+100);
+        }
+        temp = temp->next;
+    }
+}

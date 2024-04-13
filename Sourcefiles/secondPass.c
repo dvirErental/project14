@@ -224,7 +224,6 @@ void secondPass() {
     }
 
     fclose(fp);
-    printf("second pass finished\n");
 }
 
 /**
