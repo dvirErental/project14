@@ -7,7 +7,6 @@
  */
 void firstPass(void) {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
-    FILE* file = fopen("../TextFiles/ps.ext", "w");
     int IC = 0, DC = 0;
     int address = 100;
     int lineNum = 0;
@@ -168,8 +167,8 @@ int getFromExtern(){
     char* name = (char*)mallocError(sizeof(char)*MAX_WORD_LENGTH);
     char* value = (char*)mallocError(sizeof(char)*MAX_WORD_LENGTH);
     int firstFlag=TRUE;
-    if (fileExist("../TextFiles/ps.ext")) {
-        FILE* fp=fopen()
+    if (isFileExist("../TextFiles/ps.ext")) {
+        FILE* fp=fopen("../TextFiles/ps.ext","r");
         if (!FileEmpty("../TextFiles/ps.ext")) {
             while (!feof(fp)) {
                 fgets(line, MAX_WORD_LENGTH * 2, fp);

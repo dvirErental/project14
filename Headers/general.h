@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include <unistd.h>
 #define NUM_OF_COMMANDS 16
 #define MAX_LINE_LENGTH 81
 #define MAX_WORD_LENGTH 10
