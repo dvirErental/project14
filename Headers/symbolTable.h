@@ -36,6 +36,10 @@ extern line_table * first_Symbol;
 
 int existDataSymbolList(char* name);
 
+int existExternalSymbol();
+
+int existEntrySymbol();
+
 void updateData(int);
 void updateDataValue(int);
 void printSymbolTable(void);

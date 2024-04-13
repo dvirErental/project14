@@ -71,6 +71,25 @@ int existDataSymbolList(char* name){
     return 0;
 }
 
+int existExternalSymbol(){
+    line_table *temp = first_Symbol;
+    while (temp != NULL){
+        if (strcmp(temp->type,"external")==0)
+            return 1;
+        temp = temp->next;
+    }
+    return 0;
+}
+
+int existEntrySymbol(){
+    line_table *temp = first_Symbol;
+    while (temp != NULL){
+        if (strcmp(temp->type,"entry")==0)
+            return 1;
+        temp = temp->next;
+    }
+    return 0;
+}
 
 int getValue(char* name){
     line_table *temp = first_Symbol;

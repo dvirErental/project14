@@ -54,31 +54,33 @@ void buildOB(infoTable* firstInfo) {
 }
 
 void buildEnt(line_table* firstSym) {
-    FILE *filePointer;
-    filePointer = fopen("ps.ent", "w");
-    if (filePointer == NULL) {
-        printf("לא ניתן לפתוח את הקובץ.\n");
-        return;
-    }
-    while (firstSym != NULL) {
-        if (strcmp(firstSym->type, "entry") == 0){
-            fprintf(filePointer, "%s %d\n", firstSym->name, firstSym->value);}
-        firstSym = firstSym->next;
-    }
-    fclose(filePointer);
+    if (existEntrySymbol()){
+        FILE *filePointer;
+        filePointer = fopen("ps.ent", "w");
+        if (filePointer == NULL) {
+            printf("לא ניתן לפתוח את הקובץ.\n");
+            return;
+        }
+        while (firstSym != NULL) {
+            if (strcmp(firstSym->type, "entry") == 0){
+                fprintf(filePointer, "%s %d\n", firstSym->name, firstSym->value);}
+            firstSym = firstSym->next;
+        }
+        fclose(filePointer);}
 }
 
 void buildExt(line_table* firstSym) {
-    FILE *filePointer;
-    filePointer = fopen("../TextFiles/ps.ext", "w");
-    if (filePointer == NULL) {
-        printf("לא ניתן לפתוח את הקובץ.\n");
-        return;
-    }
-    while (firstSym != NULL) {
-        if (strcmp(firstSym->type, "external") == 0){
-            fprintf(filePointer, "%s %d\n", firstSym->name, firstSym->value);}
-        firstSym = firstSym->next;
-    }
-    fclose(filePointer);
+    if (existExternalSymbol()){
+        FILE *filePointer;
+        filePointer = fopen("../TextFiles/ps.ext", "w");
+        if (filePointer == NULL) {
+            printf("לא ניתן לפתוח את הקובץ.\n");
+            return;
+        }
+        while (firstSym != NULL) {
+            if (strcmp(firstSym->type, "external") == 0){
+                fprintf(filePointer, "%s %d\n", firstSym->name, firstSym->value);}
+            firstSym = firstSym->next;
+        }
+        fclose(filePointer);}
 }
