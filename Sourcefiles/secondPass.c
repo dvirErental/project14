@@ -16,8 +16,9 @@ void secondPass() {
     char are1[2];
     char are2[2];
     int countBinaryLines=0;
-    int i=0;
+    int i;
     while (!feof(fp)) {
+        i=0;
         if (countBinaryLines>0){
             for (; i <countBinaryLines ; ++i) {
                 temp->address[i]=temp->address[0]+i ;
@@ -36,6 +37,7 @@ void secondPass() {
 
             if ((!strcmp(words[index], ".define")) || (!strcmp(words[index], ".string")) ||
                 (!strcmp(words[index], ".data"))) {
+                countBinaryLines=0;
                 continue;
             }
             if (!strcmp(words[index], "entry")) {
@@ -45,6 +47,7 @@ void secondPass() {
                     break;
                 }
                 addToSymbolList(words[1 + index], "entry", getValue(words[1 + index]));
+                countBinaryLines=0;
                 continue;
 
             }
@@ -373,13 +376,15 @@ char encodeBitsPair(int bit1, int bit2) {
     }
 }
 
-void encodeBits(int bits[14], FILE* fp) {
-    char encodedString[8]; // מחרוזת שמכילה את התווים המוצפנים
+void encodeBits(char bits[NUM_OF_BITS], FILE* fp) {
+
+    char encodedString[9]; // מחרוזת שמכילה את התווים המוצפנים
     int i, j = 0;
     for (i = 0; i < NUM_OF_BITS; i += 2) { // מעבר על הביטים בצעדים של שניים
-        encodedString[j++] = encodeBitsPair(bits[i], bits[i + 1]);
+        encodedString[j++] = encodeBitsPair((bits[i]-'0'), (bits[i + 1]-'0'));
     }
     encodedString[j] = '\n';
+    encodedString[j+1] = '\0';
     fprintf(fp, "%s", encodedString);
 }
 
@@ -394,9 +399,9 @@ void buildOB(infoTable* firstInfo) {
 
     }
     while(firstInfo != NULL){
-        while(firstInfo->address[i]>=100){
+        while(firstInfo->address[i]>=100 && firstInfo->address[i]<=1000){
             fprintf(filePointer, "%d ", firstInfo->address[i]);
-            encodeBits((int*)(firstInfo->binaryCode[i]-'0'), filePointer);
+            encodeBits((int*)(firstInfo->binaryCode[i]), filePointer);
             i++;
         }
         i=0;
