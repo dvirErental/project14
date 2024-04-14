@@ -164,7 +164,7 @@ int isArrayAddress(const char* op){
 }
 
 int getFromExtern(){
-    char line[MAX_WORD_LENGTH*2];
+    char line[MAX_WORD_LENGTH*2]={0};
     char* name = (char*)mallocError(sizeof(char)*MAX_WORD_LENGTH);
     char* value = (char*)mallocError(sizeof(char)*MAX_WORD_LENGTH);
     int firstFlag=TRUE;

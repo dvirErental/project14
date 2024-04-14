@@ -23,6 +23,7 @@ void secondPass() {
             for (; i <countBinaryLines ; ++i) {
                 temp->address[i]=temp->address[0]+i ;
             }
+            temp->address[i]=-1;
         }
         lineNum++;
         fgets(line, MAX_LINE_LENGTH, fp);
@@ -335,7 +336,8 @@ int isArrayAddressSecondPass(char* op){
  * @return a copy of the string until the brackets
  */
 char* extractSubstringUntilBrackets(char* str) {
-    char* pos = strchr(str, '[');
+    char* pos = mallocError(sizeof (str));
+    pos = strchr(str, '[');
 
     if (pos != NULL) {
         size_t length = pos - str;
@@ -378,7 +380,7 @@ char encodeBitsPair(int bit1, int bit2) {
 
 void encodeBits(char bits[NUM_OF_BITS], FILE* fp) {
 
-    char encodedString[9]; // מחרוזת שמכילה את התווים המוצפנים
+    char encodedString[9]={0}; // מחרוזת שמכילה את התווים המוצפנים
     int i, j = 0;
     for (i = 0; i < NUM_OF_BITS; i += 2) { // מעבר על הביטים בצעדים של שניים
         encodedString[j++] = encodeBitsPair((bits[i]-'0'), (bits[i + 1]-'0'));

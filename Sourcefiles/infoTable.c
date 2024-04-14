@@ -38,6 +38,7 @@ void addLineToInfoTable(int address, char* sourceCode, int num, char* stringAlte
         temp = temp->next;
     temp->next = mallocError(sizeof(infoTable));
     temp->next-> address[0] = address;
+    temp->next-> address[1] = -1;
     strcpy((temp->next)->sourceCode, sourceCode);
     if(strcmp(stringAlternative, "") == 0)
         strcpy(temp->next->binaryCode[0], translateToTwosCompliment(num, NUM_OF_BITS));
@@ -136,6 +137,7 @@ int createDataLine(int address, char* sourceCode) {
     for (i = 0; i < count; i++) {
         temp->address[i] = address+i;
     }
+    temp->address[i] = -1;
     strcpy(temp->sourceCode, sourceCode);
     temp->next = NULL;
     addCompleteLineToInfoTable(temp);
