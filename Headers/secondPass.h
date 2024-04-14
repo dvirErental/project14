@@ -1,6 +1,6 @@
 #include "firstPass.h"
 
-void secondPass(void);
+void secondPass(FILE*);
 
 int discoverOperandTypeSecondPass(char* op);
 

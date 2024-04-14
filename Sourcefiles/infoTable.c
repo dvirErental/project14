@@ -1,5 +1,5 @@
 
-#include "infoTable.h"
+#include "../Headers/infoTable.h"
 
 infoTable* first_info = NULL;
 /**
@@ -77,7 +77,7 @@ void addCompleteLineToInfoTable(infoTable* info){
  * @return true if it is, otherwise false.
  */
 int isValidDataString(const char *str) {
-    /* מחזיר אפס אם המחרוזת חוקית, אחרת מחזיר את המספר הראשון שלא הצליחנו לקרוא*/
+
     char *endptr = mallocError(sizeof(char)* MAX_WORD_LENGTH);
     char *deleteLabel = mallocError(sizeof(char)* lengthOf(str));
     strcpy(deleteLabel,str);
@@ -125,7 +125,7 @@ int createDataLine(int address, char* sourceCode) {
         }
         else {
             if (token[strlen(token) - 1] == '\n')
-                token[strlen(token) - 1] = '\0'; // Remove newline character if present
+                token[strlen(token) - 1] = '\0'; /* Remove newline character if present*/
             if (existDefine(token))
                 numbers[count] = getValue(token);
             }

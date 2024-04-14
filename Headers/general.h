@@ -19,6 +19,7 @@
 #define OTHER_TWO_OPERAND_COMMAND 6
 #define ZERO_OPERAND_COMMAND 14
 #define OTHER_ZERO_OPERAND_COMMAND 15
+#define LONGEST_POSSIBLE_FILE_NAME 23
 extern char* commands[];
 void initializeCommands(void);/*initialize the command*/
 int isCommand (char*); /*check if the string is a command*/

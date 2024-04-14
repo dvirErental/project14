@@ -6,7 +6,7 @@ char* commands[16];
  * @param op - the file to "PreAssemble".
  * @return a pointer to a new file following the preAssembly of the original file.
  */
-FILE* preAssemble(FILE* op) {
+FILE* preAssemble(FILE* op, char* fileName) {
     int macsFound = 0;
     int lineNum = 1;
     char line[MAX_LINE_LENGTH];
@@ -14,8 +14,10 @@ FILE* preAssemble(FILE* op) {
     char *secondWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     char *thirdWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node *current;
+    char* name = mallocError(sizeof(char)* (lengthOf(fileName)+1));
+    strcpy(name, strcat(fileName, ".am"));
     initializeCommands();/*initialize the commands array*/
-    FILE *ModOrig = fopen("../TextFiles/postPreAssembler", "w+");
+    FILE *ModOrig = fopen(name, "w+");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
         if(line[0] == ';')

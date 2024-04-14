@@ -1,4 +1,4 @@
-#include "general.h"
+#include "../Headers/general.h"
 /**
  * initializes the 16 commands into an commands array
  */
@@ -73,7 +73,7 @@ int isSymbolDefinition(const char* a){
  * @return nums' representation in binary (in 'length' bits)
  */
 char* translateToTwosCompliment(int num,int length) {
-    char *str = (char *)malloc((length + 1) * sizeof(char));
+    char *str = malloc((length + 1) * sizeof(char));
     if (str == NULL) {
         printf("Memory allocation failed.\n");
         exit(1);

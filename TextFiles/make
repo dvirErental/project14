@@ -1,0 +1,26 @@
+firstPass: firstPass.c ../Headers/firstPass.h
+	gcc -ansi -Wall -pedantic firstPass.c -o firstPass
+
+general: general.c ../Headers/general.h
+	gcc -ansi -Wall -pedantic general.c -o general
+
+infoTable: infoTable.c ../Headers/infoTable.h
+	gcc -ansi -Wall -pedantic infoTable.c -o infoTable
+
+main: main.c ../Headers/PreAssembler.h ../Headers/secondPass.h
+	gcc -ansi -Wall -pedantic main.c -o main
+
+nodes: nodes.c ../Headers/nodes.h
+	gcc -ansi -Wall -pedantic nodes.c -o nodes
+
+PreAssembler: PreAssembler.c ../Headers/PreAssembler.h
+	gcc -ansi -Wall -pedantic PreAssembler.c -o PreAssembler
+
+secondPass: secondPass.c ../Headers/secondPass.h
+	gcc -ansi -Wall -pedantic secondPass.c -o secondPass
+
+symbolTable: symbolTable.c ../Headers/symbolTable.h
+	gcc -ansi -Wall -pedantic symbolTable.c -o symbolTable
+
+clean:
+	rm -f firstPass general infoTable main nodes PreAssembler secondPass symbolTable

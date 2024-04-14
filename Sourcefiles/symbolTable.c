@@ -1,6 +1,3 @@
-//
-// Created by dvir on 10/02/2024.
-//
 
 #include "../Headers/symbolTable.h"
 line_table * first_Symbol;
