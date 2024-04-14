@@ -219,21 +219,6 @@ void printInfoTable(void){
     }
 }
 
-/*int isNumberValue(const char* word) {
-    int num;
-    if (searchForMdefine(word))
-        return searchForMdefine(word);
-    else if (word[0] == '#') {
-        num = atoi(&word[1]);
-        return num;
-    }
-    return MIN_NUM;
-}*/
-/*int searchForMdefine(const char* name){
-    line_table *temp = first_Symbol;
-    while (temp != NULL){
-        if ((strcmp(temp->name,name) == 0) && (strcmp(temp->type, "mdefine") == 0))
-            return temp->value;
-    }
-    return 0;
-}*/
+infoTable* getFirstLine(){
+    return first_info;
+}

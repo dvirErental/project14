@@ -15,9 +15,14 @@ void secondPass() {
     infoTable *temp;
     char are1[2];
     char are2[2];
-    int countBinaryLines;
-    int i;
+    int countBinaryLines=0;
+    int i=0;
     while (!feof(fp)) {
+        if (countBinaryLines>0){
+            for (; i <countBinaryLines ; ++i) {
+                temp->address[i]=temp->address[0]+i ;
+            }
+        }
         lineNum++;
         fgets(line, MAX_LINE_LENGTH, fp);
         cutString(line, ':');
@@ -222,7 +227,9 @@ void secondPass() {
         printf("Error was found in second pass\n");
         exit(0);
     }
-
+    infoTable *firstInfo = (infoTable*)mallocError(sizeof(infoTable));
+    firstInfo = getFirstLine();
+    buildOutPut(firstInfo,first_Symbol);
     fclose(fp);
 }
 
@@ -346,4 +353,92 @@ char* extractSubstringUntilBrackets(char* str) {
     else {
         return strdup(str);
     }
+}
+
+char encodeBitsPair(int bit1, int bit2) {
+    // הממיר מבסיס 2 לבסיס 10
+    int value = bit1 * 2 + bit2;
+    // הממיר מבסיס 10 לבסיס 4 מוצפן
+    switch (value) {
+        case 0:
+            return '*';
+        case 1:
+            return '#';
+        case 2:
+            return '%';
+        case 3:
+            return '!';
+        default:
+            return '?'; // במקרה של ערך לא תקין
+    }
+}
+
+void encodeBits(int bits[14], FILE* fp) {
+    char encodedString[8]; // מחרוזת שמכילה את התווים המוצפנים
+    int i, j = 0;
+    for (i = 0; i < NUM_OF_BITS; i += 2) { // מעבר על הביטים בצעדים של שניים
+        encodedString[j++] = encodeBitsPair(bits[i], bits[i + 1]);
+    }
+    encodedString[j] = '\n';
+    fprintf(fp, "%s", encodedString);
+}
+
+void buildOB(infoTable* firstInfo) {
+    int i = 0;
+    FILE *filePointer;
+
+    filePointer = fopen("../TextFiles/ps.ob", "w");
+    if (filePointer == NULL) {
+        printf("לא ניתן לפתוח את הקובץ.\n");
+        return;
+
+    }
+    while(firstInfo != NULL){
+        while(firstInfo->address[i]>=100){
+            fprintf(filePointer, "%d ", firstInfo->address[i]);
+            encodeBits((int*)(firstInfo->binaryCode[i]-'0'), filePointer);
+            i++;
+        }
+        i=0;
+        firstInfo = firstInfo->next;
+    }
+    fclose(filePointer);
+}
+
+void buildEnt(line_table* firstSym) {
+    if (existEntrySymbol()){
+        FILE *filePointer;
+        filePointer = fopen("ps.ent", "w");
+        if (filePointer == NULL) {
+            printf("לא ניתן לפתוח את הקובץ.\n");
+            return;
+        }
+        while (firstSym != NULL) {
+            if (strcmp(firstSym->type, "entry") == 0){
+                fprintf(filePointer, "%s %d\n", firstSym->name, firstSym->value);}
+            firstSym = firstSym->next;
+        }
+        fclose(filePointer);}
+}
+
+void buildExt(line_table* firstSym) {
+    if (existExternalSymbol()){
+        FILE *filePointer;
+        filePointer = fopen("../TextFiles/ps.ext", "w");
+        if (filePointer == NULL) {
+            printf("לא ניתן לפתוח את הקובץ.\n");
+            return;
+        }
+        while (firstSym != NULL) {
+            if (strcmp(firstSym->type, "external") == 0){
+                fprintf(filePointer, "%s %d\n", firstSym->name, firstSym->value);}
+            firstSym = firstSym->next;
+        }
+        fclose(filePointer);}
+}
+
+void buildOutPut(infoTable* firstInfo, line_table* firstSym) {
+    buildOB(firstInfo);
+    buildEnt(firstSym);
+    buildExt(firstSym);
 }
