@@ -13,8 +13,8 @@ void secondPass() {
     int errorFlag = FALSE;
     char words[MAX_WORD_LENGTH][MAX_WORD_LENGTH] = {"","","","","","","","","",""};
     infoTable *temp;
-    char are1[2];
-    char are2[2];
+    char are1[2]="00";
+    char are2[2]="00";
     int countBinaryLines=0;
     int i;
     while (!feof(fp)) {
@@ -360,7 +360,7 @@ char* extractSubstringUntilBrackets(char* str) {
 
 char encodeBitsPair(int bit1, int bit2) {
     // הממיר מבסיס 2 לבסיס 10
-    int value = bit1 * 2 + bit2;
+    int value = bit1*2 + bit2;
     // הממיר מבסיס 10 לבסיס 4 מוצפן
     switch (value) {
         case 0:
@@ -401,7 +401,7 @@ void buildOB(infoTable* firstInfo) {
     while(firstInfo != NULL){
         while(firstInfo->address[i]>=100 && firstInfo->address[i]<=1000){
             fprintf(filePointer, "%d ", firstInfo->address[i]);
-            encodeBits((int*)(firstInfo->binaryCode[i]), filePointer);
+            encodeBits((firstInfo->binaryCode[i]), filePointer);
             i++;
         }
         i=0;

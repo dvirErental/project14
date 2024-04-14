@@ -8,6 +8,7 @@
 void firstPass(void) {
     FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
     int IC = 0, DC = 0;
+    int temp;
     int address = 100;
     int lineNum = 0;
     int index;
@@ -61,11 +62,11 @@ void firstPass(void) {
                 }
                 if (strcmp(words[1], ".string") == 0) {
                     addLineToInfoTable(address++, line, 0, translateToTwosCompliment((int)words[index+1][1], NUM_OF_BITS));
-                    DC = createStringLine(DC, &words[index + 1][2]);
+                    DC = createStringLine(DC+address, &words[index + 1][2])-address;
                 }
                 else{
                     if (isValidDataString(line)) {
-                        DC = createDataLine(DC, line);
+                        DC = createDataLine(DC+address, line)-address;
                     }
                     else
                         printf("not valid string/data in line %d", lineNum);

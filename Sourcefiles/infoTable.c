@@ -111,6 +111,7 @@ int createDataLine(int address, char* sourceCode) {
     int numbers[MAX_NUM_OF_WORDS];
     int count = 0;
     char *token;
+    int i;
     char *mutable_str = mallocError(strlen(sourceCode) + 1); // Allocate memory for mutable_str
     strcpy(mutable_str, sourceCode);
     mutable_str = cutString(mutable_str, '.');
@@ -132,8 +133,9 @@ int createDataLine(int address, char* sourceCode) {
         count++;
         token = strtok(NULL, ", ");
     }
-
-    temp->address[0] = address;
+    for (i = 0; i < count; i++) {
+        temp->address[i] = address+i;
+    }
     strcpy(temp->sourceCode, sourceCode);
     temp->next = NULL;
     addCompleteLineToInfoTable(temp);
@@ -163,7 +165,7 @@ int createStringLine(int address, char* stringToSave) {
     }
 
     addLineToInfoTable(address, "", 0, "00000000000000");
-    return address + 2;
+    return address + 1;
 }
 
 /**
