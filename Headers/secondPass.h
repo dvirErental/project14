@@ -20,6 +20,6 @@ void encodeBits(char bits[14], FILE* fp) ;
 
 void buildOB(infoTable* firstInfo, char*) ;
 
-void buildExt(line_table* firstSym, char*);
+void buildExt(infoTable*, char*);
 
 void buildEnt(line_table* firstSym, char*);

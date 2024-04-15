@@ -2,9 +2,12 @@
 
 /**
  * primary function of the second pass - finishes the info table and follows the given algorithm
+ * @param fp - the file following the preAssembler.
+ * @param name - the name of the file without the end (without ".am")
  */
 void secondPass(FILE* fp, char* name) {
     char* line = mallocError(sizeof(char) * MAX_LINE_LENGTH);
+    int address = 100;
     int lineNum = 0;
     int index;
     int operand1Type;
@@ -16,6 +19,7 @@ void secondPass(FILE* fp, char* name) {
     char are2[2]="00";
     int countBinaryLines=0;
     int i;
+
     while (!feof(fp)) {
         i=0;
         if (countBinaryLines>0){
@@ -36,11 +40,12 @@ void secondPass(FILE* fp, char* name) {
                 index = 0;
 
             if ((!strcmp(words[index], ".define")) || (!strcmp(words[index], ".string")) ||
-                (!strcmp(words[index], ".data"))) {
+                (!strcmp(words[index], ".data")) ||(!strcmp(words[index], ".extern")) ) {
                 countBinaryLines=0;
                 continue;
             }
-            if (!strcmp(words[index], "entry")) {
+
+            if (!strcmp(words[index], ".entry")) {
                 if (searchSymbolList(words[1 + index])) {
                     printf("Error, line %d, multiple declarations for same symbol", lineNum);
                     errorFlag = TRUE;
@@ -225,6 +230,7 @@ void secondPass(FILE* fp, char* name) {
             }
         }
     }
+    printSymbolTable();
 
     if (errorFlag){
         printf("Error was found in second pass\n");
@@ -265,9 +271,9 @@ char* discoverARE(char* op) {
         return "ERROR";
     if ((op[0] == '#') || (isRegisterName(op)))
         return "00";
-    else if (searchSymbolList(extractSubstringUntilBrackets(op)) || isArrayAddress(op))
+    else if (searchSymbolList(extractSubstringUntilBrackets(op)) && isArrayAddress(op))
         return "10";
-    else if (isExternal(op))
+    else if (searchSymbolList(op))
         return "01";
     else
         return "ERROR";
@@ -426,33 +432,44 @@ void buildEnt(line_table* firstSym, char* name) {
         }
         while (firstSym != NULL) {
             if (strcmp(firstSym->type, "entry") == 0){
-                fprintf(filePointer, "%s %d\n", firstSym->name, firstSym->value);}
+                fprintf(filePointer, "%s\t%d\n", firstSym->name, firstSym->value);}
             firstSym = firstSym->next;
         }
         fclose(filePointer);}
 }
 
-void buildExt(line_table* firstSym, char* name) {
-    char* changedName = mallocError(sizeof(char) * LONGEST_POSSIBLE_FILE_NAME);
-    strcpy(changedName, name);
-    strcat(changedName, ".ext");
-    if (existExternalSymbol()){
-        FILE *filePointer;
-        filePointer = fopen(changedName, "w");
-        if (filePointer == NULL) {
-            printf("לא ניתן לפתוח את הקובץ.\n");
-            return;
-        }
-        while (firstSym != NULL) {
-            if (strcmp(firstSym->type, "external") == 0){
-                fprintf(filePointer, "%s %d\n", firstSym->name, firstSym->value);}
-            firstSym = firstSym->next;
-        }
-        fclose(filePointer);}
-}
+void buildExt(infoTable* firstinfo, char* name){
+    int i;
+    char* nameForExt = mallocError(sizeof(char) * LONGEST_POSSIBLE_FILE_NAME);
+    strcpy(nameForExt, name);
+    strcat(nameForExt, ".ext");
+    infoTable* temp = firstinfo;
+    char words[MAX_WORD_LENGTH][MAX_WORD_LENGTH] = {"","","","","","","","","",""};
+    int index;
+    int isSymbolDefinitionToStart = 0;
+    FILE* fp;
+    if (existExternalSymbol()) {
+        fp = fopen(nameForExt, "w");
+        while(temp!=NULL){
+            index = 0;
+            isSymbolDefinitionToStart = FALSE;
+            for(i = 0; i< MAX_NUM_OF_WORDS; i++)
+                strcpy(words[i], "");
+            sscanf(temp->sourceCode, "%s%s%s%s%s%s%s%s%s%s", words[0], words[1], words[2], words[3], words[4], words[5], words[6],
+                   words[7], words[8], words[9]);
+            isSymbolDefinitionToStart = (isSymbolDefinition(words[0]));
 
+            while(strcmp(words[index], "") != 0){
+                if (isExternal(words[index]))
+                    fprintf(fp, "%d\t%s\n", (temp->address[0] + index - isSymbolDefinitionToStart), words[index]);
+                index++;
+            }
+            temp = temp->next;
+        }
+    }
+}
 void buildOutPut(infoTable* firstInfo, line_table* firstSym, char* name) {
     buildOB(firstInfo, name);
     buildEnt(firstSym, name);
-    buildExt(firstSym, name);
+    buildExt(firstInfo, name);
 }

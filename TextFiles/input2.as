@@ -1,15 +1,19 @@
-.entry LENGTH
-	.extern W
-MAIN: mov r3  , LENGTH
-LOOP: jmp L1
-prn #-5
-bne W
-sub r1, r4
-	bne L3
-L1:  inc K
-	.entry LOOP
-jmp W
-STR: .string "abcdef"
-LENGTH: .data  6,-9,15
-K: .data  22
-	.extern L3
+.entry LIST
+.extern W
+.define sz = 2
+MAIN: mov r3, LIST[sz]
+LOOP: jmp W
+ prn #-5
+ mov STR[5], STR[2]
+ sub r1, r4
+ cmp K, #sz
+ bne W
+L1: inc L3
+.entry LOOP
+ bne LOOP
+END: hlt
+.define len = 4
+STR: .string “abcdef”
+LIST: .data 6, -9, len
+K: .data 22
+.extern L3

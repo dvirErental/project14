@@ -17,10 +17,13 @@ void firstPass(FILE* fp) {
     char line[MAX_LINE_LENGTH] = "";
     char words[MAX_NUM_OF_WORDS][MAX_WORD_LENGTH] = {"", "", "", "",
                                                      "", "", "", "", "", ""};
-
+    int i;
     initializeCommands();/*fills the command array with the commands*/
     isFirstSymbol = getFromExtern();
     while (!feof(fp)) {
+        for(i = 0; i<MAX_NUM_OF_WORDS; i++){
+            strcpy(words[i], "");
+        }
         symbolDefinitionFlag = FALSE;
         ++lineNum;
         fgets(line, MAX_LINE_LENGTH, fp);
@@ -79,8 +82,8 @@ void firstPass(FILE* fp) {
                     isFirstSymbol = FALSE;
                 } else
                     addToSymbolList(words[1], "external", 0);
-
-                while ((index < MAX_NUM_OF_WORDS) && (strcmp(words[index], "") != 0)) {
+                index = 2;
+                while (strcmp(words[index], "") != 0){
                     addToSymbolList(words[index], "external", 0);
                     index++;
                 }
