@@ -6,8 +6,7 @@ int main(int argc, char* argv[]){
     FILE* fp;
     char* fileName[LONGEST_POSSIBLE_FILE_NAME];/*assuming longest possible file name is 20*/
     int index = 1;
-    /*while(index<=argc){*/
-
+    while(index<argc) {
         strcpy(fileName, argv[index]);
         strcat(fileName, ".as");
         fp = fopen(fileName, "r");
@@ -19,5 +18,5 @@ int main(int argc, char* argv[]){
         firstPass(fp);
         secondPass(fp, argv[index]);
         index++;
-
+    }
 }
