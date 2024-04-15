@@ -34,7 +34,6 @@ node* existNode(char *name){/* Check if the node exists in the list */
 
     while (temp != NULL) {
         if (strcmp(name, temp->name) == 0) {/* If the node exists already */
-            printf("Node %s already exists in the list\n", name);
             return temp;
         }
         temp = temp->next;

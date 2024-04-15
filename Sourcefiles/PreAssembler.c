@@ -14,10 +14,11 @@ FILE* preAssemble(FILE* op, char* fileName) {
     char *secondWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     char *thirdWord = mallocError(MAX_WORD_LENGTH * sizeof(char));/*to prevent segmentation fault*/
     node *current;
-    char* name = mallocError(sizeof(char)* (lengthOf(fileName)+1));
-    strcpy(name, strcat(fileName, ".am"));
+    char* name = mallocError(sizeof(char)* LONGEST_POSSIBLE_FILE_NAME);
+    strcpy(name, fileName);
+    strcat(name, ".am");
     initializeCommands();/*initialize the commands array*/
-    FILE *ModOrig = fopen(name, "w+");
+    FILE *ModOrig = fopen(name, "w");
     while (!feof(op)) {
         fgets(line, MAX_LINE_LENGTH, op);
         if(line[0] == ';')
@@ -84,7 +85,6 @@ int createMacro(FILE* fp, char* name, int lineNum, int macsFound){
             }
         }
         else{/*else add the line to the content*/
-            printf("\n*");
             char* temp = realloc(content, (strlen(content)+MAX_LINE_LENGTH)*sizeof(char));
             if (temp == NULL) {
                 printf("Failed dynamically memory");

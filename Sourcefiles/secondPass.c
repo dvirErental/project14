@@ -3,8 +3,7 @@
 /**
  * primary function of the second pass - finishes the info table and follows the given algorithm
  */
-void secondPass() {
-    FILE* fp = fopen("../TextFiles/postPreAssembler", "r");
+void secondPass(FILE* fp, char* name) {
     char* line = mallocError(sizeof(char) * MAX_LINE_LENGTH);
     int lineNum = 0;
     int index;
@@ -233,7 +232,7 @@ void secondPass() {
     }
     infoTable *firstInfo = (infoTable*)mallocError(sizeof(infoTable));
     firstInfo = getFirstLine();
-    buildOutPut(firstInfo,first_Symbol);
+    buildOutPut(firstInfo,first_Symbol, name);
     fclose(fp);
 }
 
@@ -380,9 +379,9 @@ char encodeBitsPair(int bit1, int bit2) {
 
 void encodeBits(char bits[NUM_OF_BITS], FILE* fp) {
 
-    char encodedString[9]={0}; // מחרוזת שמכילה את התווים המוצפנים
+    char encodedString[9]={0}; /*מחרוזת שמכילה את התווים המוצפנים*/
     int i, j = 0;
-    for (i = 0; i < NUM_OF_BITS; i += 2) { // מעבר על הביטים בצעדים של שניים
+    for (i = 0; i < NUM_OF_BITS; i += 2) { /* מעבר על הביטים בצעדים של שניים*/
         encodedString[j++] = encodeBitsPair((bits[i]-'0'), (bits[i + 1]-'0'));
     }
     encodedString[j] = '\n';
@@ -390,11 +389,13 @@ void encodeBits(char bits[NUM_OF_BITS], FILE* fp) {
     fprintf(fp, "%s", encodedString);
 }
 
-void buildOB(infoTable* firstInfo) {
+void buildOB(infoTable* firstInfo, char* name) {
     int i = 0;
     FILE *filePointer;
-
-    filePointer = fopen("../TextFiles/ps.ob", "w");
+    char* changedName = mallocError(sizeof(char) * LONGEST_POSSIBLE_FILE_NAME);
+    strcpy(changedName, name);
+    strcat(changedName, ".ob");
+    filePointer = fopen(changedName, "w");
     if (filePointer == NULL) {
         printf("לא ניתן לפתוח את הקובץ.\n");
         return;
@@ -412,10 +413,13 @@ void buildOB(infoTable* firstInfo) {
     fclose(filePointer);
 }
 
-void buildEnt(line_table* firstSym) {
+void buildEnt(line_table* firstSym, char* name) {
+    char* changedName = mallocError(sizeof(char) * LONGEST_POSSIBLE_FILE_NAME);
+    strcpy(changedName, name);
+    strcat(changedName, ".ent");
     if (existEntrySymbol()){
         FILE *filePointer;
-        filePointer = fopen("ps.ent", "w");
+        filePointer = fopen(changedName, "w");
         if (filePointer == NULL) {
             printf("לא ניתן לפתוח את הקובץ.\n");
             return;
@@ -428,10 +432,13 @@ void buildEnt(line_table* firstSym) {
         fclose(filePointer);}
 }
 
-void buildExt(line_table* firstSym) {
+void buildExt(line_table* firstSym, char* name) {
+    char* changedName = mallocError(sizeof(char) * LONGEST_POSSIBLE_FILE_NAME);
+    strcpy(changedName, name);
+    strcat(changedName, ".ext");
     if (existExternalSymbol()){
         FILE *filePointer;
-        filePointer = fopen("../TextFiles/ps.ext", "w");
+        filePointer = fopen(changedName, "w");
         if (filePointer == NULL) {
             printf("לא ניתן לפתוח את הקובץ.\n");
             return;
@@ -444,8 +451,8 @@ void buildExt(line_table* firstSym) {
         fclose(filePointer);}
 }
 
-void buildOutPut(infoTable* firstInfo, line_table* firstSym) {
-    buildOB(firstInfo);
-    buildEnt(firstSym);
-    buildExt(firstSym);
+void buildOutPut(infoTable* firstInfo, line_table* firstSym, char* name) {
+    buildOB(firstInfo, name);
+    buildEnt(firstSym, name);
+    buildExt(firstSym, name);
 }
