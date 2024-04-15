@@ -7,7 +7,6 @@
  */
 void secondPass(FILE* fp, char* name) {
     char* line = mallocError(sizeof(char) * MAX_LINE_LENGTH);
-    int address = 100;
     int lineNum = 0;
     int index;
     int operand1Type;
@@ -19,8 +18,11 @@ void secondPass(FILE* fp, char* name) {
     char are2[2]="00";
     int countBinaryLines=0;
     int i;
-
+    rewind(fp);
     while (!feof(fp)) {
+        for(i = 0; i<MAX_NUM_OF_WORDS; i++){
+            strcpy(words[i], "");
+        }
         i=0;
         if (countBinaryLines>0){
             for (; i <countBinaryLines ; ++i) {
@@ -46,11 +48,6 @@ void secondPass(FILE* fp, char* name) {
             }
 
             if (!strcmp(words[index], ".entry")) {
-                if (searchSymbolList(words[1 + index])) {
-                    printf("Error, line %d, multiple declarations for same symbol", lineNum);
-                    errorFlag = TRUE;
-                    break;
-                }
                 addToSymbolList(words[1 + index], "entry", getValue(words[1 + index]));
                 countBinaryLines=0;
                 continue;
@@ -64,6 +61,8 @@ void secondPass(FILE* fp, char* name) {
                     break;
                 }
                 if (((isCommand(words[index]) >= 0 && isCommand(words[index]) <= 3)) || isCommand(words[index]) == 6) {
+                    if(words[index+1][strlen(words[index+1])-1] == ',')
+                        words[index+1][strlen(words[index+1])-1] = '\0';
                     operand1Type = discoverOperandTypeSecondPass(words[index + 1]);
                     operand2Type = discoverOperandTypeSecondPass(words[index + 2]);
                     strcpy(are1, discoverARE(words[index + 1]));
@@ -240,6 +239,7 @@ void secondPass(FILE* fp, char* name) {
     firstInfo = getFirstLine();
     buildOutPut(firstInfo,first_Symbol, name);
     fclose(fp);
+    freeInfoTable();
 }
 
 /**
@@ -446,7 +446,7 @@ void buildExt(infoTable* firstinfo, char* name){
     infoTable* temp = firstinfo;
     char words[MAX_WORD_LENGTH][MAX_WORD_LENGTH] = {"","","","","","","","","",""};
     int index;
-    int isSymbolDefinitionToStart = 0;
+    int isSymbolDefinitionToStart;
     FILE* fp;
     if (existExternalSymbol()) {
         fp = fopen(nameForExt, "w");

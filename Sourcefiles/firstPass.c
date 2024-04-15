@@ -53,20 +53,25 @@ void firstPass(FILE* fp) {
                     if (isFirstSymbol == TRUE) {
                         first_Symbol = make_symbol(words[0], "data", DC);
                         isFirstSymbol = FALSE;
-                    } else
+                    }
+                    else
                         addToSymbolList(words[0], "data", DC);
-                } else {
+                }
+                else {
                     printf("ERROR: data without symbol");
                     errorFlag = TRUE;
                 }
                 if (strcmp(words[1], ".string") == 0) {
                     addLineToInfoTable(address++, line, 0,
                                        translateToTwosCompliment((int) words[index + 1][1], NUM_OF_BITS));
-                    DC = createStringLine(DC + address, &words[index + 1][2]) - address;
-                } else {
+                    DC = createStringLine(DC + address, words[index + 1]+2) - address+1;
+
+                }
+                else {
                     if (isValidDataString(line)) {
                         DC = createDataLine(DC + address, line) - address;
-                    } else
+                    }
+                    else
                         printf("not valid string/data in line %d", lineNum);
                 }
 
@@ -80,7 +85,8 @@ void firstPass(FILE* fp) {
                 if (isFirstSymbol == TRUE) {
                     first_Symbol = make_symbol(words[1], "external", 0);
                     isFirstSymbol = FALSE;
-                } else
+                }
+                else
                     addToSymbolList(words[1], "external", 0);
                 index = 2;
                 while (strcmp(words[index], "") != 0){
@@ -122,6 +128,8 @@ void firstPass(FILE* fp) {
 
         }
     }
+    updateData(IC);
+
 }
 /**
  * discovers which type of operand a given word is.

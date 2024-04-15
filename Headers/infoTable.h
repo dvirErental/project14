@@ -22,13 +22,9 @@ int isValidDataString(const char *str);
 
 int createStringLine(int, char*);
 
-void startInfoTable(infoTable*);
-
 void executeCommandFirstPass(char*, int, int, int, char*);
 
 void addSetLineToInfoTable(infoTable* info);
-
-void printInfoTable();
 
 void addCompleteLineToInfoTable(infoTable* info);
 
@@ -36,14 +32,7 @@ infoTable* searchInfoTable(char*);
 
 infoTable* getFirstLine();
 
-void freeInfoLine(infoTable *line);
+void freeInfoTable(void);
 
-void freeInfoTable(infoTable *head);
+void printInfoTable();
 
-char* dataToBinary();
-//שני מערכים דו ממדיים  = address והקוד הבינארי לכל מילה
-int isNumberValue(const char*);
-
-int searchForMdefine(const char*);
-
-int howManyLines(void);

@@ -135,7 +135,7 @@ int createDataLine(int address, char* sourceCode) {
         token = strtok(NULL, ", ");
     }
     for (i = 0; i < count; i++) {
-        temp->address[i] = address+i;
+        temp->address[i] = address+i-1;
     }
     temp->address[i] = -1;
     strcpy(temp->sourceCode, sourceCode);
@@ -225,4 +225,10 @@ void printInfoTable(void){
 
 infoTable* getFirstLine(){
     return first_info;
+}
+
+
+
+void freeInfoTable(){
+    first_info = NULL;
 }

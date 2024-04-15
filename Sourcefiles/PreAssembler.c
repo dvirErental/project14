@@ -49,7 +49,8 @@ FILE* preAssemble(FILE* op, char* fileName) {
             }
         }
     }
-    free_list(first);
+    if(macsFound)
+        free_list(first);
     return ModOrig;
 }
 
