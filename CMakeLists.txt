@@ -16,4 +16,5 @@ add_executable(project14_1
         Sourcefiles/infoTable.c
         Sourcefiles/symbolTable.c
         Sourcefiles/firstPass.c
-        Headers/infoTable.h)
+        Headers/infoTable.h
+        Sourcefiles/secondPass.c)
